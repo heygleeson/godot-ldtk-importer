@@ -31,7 +31,7 @@
 ## 🧱 Tilesets
 - Generates Atlases from LDtk Tilesets
 - **Supports flipped tiles**
-- Supports importing tilesets as CanvasTextures, allowing for usage of [normal maps]().
+- Supports importing tilesets as CanvasTextures, allowing for usage of normal maps.
 - Allows for further editing of TileSets in the Editor, preserving changes (Physics Layers, Render Layers, etc.)
 - Supports Tile Custom Data (must be parsed by a post-import script)
 
