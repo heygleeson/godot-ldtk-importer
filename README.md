@@ -1,12 +1,16 @@
-# godot-ldtk
+<p align="center">
+	<img width="200" height="200" src="icon.svg">
+</p>
+
+# Godot LDtk Importer
 
 [LDtk](https://ldtk.io/) importer for [Godot 4](https://godotengine.org/)
 
-![](https://img.shields.io/badge/Godot-4.0%2B-%20?logo=godotengine&color=%23478CBF) ![](https://img.shields.io/badge/LDtk%201.3.4-%20?color=%23FFCC00)
+![](https://img.shields.io/badge/Godot-4.1%2B-%20?logo=godotengine&color=%23478CBF) ![](https://img.shields.io/badge/LDtk%201.3.4-%20?color=%23FFCC00)
 
 # Quickstart
 
-1. [Download the latest release]()
+1. [Download the latest release](https://github.com/heygleeson/godot-ldtk-importer/releases)
 2. Unpack `/ldtk-importer/` into the `'/addons/` folder in your Godot project.
 3. Enable this plugin in `Project > Project Settings > Plugins`
 
@@ -41,16 +45,16 @@
 With the `.ldtk` file selected in `FileViewer`, go to the `Import` dock to view the following import options:
 
 - **Tileset**
-	- Force Tileset Reimport: Ignore existing TileSets and generate new ones.
-	- Tileset Custom Data: Add tile custom data (see Tile Custom Data)
-	- Atlas Texture Type: CompressedTexture2D or CanvasTexture
+	- **Force Tileset Reimport**: *Ignore existing TileSets and generate new ones.*
+	- **Tileset Custom Data**: *Add tile custom data (see Tile Custom Data)*
+	- **Atlas Texture Type**: *CompressedTexture2D or CanvasTexture*
 - **Entity**
-	- Use Entity Placeholders: Create `LDTKEntity` nodes that emulate entities inside LDTK.
+	- **Use Entity Placeholders**: *Create `LDTKEntity` nodes that emulate entities inside LDTK.*
 - **Post Import**
-	- Tileset Post Import: Attach script (see Post-Import)
-	- Entity Post Import: Attach script (see Post-Import)
-	- Level Post Import: Attach script (see Post-Import)
-	- World Post Import: Attach script (see Post-Import)
+	- **Tileset Post Import**: *Attach script (see Post-Import)*
+	- **Entity Post Import**: *Attach script (see Post-Import)*
+	- **Level Post Import**: *Attach script (see Post-Import)*
+	- **World Post Import**: *Attach script (see Post-Import)*
 	
 ## 🧩 Tile Custom Data
 
@@ -60,7 +64,9 @@ LDtk allows you to add custom data to individual tiles in any given tileset.
 
 # 🔧 Post-Import
 
-You can hook up custom scripts that run during importing that modify the resulting Scene. Currently, there are 4 points where a post-import can be inserted, in order of execution:
+You can hook up custom scripts that run during importing that further modify the resulting Scene/Resource.
+
+Currently, there are **four** points where a post-import can be inserted, in order of execution:
 - **TileSet:** supplies an Array of generated TileSets
 - **Entity:** supplies a *LDTKEntityLayer* containing the layer definition and entities.
 - **Level:** supplies a *LDTKLevel* node containing *TileMaps*, *Backgrounds(Sprite2D)* and *LDTKEntityLayer*`* nodes.
