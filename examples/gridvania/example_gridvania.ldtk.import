@@ -1,0 +1,32 @@
+[remap]
+
+importer="ldtk.import"
+type="PackedScene"
+uid="uid://xxx8r8vuswa"
+path="res://.godot/imported/example_gridvania.ldtk-2c2bfddda6d6598db19492e019e8ae49.scn"
+
+[deps]
+
+files=["res://examples/gridvania/tilesets/tileset16x16.res"]
+
+source_file="res://examples/gridvania/example_gridvania.ldtk"
+dest_files=["res://.godot/imported/example_gridvania.ldtk-2c2bfddda6d6598db19492e019e8ae49.scn", "res://examples/gridvania/tilesets/tileset16x16.res"]
+
+[params]
+
+World=""
+Level=""
+Tileset=""
+force_tileset_reimport=false
+tileset_custom_data=true
+atlas_texture_type=1
+Entity=""
+use_entity_placeholders=true
+Post Import=""
+tileset_post_import=""
+entities_post_import="res://examples/entity-spawn-lights.gd"
+level_post_import=""
+world_post_import=""
+Debug=""
+verbose_output=false
+verbose_post_import=false

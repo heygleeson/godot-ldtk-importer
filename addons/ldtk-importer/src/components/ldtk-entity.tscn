@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c36l6fpttus66"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="1_hclg8"]
+
+[node name="LDTK Entity" type="Node2D"]
+script = ExtResource("1_hclg8")
+smart_color = Color(1, 0.8, 0, 0.533333)
