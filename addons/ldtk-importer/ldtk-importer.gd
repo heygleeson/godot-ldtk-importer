@@ -129,7 +129,8 @@ func _import(
 
 	# Parse source_file
 	var base_dir := source_file.get_base_dir() + "/"
-	var world_name := source_file.get_file().split(".")[0]
+	var file_name := source_file.get_file()
+	var world_name := file_name.split(".")[0]
 
 	var world_data := Util.parse_file(source_file)
 	if (Util.options.verbose_output):

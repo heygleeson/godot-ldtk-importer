@@ -1,5 +1,7 @@
 @tool
 
+const Util = preload("util.gd")
+
 static func get_world_position(
 		world_data: Dictionary,
 		level_data: Dictionary
@@ -35,3 +37,18 @@ static func get_world_position(
 	else:
 		push_warning("World layout not supported", world_data.worldLayout)
 		return Vector2i.ZERO
+
+
+static func get_external_level(
+		level_data: Dictionary,
+		base_dir: String
+) -> Dictionary:
+
+	var level_file = base_dir + "/" + level_data.externalRelPath
+	var new_level_data = Util.parse_file(level_file)
+	if not new_level_data == null:
+		if Util.options.verbose_output:
+			print("Parsed External Level: ", level_file)
+		return new_level_data
+
+	return level_data
