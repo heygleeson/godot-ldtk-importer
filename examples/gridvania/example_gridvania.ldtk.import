@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/example_gridvania.ldtk-2c2bfddda6d6598db19492
 [params]
 
 World=""
+separate_world_layers=true
 Level=""
 Tileset=""
 force_tileset_reimport=false

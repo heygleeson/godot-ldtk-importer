@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://tiadjdf7bmjd"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world-layer.gd" id="1_tla3i"]
+
+[node name="World Layer" type="Node2D"]
+script = ExtResource("1_tla3i")

@@ -14,8 +14,25 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 	var y1 = world.rect.position.y
 	var y2 = world.rect.end.y
 
+	var worldDepths := {}
+
 	for level in levels:
-		world.add_child(level)
+
+		if Util.options.separate_world_layers:
+			var worldDepthLayer
+			var z_index = level.z_index
+			if not z_index in worldDepths:
+				worldDepthLayer = LDTKWorldLayer.new()
+				worldDepthLayer.name = "WorldLayer_" + str(z_index)
+				world.add_child(worldDepthLayer)
+				worldDepthLayer.set_owner(world)
+				worldDepths[z_index] = worldDepthLayer
+			else:
+				worldDepthLayer = worldDepths[z_index]
+			worldDepthLayer.add_child(level)
+		else:
+			world.add_child(level)
+
 		level.set_owner(world)
 
 		x1 = min(x1, level.position.x)

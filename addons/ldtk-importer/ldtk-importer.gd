@@ -46,7 +46,10 @@ func _get_import_options(path, index):
 	return [
 		# --- World --- #
 		{"name": "World", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
-
+		{
+			"name": "separate_world_layers",
+			"default_value": false,
+		},
 		# --- Levels --- #
 		{"name": "Level", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 
