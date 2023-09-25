@@ -1,5 +1,15 @@
 @tool
 
+enum LDTK_VERSION {
+	FUTURE,
+	v1_4,
+	v1_3,
+	v1_2,
+	v1_0,
+	UNSUPPORTED
+}
+static var file_version = LDTK_VERSION.UNSUPPORTED
+
 const TYPE_STRING = [
 		"Nil", "Bool", "Int", "Float", "String", "Vec2", "Vec2i", "Rect2", "Rect2i", "Vec3",
 		"Vec3i", "Transform2D", "Vec4", "Vec4i", "Plane", "Quarternion", "AABB", "Basis",
@@ -35,6 +45,27 @@ static func parse_file(source_file: String) -> Dictionary:
 	var json := FileAccess.open(source_file, FileAccess.READ)
 	var data := JSON.parse_string(json.get_as_text())
 	return data
+
+static func check_version(version: String, latest_version: String) -> bool:
+	if version.begins_with("0."):
+		push_error("LDTK version out of date. Please update LDtk to ", latest_version)
+		file_version = LDTK_VERSION.UNSUPPORTED
+		return false
+
+	var major_minor = version.substr(0, 3)
+	match major_minor:
+		"1.0", "1.1":
+			file_version = LDTK_VERSION.v1_0
+		"1.2":
+			file_version = LDTK_VERSION.v1_2
+		"1.3":
+			file_version = LDTK_VERSION.v1_3
+		"1.4":
+			file_version = LDTK_VERSION.v1_4
+		_:
+			push_warning("LDtk file version is newer than what is supported. Errors may occur.")
+			file_version = LDTK_VERSION.FUTURE
+	return true
 
 static func recursive_set_owner(node: Node, owner: Node, root: Node):
 	if node.owner != root and node.owner != null:

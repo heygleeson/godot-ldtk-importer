@@ -1,6 +1,8 @@
 @tool
 extends EditorImportPlugin
 
+const LDTK_LATEST_VERSION = "1.3.4"
+
 enum Presets {DEFAULT}
 
 const Util = preload("src/util/util.gd")
@@ -132,6 +134,11 @@ func _import(
 	var world_data := Util.parse_file(source_file)
 	if (Util.options.verbose_output):
 		Util.log_time("Parse File")
+
+	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
+		print("LDTK VERSION OK")
+	else:
+		return ERR_PARSE_ERROR
 
 	# Generate Definitions
 	var definitions := DefinitionUtil.build_definitions(world_data)
