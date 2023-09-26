@@ -1,5 +1,29 @@
 @tool
 
+# Copy over and rotate extra tiledata
+static func copy_and_modify_tile_data(
+	tile_data: TileData,
+	orig_tile_data: TileData,
+	physics_layers_cnt: int,
+	iteration_count: int,
+):
+	# Copy over physics
+	for pli in range(physics_layers_cnt):
+		var polygon_cnt = orig_tile_data.get_collision_polygons_count(pli)
+		for pi in range(polygon_cnt):
+			tile_data.add_collision_polygon(pli)
+			var points: PackedVector2Array = orig_tile_data.get_collision_polygon_points(pli, pi)
+			for point_idx in range(points.size()):
+				var point: Vector2 = points[point_idx]
+				
+				if iteration_count & 1:
+					point = Vector2(-point.x, point.y)
+				if iteration_count & 2:
+					point = Vector2(point.x, -point.y)
+				
+				points[point_idx] = point
+			tile_data.set_collision_polygon_points(pli, pi, points)
+
 # Get Rect of Tile for an AtlasSource using LDTK tileset data
 static func get_tile_region(
 		coords: Vector2i,
