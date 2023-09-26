@@ -209,6 +209,7 @@ static func create_tile_layer(
 						tile_data, 
 						tile_source.get_tile_data(tile_grid, 0), 
 						tilemap.tile_set.get_physics_layers_count(),
+						tilemap.tile_set.get_navigation_layers_count(),
 						i
 					)
 					if i & 1:

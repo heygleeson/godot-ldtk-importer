@@ -1,10 +1,24 @@
 @tool
 
+# Flip a vector based on a bitset
+static func _flip_vector_array_with_bitset(
+	vecs: PackedVector2Array,
+	bitset: int
+):
+	for point_idx in range(vecs.size()):
+		var new_vec = Vector2(vecs[point_idx])
+		if bitset & 1:
+			new_vec.x = -new_vec.x 
+		if bitset & 2:
+			new_vec.y = -new_vec.y
+		vecs[point_idx] = new_vec
+
 # Copy over and rotate extra tiledata
 static func copy_and_modify_tile_data(
 	tile_data: TileData,
 	orig_tile_data: TileData,
 	physics_layers_cnt: int,
+	navigation_layers_cnt: int,
 	iteration_count: int,
 ):
 	# Copy over physics
@@ -13,16 +27,19 @@ static func copy_and_modify_tile_data(
 		for pi in range(polygon_cnt):
 			tile_data.add_collision_polygon(pli)
 			var points: PackedVector2Array = orig_tile_data.get_collision_polygon_points(pli, pi)
-			for point_idx in range(points.size()):
-				var point: Vector2 = points[point_idx]
-				
-				if iteration_count & 1:
-					point = Vector2(-point.x, point.y)
-				if iteration_count & 2:
-					point = Vector2(point.x, -point.y)
-				
-				points[point_idx] = point
+			_flip_vector_array_with_bitset(points, iteration_count)
 			tile_data.set_collision_polygon_points(pli, pi, points)
+	
+	# Copy over navigation
+	for navi in range(navigation_layers_cnt):
+		var nav_polygon: NavigationPolygon = orig_tile_data.get_navigation_polygon(navi)
+		var new_polygon = NavigationPolygon.new()
+		for outline_idx in range(nav_polygon.get_outline_count()):
+			var vertices = nav_polygon.get_outline(outline_idx)
+			_flip_vector_array_with_bitset(vertices, iteration_count)
+			new_polygon.add_outline(vertices)
+		new_polygon.make_polygons_from_outlines()
+		tile_data.set_navigation_polygon(navi, new_polygon)
 
 # Get Rect of Tile for an AtlasSource using LDTK tileset data
 static func get_tile_region(
