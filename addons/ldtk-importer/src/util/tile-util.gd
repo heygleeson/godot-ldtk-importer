@@ -31,6 +31,8 @@ static func copy_and_modify_tile_data(
 			tile_data.add_collision_polygon(pli)
 			var points: PackedVector2Array = _flip_vector_array_with_bitset(orig_tile_data.get_collision_polygon_points(pli, pi), bitset)
 			tile_data.set_collision_polygon_points(pli, pi, points)
+		tile_data.set_constant_angular_velocity(pli, orig_tile_data.get_constant_angular_velocity(pli))
+		tile_data.set_constant_linear_velocity(pli, orig_tile_data.get_constant_linear_velocity(pli))
 	
 	# Copy over navigation
 	for navi in range(navigation_layers_cnt):
