@@ -139,6 +139,7 @@ func _import(
 	if (Util.options.verbose_output):
 		Util.log_time("Parse File")
 
+	# Check Version
 	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
 		print("LDTK VERSION OK")
 	else:

@@ -40,6 +40,7 @@ static func build_levels(
 			printerr("World Layout not supported: ", world_data.worldLayout)
 
 	var external_levels = world_data.externalLevels
+
 	# Create Levels
 	for level_index in range(world_data.levels.size()):
 		var level_data

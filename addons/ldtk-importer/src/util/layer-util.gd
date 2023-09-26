@@ -6,24 +6,6 @@ const FieldUtil = preload("field-util.gd")
 # Counter reset per level, used when creating EntityPlacholders
 static var placeholder_counts := {}
 
-static func get_layer_definition(layer_def_uid: int, world_data: Dictionary) -> Dictionary :
-	for layer_def in world_data.defs.layers:
-		if layer_def.uid == layer_def_uid:
-			return {
-				"type": layer_def.type,
-				"identifier": layer_def.identifier,
-				"uid": layer_def.uid,
-				"gridSize": layer_def.gridSize,
-				"offset": Vector2i(layer_def.pxOffsetX, layer_def.pxOffsetY),
-				"parallax": Vector2(layer_def.parallaxFactorX, layer_def.parallaxFactorY),
-				"parallaxScaling": layer_def.parallaxScaling,
-				"tilePivot": Vector2i(layer_def.tilePivotX, layer_def.tilePivotY),
-				"intGridValues": layer_def.intGridValues
-			}
-
-	# Return Empty
-	return {}
-
 static func parse_entity_instances(
 		entities: Array,
 		entity_defs: Dictionary,

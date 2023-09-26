@@ -22,7 +22,6 @@ static func resolve_layer_definitions(layer_defs: Array) -> Dictionary:
 			"offset": Vector2i(layer_def.pxOffsetX, layer_def.pxOffsetY),
 			"parallax": Vector2(layer_def.parallaxFactorX, layer_def.parallaxFactorY),
 			"parallaxScaling": layer_def.parallaxScaling,
-			"tilePivot": Vector2i(layer_def.tilePivotX, layer_def.tilePivotY),
 			"intGridValues": layer_def.intGridValues
 		}
 
