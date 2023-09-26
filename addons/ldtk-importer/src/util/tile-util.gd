@@ -52,6 +52,12 @@ static func copy_and_modify_tile_data(
 		new_occluder.closed = occluder.closed
 		new_occluder.polygon = _flip_vector_array_with_bitset(occluder.polygon, bitset)
 		tile_data.set_occluder(occi, new_occluder)
+	
+	# Flip depending on bitset
+	if bitset & 1:
+		tile_data.set_flip_h(true)
+	if bitset & 2:
+		tile_data.set_flip_v(true)
 
 # Get Rect of Tile for an AtlasSource using LDTK tileset data
 static func get_tile_region(
