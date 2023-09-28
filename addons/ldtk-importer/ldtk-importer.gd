@@ -174,10 +174,12 @@ func _import(
 			world_nodes.append(world_node)
 
 		# Pack and Save Worlds
-		var world_paths := World.save_worlds(world_nodes, base_dir)
-		gen_files.append_array(world_paths)
+		# Currenty unsupported: Cannot resolve references.
+		#var world_paths := World.save_worlds(world_nodes, base_dir)
+		#gen_files.append_array(world_paths)
+		#world = World.create_multi_world(world_name, world_paths)
 
-		world = World.create_multi_world(world_name, world_paths)
+		world = World.create_multi_world(world_name, world_nodes)
 	else:
 		var levels := Level.build_levels(world_data, definitions, tilesets, base_dir)
 		Util.log_time("Built Levels")
@@ -188,6 +190,7 @@ func _import(
 	# Resolve References
 	Util.resolve_references()
 	Util.clean_references()
+	Util.clean_resolvers()
 
 	# Save World as PackedScene
 	var packed_world = PackedScene.new()

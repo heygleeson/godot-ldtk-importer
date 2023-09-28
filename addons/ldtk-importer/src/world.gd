@@ -58,7 +58,7 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 			level = PostImport.run(level, Util.options.level_post_import)
 
 		for node in level.get_children():
-			Util.recursive_set_owner(node, world, null)
+			Util.recursive_set_owner(node, world)
 
 	world.rect.position = Vector2i(x1, y1)
 	world.rect.end = Vector2i(x2, y2)
@@ -73,18 +73,17 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 
 static func create_multi_world(
 	name: String,
-	world_paths: Array
+	worlds: Array[LDTKWorld]
 ) -> LDTKWorld:
 
-	var world = LDTKWorld.new()
-	world.name = name
+	var multi_world = LDTKWorld.new()
+	multi_world.name = name
 
-	for world_path in world_paths:
-		var instance = load(world_path).instantiate()
-		world.add_child(instance)
-		instance.set_owner(world)
+	for world in worlds:
+		multi_world.add_child(world)
+		Util.recursive_set_owner(world, multi_world)
 
-	return world
+	return multi_world
 
 static func save_worlds(worlds: Array[LDTKWorld], base_dir: String) -> Array:
 	var gen_files := []

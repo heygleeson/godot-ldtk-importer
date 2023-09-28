@@ -7,10 +7,10 @@ path="res://.godot/imported/example-multiworld.ldtk-ca20e92fe75708e5d7c8026b1ce3
 
 [deps]
 
-files=["res://examples/multiworlds/tilesets/tileset16x16.res", "res://examples/multiworlds/worlds/WorldA.tscn", "res://examples/multiworlds/worlds/WorldB.tscn"]
+files=["res://examples/multiworlds/tilesets/tileset16x16.res"]
 
 source_file="res://examples/multiworlds/example-multiworld.ldtk"
-dest_files=["res://.godot/imported/example-multiworld.ldtk-ca20e92fe75708e5d7c8026b1ce37084.scn", "res://examples/multiworlds/tilesets/tileset16x16.res", "res://examples/multiworlds/worlds/WorldA.tscn", "res://examples/multiworlds/worlds/WorldB.tscn"]
+dest_files=["res://.godot/imported/example-multiworld.ldtk-ca20e92fe75708e5d7c8026b1ce37084.scn", "res://examples/multiworlds/tilesets/tileset16x16.res"]
 
 [params]
 
@@ -22,7 +22,7 @@ force_tileset_reimport=false
 tileset_custom_data=false
 atlas_texture_type=0
 Entity=""
-use_entity_placeholders=false
+use_entity_placeholders=true
 Post Import=""
 tileset_post_import=""
 entities_post_import=""

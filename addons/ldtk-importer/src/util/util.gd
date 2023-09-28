@@ -68,13 +68,10 @@ static func check_version(version: String, latest_version: String) -> bool:
 			file_version = LDTK_VERSION.FUTURE
 	return true
 
-static func recursive_set_owner(node: Node, owner: Node, root: Node):
-	if node.owner != root and node.owner != null:
-		return
-
+static func recursive_set_owner(node: Node, owner: Node):
 	node.set_owner(owner)
 	for child in node.get_children():
-		recursive_set_owner(child, owner, root)
+		recursive_set_owner(child, owner)
 
 ### References
 static var tilemap_refs := {}
@@ -137,6 +134,7 @@ static func clean_references() -> void:
 	instance_refs.clear()
 	unresolved_refs.clear()
 
+static func clean_resolvers() -> void:
 	for resolver in path_resolvers:
 		resolver.free()
 	path_resolvers.clear()
