@@ -27,6 +27,9 @@ static func copy_and_modify_tile_data(
 	# Copy over physics
 	for pli in range(physics_layers_cnt):
 		var polygon_cnt = orig_tile_data.get_collision_polygons_count(pli)
+		if polygon_cnt == 0:
+			# We have no polygon for this layer
+			continue
 		for pi in range(polygon_cnt):
 			tile_data.add_collision_polygon(pli)
 			var points: PackedVector2Array = _flip_vector_array_with_bitset(orig_tile_data.get_collision_polygon_points(pli, pi), bitset)
@@ -42,6 +45,9 @@ static func copy_and_modify_tile_data(
 	# Copy over navigation
 	for navi in range(navigation_layers_cnt):
 		var nav_polygon: NavigationPolygon = orig_tile_data.get_navigation_polygon(navi)
+		if nav_polygon == null:
+			# We have no polygon for this layer
+			continue
 		var new_polygon = NavigationPolygon.new()
 		for outline_idx in range(nav_polygon.get_outline_count()):
 			var vertices = _flip_vector_array_with_bitset(nav_polygon.get_outline(outline_idx), bitset)
@@ -52,6 +58,9 @@ static func copy_and_modify_tile_data(
 	#Copy over occluder
 	for occi in range(occluder_layers_cnt):
 		var occluder: OccluderPolygon2D = orig_tile_data.get_occluder(occi)
+		if occluder == null:
+			# We have no polygon for this layer
+			continue
 		var new_occluder: OccluderPolygon2D = OccluderPolygon2D.new()
 		new_occluder.cull_mode = occluder.cull_mode
 		new_occluder.closed = occluder.closed
