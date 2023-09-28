@@ -30,10 +30,11 @@ static func start_time():
 	print("-- LDTK: Start Import --")
 
 static func log_time(message: String):
-	var time = Time.get_ticks_msec()
-	var time_log = time - time_last
-	time_last = time
-	print("%s :: %sms" % [message, time_log])
+	if options.verbose_output:
+		var time = Time.get_ticks_msec()
+		var time_log = time - time_last
+		time_last = time
+		print("%s :: %sms" % [message, time_log])
 
 static func finish_time():
 	var time = Time.get_ticks_msec()

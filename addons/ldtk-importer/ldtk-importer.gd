@@ -136,8 +136,7 @@ func _import(
 	var world_name := file_name.split(".")[0]
 
 	var world_data := Util.parse_file(source_file)
-	if (Util.options.verbose_output):
-		Util.log_time("Parse File")
+	Util.log_time("Parse File")
 
 	# Check Version
 	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
@@ -147,8 +146,7 @@ func _import(
 
 	# Generate Definitions
 	var definitions := DefinitionUtil.build_definitions(world_data)
-	if (Util.options.verbose_output):
-		Util.log_time("Build Definitions")
+	Util.log_time("Build Definitions")
 
 	# Generate TileSets
 	var tilesets := Tileset.build_tilesets(definitions, base_dir)
@@ -162,8 +160,7 @@ func _import(
 
 	# Create World
 	var world := World.create_world(world_name, levels)
-	if (Util.options.verbose_output):
-		Util.log_time("Built World")
+	Util.log_time("Built Tilesets")
 
 	# Save Tilesets as Resources
 	var tileset_paths := Tileset.save_tilesets(tilesets, base_dir)
@@ -174,13 +171,10 @@ func _import(
 	# Save World as PackedScene
 	var packed_world = PackedScene.new()
 	packed_world.pack(world)
-	if (Util.options.verbose_output):
-		Util.log_time("Packed World Scene")
+	Util.log_time("Packed World Scene")
 
 	var world_path = "%s.%s" % [save_path, _get_save_extension()]
 	var err = ResourceSaver.save(packed_world, world_path)
-	if (Util.options.verbose_output):
-		Util.log_time("Saved World Scene")
-
+	Util.log_time("Saved World Scene")
 	Util.finish_time()
 	return err
