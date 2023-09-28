@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://cuhxcceg6ag3k"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world.gd" id="1_17bud"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="2_smjvq"]
+[ext_resource type="TileSet" uid="uid://48m0gymmjvyn" path="res://examples/multiworlds/tilesets/tileset16x16.res" id="3_v26gq"]
+
+[node name="WorldA" type="Node2D"]
+script = ExtResource("1_17bud")
+rect = Rect2i(0, 0, 512, 256)
+
+[node name="Level_0" type="Node2D" parent="."]
+script = ExtResource("2_smjvq")
+size = Vector2i(256, 256)
+neighbours = [{
+"dir": "e",
+"levelIid": "87a2bea0-3b70-11ee-a0fe-f76f3d643a40"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Tilemaps16x16" type="TileMap" parent="Level_0"]
+texture_filter = 1
+tile_set = ExtResource("3_v26gq")
+format = 2
+layer_0/name = "IntGrid-values"
+layer_0/enabled = false
+layer_0/tile_data = PackedInt32Array(0, 1, 0, 1, 1, 0, 2, 1, 0, 3, 1, 0, 4, 1, 0, 5, 1, 0, 6, 1, 0, 7, 1, 0, 8, 1, 0, 9, 1, 0, 10, 1, 0, 11, 1, 0, 12, 1, 0, 13, 1, 0, 14, 1, 0, 15, 1, 0, 65536, 1, 0, 65551, 1, 0, 131072, 1, 0, 131087, 1, 0, 196608, 1, 0, 196623, 1, 0, 262144, 1, 0, 262159, 1, 0, 327680, 1, 0, 327695, 1, 0, 393216, 1, 0, 393231, 1, 0, 458752, 1, 0, 458767, 1, 0, 524288, 1, 0, 524303, 1, 0, 589824, 1, 0, 589839, 1, 0, 655360, 1, 0, 655375, 1, 0, 720896, 1, 0, 720911, 1, 0, 786432, 1, 0, 786447, 1, 0, 851968, 1, 0, 851983, 1, 0, 917504, 1, 0, 917519, 1, 0, 983040, 1, 0, 983041, 1, 0, 983042, 1, 0, 983043, 1, 0, 983044, 1, 0, 983045, 1, 0, 983046, 1, 0, 983047, 1, 0, 983048, 1, 0, 983049, 1, 0, 983050, 1, 0, 983051, 1, 0, 983052, 1, 0, 983053, 1, 0, 983054, 1, 0, 983055, 1, 0)
+layer_1/name = "Tiles"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array(131074, 4, 0, 131075, 4, 0, 196610, 4, 0, 196611, 4, 0, 786444, 4, 4, 786445, 4, 4, 851980, 4, 4, 851981, 4, 4)
+
+[node name="Level_1" type="Node2D" parent="."]
+position = Vector2(256, 0)
+script = ExtResource("2_smjvq")
+size = Vector2i(256, 256)
+neighbours = [{
+"dir": "w",
+"levelIid": "61af0410-3b70-11ee-a0fe-21bfc2dcb645"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Tilemaps16x16" type="TileMap" parent="Level_1"]
+texture_filter = 1
+tile_set = ExtResource("3_v26gq")
+format = 2
+layer_0/name = "IntGrid-values"
+layer_0/enabled = false
+layer_0/tile_data = PackedInt32Array(0, 65537, 0, 1, 65537, 0, 2, 65537, 0, 3, 65537, 0, 4, 65537, 0, 5, 65537, 0, 6, 65537, 0, 7, 65537, 0, 8, 65537, 0, 9, 65537, 0, 10, 65537, 0, 11, 65537, 0, 12, 65537, 0, 13, 65537, 0, 14, 65537, 0, 15, 65537, 0, 65536, 65537, 0, 65551, 65537, 0, 131072, 65537, 0, 131087, 65537, 0, 196608, 65537, 0, 196623, 65537, 0, 262144, 65537, 0, 262159, 65537, 0, 327680, 65537, 0, 327695, 65537, 0, 393216, 65537, 0, 393231, 65537, 0, 458752, 65537, 0, 458767, 65537, 0, 524288, 65537, 0, 524303, 65537, 0, 589824, 65537, 0, 589839, 65537, 0, 655360, 65537, 0, 655375, 65537, 0, 720896, 65537, 0, 720911, 65537, 0, 786432, 65537, 0, 786447, 65537, 0, 851968, 65537, 0, 851983, 65537, 0, 917504, 65537, 0, 917519, 65537, 0, 983040, 65537, 0, 983041, 65537, 0, 983042, 65537, 0, 983043, 65537, 0, 983044, 65537, 0, 983045, 65537, 0, 983046, 65537, 0, 983047, 65537, 0, 983048, 65537, 0, 983049, 65537, 0, 983050, 65537, 0, 983051, 65537, 0, 983052, 65537, 0, 983053, 65537, 0, 983054, 65537, 0, 983055, 65537, 0)
+layer_1/name = "Tiles"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = false
+layer_1/y_sort_origin = 0
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array(131074, 4, 4, 131075, 4, 4, 131084, 4, 0, 131085, 4, 0, 196610, 4, 4, 196611, 4, 4, 196620, 4, 0, 196621, 4, 0, 786434, 4, 4, 786435, 4, 4, 786444, 4, 0, 786445, 4, 0, 851970, 4, 4, 851971, 4, 4, 851980, 4, 0, 851981, 4, 0)

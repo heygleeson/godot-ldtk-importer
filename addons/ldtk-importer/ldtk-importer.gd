@@ -150,23 +150,44 @@ func _import(
 
 	# Generate TileSets
 	var tilesets := Tileset.build_tilesets(definitions, base_dir)
-	if (Util.options.verbose_output):
-		Util.log_time("Built Tilesets")
-
-	# Create Levels
-	var levels := Level.build_levels(world_data, definitions, tilesets, base_dir)
-	if (Util.options.verbose_output):
-		Util.log_time("Built Levels")
-
-	# Create World
-	var world := World.create_world(world_name, levels)
 	Util.log_time("Built Tilesets")
 
 	# Save Tilesets as Resources
 	var tileset_paths := Tileset.save_tilesets(tilesets, base_dir)
 	gen_files.append_array(tileset_paths)
-	if (Util.options.verbose_output):
-		Util.log_time("Saved Tilesets")
+	Util.log_time("Saved Tilesets")
+
+	# Detect Multi-Worlds
+	var world
+	if world_data.worldLayout == null:
+		var world_nodes: Array[LDTKWorld] = []
+		var world_instances = world_data.worlds
+		for world_instance in world_instances:
+			var world_instance_name = world_instance.identifier
+
+			var levels := Level.build_levels(world_instance, definitions, tilesets, base_dir)
+			Util.log_time("\nBuilt Levels: " + world_instance_name)
+
+			var world_node := World.create_world(world_instance_name, levels)
+			Util.log_time("\nBuilt World: " + world_instance_name)
+
+			world_nodes.append(world_node)
+
+		# Pack and Save Worlds
+		var world_paths := World.save_worlds(world_nodes, base_dir)
+		gen_files.append_array(world_paths)
+
+		world = World.create_multi_world(world_name, world_paths)
+	else:
+		var levels := Level.build_levels(world_data, definitions, tilesets, base_dir)
+		Util.log_time("Built Levels")
+
+		world = World.create_world(world_name, levels)
+		Util.log_time("Built World")
+
+	# Resolve References
+	Util.resolve_references()
+	Util.clean_references()
 
 	# Save World as PackedScene
 	var packed_world = PackedScene.new()
@@ -177,4 +198,5 @@ func _import(
 	var err = ResourceSaver.save(packed_world, world_path)
 	Util.log_time("Saved World Scene")
 	Util.finish_time()
+
 	return err

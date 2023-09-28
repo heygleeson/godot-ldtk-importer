@@ -1,0 +1,33 @@
+[remap]
+
+importer="ldtk.import"
+type="PackedScene"
+uid="uid://21wk7cwffe60"
+path="res://.godot/imported/example-multiworld.ldtk-ca20e92fe75708e5d7c8026b1ce37084.scn"
+
+[deps]
+
+files=["res://examples/multiworlds/tilesets/tileset16x16.res", "res://examples/multiworlds/worlds/WorldA.tscn", "res://examples/multiworlds/worlds/WorldB.tscn"]
+
+source_file="res://examples/multiworlds/example-multiworld.ldtk"
+dest_files=["res://.godot/imported/example-multiworld.ldtk-ca20e92fe75708e5d7c8026b1ce37084.scn", "res://examples/multiworlds/tilesets/tileset16x16.res", "res://examples/multiworlds/worlds/WorldA.tscn", "res://examples/multiworlds/worlds/WorldB.tscn"]
+
+[params]
+
+World=""
+separate_world_layers=false
+Level=""
+Tileset=""
+force_tileset_reimport=false
+tileset_custom_data=false
+atlas_texture_type=0
+Entity=""
+use_entity_placeholders=false
+Post Import=""
+tileset_post_import=""
+entities_post_import=""
+level_post_import=""
+world_post_import=""
+Debug=""
+verbose_output=true
+verbose_post_import=false
