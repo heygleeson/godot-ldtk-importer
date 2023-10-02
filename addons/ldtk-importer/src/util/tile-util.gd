@@ -89,14 +89,14 @@ static func grid_to_px(
 
 # Converts px coords to grid coords
 static func px_to_grid(
-		px_coords: Vector2i,
-		grid_size: Vector2i,
-		padding: Vector2i = Vector2i.ZERO,
-		spacing: Vector2i = Vector2i.ZERO
+		px_coords: Vector2,
+		grid_size: Vector2,
+		padding: Vector2 = Vector2.ZERO,
+		spacing: Vector2 = Vector2.ZERO
 ) -> Vector2i:
 
-	var x: int = round(float(px_coords.x - padding.x) / float(grid_size.x + spacing.x))
-	var y: int = round(float(px_coords.y - padding.y) / float(grid_size.y + spacing.y))
+	var x: int = round((px_coords.x - padding.x) / (grid_size.x + spacing.x))
+	var y: int = round((px_coords.y - padding.y) / (grid_size.y + spacing.y))
 
 	return Vector2i(x, y)
 

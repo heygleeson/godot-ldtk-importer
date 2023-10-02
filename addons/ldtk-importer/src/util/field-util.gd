@@ -108,7 +108,7 @@ static func __parse_tile(value: Dictionary) -> AtlasTexture:
 	texture.atlas = atlas.texture
 
 	var coords = TileUtil.px_to_grid(
-			Vector2i(value.x, value.y),
+			Vector2(value.x, value.y),
 			atlas.texture_region_size,
 			atlas.margins,
 			atlas.separation

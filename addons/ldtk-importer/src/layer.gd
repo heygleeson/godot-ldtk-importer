@@ -180,15 +180,15 @@ static func create_tile_layer(
 		push_error("TileSetAtlasSource missing")
 		return false
 
-	var tile_size := Vector2i(tile_source.texture_region_size)
+	var tile_size := Vector2(tile_source.texture_region_size)
 
-	var grid_size := Vector2i(layer_data.__gridSize, layer_data.__gridSize)
-	var grid_offset := Vector2i(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
+	var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
+	var grid_offset := Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
 
 	# Place tiles
 	for tile in tiles:
-		var cell_px := Vector2i(tile.px[0], tile.px[1])
-		var tile_px := Vector2i(tile.src[0], tile.src[1])
+		var cell_px := Vector2(tile.px[0], tile.px[1])
+		var tile_px := Vector2(tile.src[0], tile.src[1])
 		var cell_grid := TileUtil.px_to_grid(cell_px, grid_size, grid_offset)
 		var tile_grid := TileUtil.px_to_grid(tile_px, tile_size, Vector2i.ZERO)
 
