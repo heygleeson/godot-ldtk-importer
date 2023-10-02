@@ -9,7 +9,7 @@ static func _flip_vector_array_with_bitset(
 	for point_idx in range(vecs.size()):
 		var new_vec = Vector2(vecs[point_idx])
 		if bitset & 1:
-			new_vec.x = -new_vec.x 
+			new_vec.x = -new_vec.x
 		if bitset & 2:
 			new_vec.y = -new_vec.y
 		new_vecs[point_idx] = new_vec
@@ -34,11 +34,11 @@ static func copy_and_modify_tile_data(
 		tile_data.set_constant_angular_velocity(pli, orig_tile_data.get_constant_angular_velocity(pli))
 		var linvel = Vector2(orig_tile_data.get_constant_linear_velocity(pli))
 		if bitset & 1:
-			linvel.x = -linvel.x 
+			linvel.x = -linvel.x
 		if bitset & 2:
 			linvel.y = -linvel.y
 		tile_data.set_constant_linear_velocity(pli, linvel)
-	
+
 	# Copy over navigation
 	for navi in range(navigation_layers_cnt):
 		var nav_polygon: NavigationPolygon = orig_tile_data.get_navigation_polygon(navi)
@@ -48,7 +48,7 @@ static func copy_and_modify_tile_data(
 			new_polygon.add_outline(vertices)
 		new_polygon.make_polygons_from_outlines()
 		tile_data.set_navigation_polygon(navi, new_polygon)
-	
+
 	#Copy over occluder
 	for occi in range(occluder_layers_cnt):
 		var occluder: OccluderPolygon2D = orig_tile_data.get_occluder(occi)
@@ -57,7 +57,7 @@ static func copy_and_modify_tile_data(
 		new_occluder.closed = occluder.closed
 		new_occluder.polygon = _flip_vector_array_with_bitset(occluder.polygon, bitset)
 		tile_data.set_occluder(occi, new_occluder)
-	
+
 	# Flip depending on bitset
 	if bitset & 1:
 		tile_data.set_flip_h(true)
@@ -94,8 +94,9 @@ static func px_to_grid(
 		padding: Vector2i = Vector2i.ZERO,
 		spacing: Vector2i = Vector2i.ZERO
 ) -> Vector2i:
-	var x: int = floor((px_coords.x - padding.x) / (grid_size.x + spacing.x))
-	var y: int = floor((px_coords.y - padding.y) / (grid_size.y + spacing.y))
+
+	var x: int = round(float(px_coords.x - padding.x) / float(grid_size.x + spacing.x))
+	var y: int = round(float(px_coords.y - padding.y) / float(grid_size.y + spacing.y))
 
 	return Vector2i(x, y)
 
