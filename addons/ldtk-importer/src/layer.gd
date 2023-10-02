@@ -155,7 +155,7 @@ static func create_tile_layer(
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier)
-	var layer_index := tilemap.get_layers_count() -1
+	var layer_index := tilemap.get_layers_count() - 1
 	tilemap.set_layer_name(layer_index, layer_name)
 	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
 	tilemap.set_layer_enabled(layer_index, layer_data.visible)
@@ -205,7 +205,7 @@ static func create_tile_layer(
 				for i in range(1,4):
 					var new_tile = tile_source.create_alternative_tile(tile_grid, i)
 					TileUtil.copy_and_modify_tile_data(
-						tile_source.get_tile_data(tile_grid, new_tile), 
+						tile_source.get_tile_data(tile_grid, new_tile),
 						tile_source.get_tile_data(tile_grid, 0),
 						tilemap.tile_set.get_physics_layers_count(),
 						tilemap.tile_set.get_navigation_layers_count(),
@@ -216,6 +216,11 @@ static func create_tile_layer(
 			if (tile_source.has_alternative_tile(tile_grid, tile_flip)):
 				alternative_tile = tile_flip
 
-		tilemap.set_cell(tile_layer_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
+		if not tilemap.get_cell_tile_data(layer_index, cell_grid):
+			tilemap.set_cell(layer_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
+		elif (Util.options.allow_overlapping_tiles):
+			LayerUtil.set_overlapping_tile(tilemap, layer_index, cell_grid, tile_source_id,
+					tile_grid, alternative_tile
+			)
 
 	return true
