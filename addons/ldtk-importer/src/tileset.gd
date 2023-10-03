@@ -28,7 +28,10 @@ static func build_tilesets(
 			)
 
 			if source == null:
-				push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
+				if tileset_def.identifier == "Internal_Icons":
+					push_warning("TileSetSource 'Internal_Icons' creation failed. This is an LDtk internal file that cannot be redistributed - you can safely ignore this message.")
+				else:
+					push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
 			elif source.texture == null:
 				push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
 
