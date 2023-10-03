@@ -11,57 +11,27 @@ static func create_layers(
 ) -> Array:
 
 	var layer_nodes := []
+	var layer_index: int = 0
 
-	for key in layer_dict:
-		# Create TileMap
-		var tilemap := TileMap.new()
-		tilemap.name = "Tilemaps" + str(key) + "x" + str(key)
-		tilemap.cell_quadrant_size = key
-		tilemap.set_texture_filter(CanvasItem.TEXTURE_FILTER_NEAREST)
-		var tileset = tilesets.get(key, null)
-		tilemap.tile_set = tileset
-		var tile_layer_index := 0
+	for layer_instance in layer_instances:
+		var layer_def: Dictionary = definitions.layers[layer_instance.layerDefUid]
+		var layer_type: String = layer_instance.__type
 
-		var layer_instances: Dictionary = layer_dict[key]
-		var layer_instance_count = layer_instances.size()
-		var layer_instance_keys = layer_instances.keys()
+		match layer_type:
+			"Entities":
+				var layer = create_entity_layer(layer_instance, layer_def, definitions.entities)
+				layer_nodes.push_front(layer)
 
-		# Add layers in reverse order
-		for index in range(layer_instance_count - 1, -1, -1):
-			var layer_data: Dictionary = layer_instances[layer_instance_keys[index]]
-			var layer_def = definitions.layers[layer_data.layerDefUid]
+			"IntGrid":
+				var layer = create_intgrid_layer(layer_instance, layer_def)
+				layer_nodes.push_front(layer)
 
-			var match_data := {
-				"type": layer_data.__type,
-				"tileset": layer_data.get("__tilesetDefUid", null) != null
-			}
+			"Tiles", "AutoLayer":
+				var layer = create_tile_layer(layer_instance, layer_def)
+				layer_nodes.push_front(layer)
 
-			var node_created := false
-			match match_data:
-				{"type": "Entities", ..}:
-					var entityDefs = definitions.entities
-					var layer = create_entity_layer(layer_data, layer_def, entityDefs)
-					layer.z_index = tile_layer_index
-					layer_nodes.push_front(layer)
-
-				{"type": "IntGrid", "tileset": false}:
-					node_created = create_intgrid_layer(tilemap, tile_layer_index, layer_data, layer_def)
-					if node_created: tile_layer_index += 1
-
-				{"type": "IntGrid", "tileset": true}:
-					node_created = create_intgrid_layer(tilemap, tile_layer_index, layer_data, layer_def)
-					if node_created: tile_layer_index += 1
-					node_created = create_tile_layer(tilemap, tile_layer_index, layer_data, layer_def)
-					if node_created: tile_layer_index += 1
-
-				{"type": "Tiles", "tileset": true}, {"type": "AutoLayer", "tileset": true}:
-					node_created = create_tile_layer(tilemap, tile_layer_index, layer_data, layer_def)
-					if node_created: tile_layer_index += 1
-
-				_:
-					push_warning("LDtk: Tried importing an unsupported layer type", match_data)
-
-		layer_nodes.push_front(tilemap)
+			_:
+				push_warning("[LDtk] Tried importing an unsupported layer type: ", layer_type)
 
 	return layer_nodes
 
@@ -103,25 +73,26 @@ static func create_entity_layer(
 	return layer
 
 static func create_intgrid_layer(
-		tilemap: TileMap,
-		tile_layer_index: int,
 		layer_data: Dictionary,
 		layer_def: Dictionary
-) -> bool:
+) -> TileMap:
+
+	var has_tileset := layer_data.__tilesetDefUid != null
+
+	# Create TileMap
+	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
+
 	# Retrieve IntGrid values - these do not always match their array index
 	var values: Array = layer_def.intGridValues.map(
 		func(item): return item.value
 	)
-
-	if tile_layer_index > 0:
-		tilemap.add_layer(-1)
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier) + "-values"
 	var layer_index := tilemap.get_layers_count() -1
 	tilemap.set_layer_name(layer_index, layer_name)
 	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
-	tilemap.set_layer_enabled(layer_index, false)
+	tilemap.set_layer_enabled(layer_index, not has_tileset)
 
 	if (Util.options.verbose_output):
 		print("Creating IntGrid Layer: ", layer_name)
@@ -129,10 +100,9 @@ static func create_intgrid_layer(
 	# Get tile data
 	var tiles: Array = layer_data.intGridCsv
 	var tile_source_id: int = layer_data.layerDefUid
-	var tile_source := tilemap.tile_set.get_source(tile_source_id)
 	var columns: int = layer_data.__cWid
 
-	# Place tiles
+	# Place Value Tiles
 	for index in range(0, tiles.size()):
 		var value = tiles[index]
 		var value_index: int = values.find(value)
@@ -141,16 +111,34 @@ static func create_intgrid_layer(
 			var tile_coords := Vector2i(value_index, 0)
 			tilemap.set_cell(layer_index, cell_coords, tile_source_id, tile_coords)
 
-	return true
+	# Place Tileset Tiles
+	if has_tileset:
+		tilemap.add_layer(-1)
+		layer_name = str(layer_data.__identifier) + "-tiles"
+		layer_index = tilemap.get_layers_count() - 1
+		tilemap.set_layer_name(layer_index, layer_name)
+		tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
+
+		# Get tile data
+		if (layer_data.__type == "Tiles"):
+			tiles = layer_data.gridTiles
+		else:
+			tiles = layer_data.autoLayerTiles
+
+		tile_source_id = layer_data.__tilesetDefUid
+		var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
+
+		__place_tiles(tilemap, tiles, tile_source_id, grid_size, layer_index)
+
+	return tilemap
 
 static func create_tile_layer(
-		tilemap: TileMap,
-		tile_layer_index: int,
 		layer_data: Dictionary,
 		layer_def: Dictionary
-) -> bool:
-	if tile_layer_index > 0:
-		tilemap.add_layer(-1)
+) -> TileMap:
+
+	# Create Tilemap
+	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier)
@@ -171,24 +159,34 @@ static func create_tile_layer(
 		tiles = layer_data.autoLayerTiles
 
 	var tile_source_id: int = layer_data.__tilesetDefUid
-	var tile_source: TileSetAtlasSource
+	var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
 
+	__place_tiles(tilemap, tiles, tile_source_id, grid_size)
+
+	return tilemap
+
+static func __place_tiles(
+		tilemap: TileMap,
+		tiles: Array,
+		tile_source_id: int,
+		grid_size: Vector2,
+		layer_index: int = 0
+) -> void:
+
+	var tile_source: TileSetAtlasSource
 	if tilemap.tile_set.has_source(tile_source_id):
 		tile_source = tilemap.tile_set.get_source(tile_source_id)
 	else:
 		push_error("TileSetAtlasSource missing")
-		return false
+		return
 
 	var tile_size := Vector2(tile_source.texture_region_size)
-
-	var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
-	var grid_offset := Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
 
 	# Place tiles
 	for tile in tiles:
 		var cell_px := Vector2(tile.px[0], tile.px[1])
 		var tile_px := Vector2(tile.src[0], tile.src[1])
-		var cell_grid := TileUtil.px_to_grid(cell_px, grid_size, grid_offset)
+		var cell_grid := TileUtil.px_to_grid(cell_px, grid_size, Vector2i.ZERO)
 		var tile_grid := TileUtil.px_to_grid(tile_px, tile_size, Vector2i.ZERO)
 
 		# Tile does not exist
@@ -196,24 +194,16 @@ static func create_tile_layer(
 			continue
 
 		# Handle flipped tiles
+		var alternative_count := tile_source.get_alternative_tiles_count(tile_grid)
 		var alternative_tile: int = 0
 		var tile_flip := int(tile.f)
 		if (tile_flip != 0):
-			if (tile_source.get_alternative_tiles_count(tile_grid) == 1):
-				# Create full set of alternative tiles for this tile
-				for i in range(1,4):
-					var new_tile = tile_source.create_alternative_tile(tile_grid, i)
-					TileUtil.copy_and_modify_tile_data(
-						tile_source.get_tile_data(tile_grid, new_tile),
-						tile_source.get_tile_data(tile_grid, 0),
-						tilemap.tile_set.get_physics_layers_count(),
-						tilemap.tile_set.get_navigation_layers_count(),
-						tilemap.tile_set.get_occlusion_layers_count(),
-						i
-					)
-
+			if (alternative_count == 1):
+				TileUtil.create_flipped_alternative_tiles(tilemap, tile_source, tile_grid)
+				alternative_count = tile_source.get_alternative_tiles_count(tile_grid)
 			if (tile_source.has_alternative_tile(tile_grid, tile_flip)):
 				alternative_tile = tile_flip
+
 
 		if not tilemap.get_cell_tile_data(layer_index, cell_grid):
 			tilemap.set_cell(layer_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
@@ -221,5 +211,3 @@ static func create_tile_layer(
 			LayerUtil.set_overlapping_tile(tilemap, layer_index, cell_grid, tile_source_id,
 					tile_grid, alternative_tile
 			)
-
-	return true

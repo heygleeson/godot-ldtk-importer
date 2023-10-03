@@ -20,6 +20,7 @@ static func build_tilesets(
 			var grid_size: int = tileset_def.gridSize
 			if not accum.has(grid_size):
 				accum[grid_size] = get_tileset(grid_size, base_dir)
+
 			var source: TileSetSource = create_tileset_source(
 					tileset_def,
 					accum[grid_size],
@@ -27,9 +28,9 @@ static func build_tilesets(
 			)
 
 			if source == null:
-				push_warning("TileSetSource creation failed!")
+				push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
 			elif source.texture == null:
-				push_warning("TileSetSource Texture failed")
+				push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
 
 			return accum
 	, {})

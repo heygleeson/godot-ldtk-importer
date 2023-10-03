@@ -93,20 +93,10 @@ static func create_level(
 	# Create Fields
 	level.fields = FieldUtil.create_fields(level_data.fieldInstances, level)
 
-	# Combine layers with same grid size.
 	var layer_instances = level_data.layerInstances
 	if not layer_instances is Array:
 		push_error("level '%s' has no layer instances." % [level_name])
 		return level
-
-	var layer_dict: Dictionary = layer_instances.reduce(
-		func (accum, current):
-			var grid_size: int = current.__gridSize
-			if accum.get(grid_size) == null:
-				accum[grid_size] = {}
-			accum[grid_size][int(current.layerDefUid)] = current
-			return accum
-	, {})
 
 	# Create Layers
 	var layers = Layer.create_layers(level_data, layer_instances, definitions)

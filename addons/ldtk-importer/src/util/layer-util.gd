@@ -1,5 +1,6 @@
 @tool
 
+const Util = preload("util.gd")
 const EntityPlaceHolder = preload("../components/ldtk-entity.tscn")
 const FieldUtil = preload("field-util.gd")
 
@@ -51,6 +52,19 @@ static func __placeholder_count(name: String) -> int:
 		placeholder_counts[name] += 1
 	return placeholder_counts[name]
 
+static func create_layer_tilemap(layer_data: Dictionary) -> TileMap:
+	var grid_size = int(layer_data.__gridSize)
+
+	var tilemap := TileMap.new()
+	tilemap.name = layer_data.__identifier
+	tilemap.cell_quadrant_size = grid_size
+	tilemap.set_texture_filter(CanvasItem.TEXTURE_FILTER_NEAREST)
+	tilemap.tile_set = Util.tilesets.get(grid_size, null)
+	var offset = Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
+	tilemap.position = offset
+
+	return tilemap
+
 static func set_overlapping_tile(
 		tilemap : TileMap,
 		layer_index: int,
@@ -88,5 +102,7 @@ static func set_overlapping_tile(
 		var new_index = layer_count
 		tilemap.set_layer_name(new_index, base_name)
 		tilemap.set_layer_z_index(new_index, highest_z)
+		tilemap.set_layer_modulate(new_index, tilemap.get_layer_modulate(layer_index))
 		# Set Cell
 		tilemap.set_cell(new_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
+
