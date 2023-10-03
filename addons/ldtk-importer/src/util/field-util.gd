@@ -28,7 +28,7 @@ static func parse_field(field: Dictionary) -> Variant:
 
 	var type := field.__type as String
 
-	# Handle Enum String
+	# Handle enum string
 	var localEnum: String
 	if type.contains("LocalEnum"):
 		var regex = RegEx.new()
@@ -40,7 +40,7 @@ static func parse_field(field: Dictionary) -> Variant:
 		else:
 			type = "LocalEnum"
 
-	# Match Field Type
+	# Match field type
 	match type:
 		"Int":
 			return int(value) as int
@@ -55,7 +55,6 @@ static func parse_field(field: Dictionary) -> Variant:
 			return value.entityIid as String
 		"LocalEnum":
 			return __parse_enum(localEnum, value) as String
-		# ------------------------------------------------------------------- #
 		"Array<Int>":
 			return value
 		"Array<Color>":

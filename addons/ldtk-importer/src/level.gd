@@ -17,7 +17,7 @@ static func build_levels(
 	base_directory = base_dir
 	var levels : Array[LDTKLevel] = []
 
-	# Calculate Level Positions
+	# Calculate level positions
 	var level_positions : Array
 	match world_data.worldLayout:
 		"LinearHorizontal":
@@ -42,7 +42,7 @@ static func build_levels(
 	if world_data.has('externalLevels'):
 		external_levels = world_data.externalLevels
 
-	# Create Levels
+	# Create levels
 	for level_index in range(world_data.levels.size()):
 		var level_data
 		var position: Vector2i = level_positions[level_index]
@@ -81,7 +81,7 @@ static func create_level(
 		Util.add_unresolved_reference(neighbour, "levelIid", level)
 	level.neighbours = neighbours
 
-	# Create Background Image
+	# Create background image
 	if level_data.bgRelPath != null:
 		var path = "%s/%s" % [base_directory, level_data.bgRelPath]
 		var sprite = Sprite2D.new()
@@ -90,7 +90,7 @@ static func create_level(
 		sprite.texture = load(path)
 		level.add_child(sprite)
 
-	# Create Fields
+	# Create fields
 	level.fields = FieldUtil.create_fields(level_data.fieldInstances, level)
 
 	var layer_instances = level_data.layerInstances
@@ -98,7 +98,7 @@ static func create_level(
 		push_error("level '%s' has no layer instances." % [level_name])
 		return level
 
-	# Create Layers
+	# Create layers
 	var layers = Layer.create_layers(level_data, layer_instances, definitions)
 	for layer in layers:
 		level.add_child(layer)

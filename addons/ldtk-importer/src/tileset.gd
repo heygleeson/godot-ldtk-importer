@@ -55,10 +55,10 @@ static func build_tilesets(
 			print("\n::POST-IMPORT Tilesets")
 		tilesets = PostImport.run(tilesets, Util.options.tileset_post_import)
 
-	# Store Tilesets in Util
+	# Store tilesets in Util
 	Util.tilesets = tilesets
 
-	# Save Tilesets
+	# Save tilesets
 	return save_tilesets(tilesets, base_dir)
 
 static func get_tileset(
@@ -128,7 +128,7 @@ static func create_tileset_source(
 		canvas_texture.diffuse_texture = texture
 		texture = canvas_texture
 
-	# Update Properties
+	# Update properties
 	if source.texture == null or source.texture.get_class() != texture.get_class():
 		source.texture = texture
 
@@ -220,7 +220,7 @@ static func create_intgrid_source(
 	source.texture = texture
 	source.texture_region_size = Vector2i(grid_size, grid_size)
 
-	# Create Tiles
+	# Create tiles
 	for index in range(0, values.size()):
 		#var value: Dictionary = values[index]
 		var coords := Vector2i(index, 0)

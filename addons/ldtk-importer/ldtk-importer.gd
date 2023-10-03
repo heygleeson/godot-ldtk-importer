@@ -65,7 +65,7 @@ func _get_import_options(path, index):
 		},
 		{
 			"name": "allow_overlapping_tiles",
-			"default_value": false,
+			"default_value": true,
 		},
 		{
 			"name": "atlas_texture_type",
@@ -131,7 +131,7 @@ func _import(
 
 	Util.start_time()
 
-	# Add Options to static var in "Util", accessible from any script.
+	# Add options to static var in "Util", accessible from any script.
 	Util.options = options
 
 	# Parse source_file
@@ -142,13 +142,13 @@ func _import(
 	var world_data := Util.parse_file(source_file)
 	Util.log_time("Parse File")
 
-	# Check Version
+	# Check version
 	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
 		print("LDTK VERSION OK")
 	else:
 		return ERR_PARSE_ERROR
 
-	# Generate Definitions
+	# Generate definitions
 	var definitions := DefinitionUtil.build_definitions(world_data)
 	Util.log_time("Build Definitions")
 
@@ -173,7 +173,7 @@ func _import(
 
 			world_nodes.append(world_node)
 
-		# Pack and Save Worlds
+		# Pack and save worlds
 		# Currenty unsupported: Cannot resolve references.
 		#var world_paths := World.save_worlds(world_nodes, base_dir)
 		#gen_files.append_array(world_paths)
@@ -187,7 +187,7 @@ func _import(
 		world = World.create_world(world_name, levels)
 		Util.log_time("Built World")
 
-	# Resolve References
+	# Resolve references
 	Util.resolve_references()
 	Util.clean_references()
 	Util.clean_resolvers()

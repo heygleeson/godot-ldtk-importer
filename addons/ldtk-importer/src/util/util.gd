@@ -21,7 +21,7 @@ const TYPE_STRING = [
 
 static var options := {}
 
-### Performance Measurement
+# Performance Measurement
 static var time_start : int
 static var time_last : int
 static func start_time():
@@ -41,7 +41,7 @@ static func finish_time():
 	var time_finish = time - time_start
 	print("-- LDTK: Finished Import -- (%sms)" % [time_finish])
 
-### General
+# General
 static func parse_file(source_file: String) -> Dictionary:
 	var json := FileAccess.open(source_file, FileAccess.READ)
 	var data := JSON.parse_string(json.get_as_text())
@@ -73,7 +73,7 @@ static func recursive_set_owner(node: Node, owner: Node):
 	for child in node.get_children():
 		recursive_set_owner(child, owner)
 
-### References
+# References
 static var tilesets := {}
 static var tilemap_refs := {}
 static var instance_refs := {}

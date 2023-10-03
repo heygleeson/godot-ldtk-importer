@@ -102,7 +102,7 @@ static func create_intgrid_layer(
 	var tile_source_id: int = layer_data.layerDefUid
 	var columns: int = layer_data.__cWid
 
-	# Place Value Tiles
+	# Place IntGrid value tiles
 	for index in range(0, tiles.size()):
 		var value = tiles[index]
 		var value_index: int = values.find(value)
@@ -111,7 +111,7 @@ static func create_intgrid_layer(
 			var tile_coords := Vector2i(value_index, 0)
 			tilemap.set_cell(layer_index, cell_coords, tile_source_id, tile_coords)
 
-	# Place Tileset Tiles
+	# Place IntGrid tileset tiles
 	if has_tileset:
 		tilemap.add_layer(-1)
 		layer_name = str(layer_data.__identifier) + "-tiles"
@@ -209,7 +209,7 @@ static func __place_tiles(
 			var alternative_index := 4
 			var alternative_exists := false
 
-			# Find Alternate Tile with same alpha
+			# Find alternate tile with same alpha
 			if alternative_count > alternative_index:
 				for i in range(alternative_index, alternative_count):
 					var data = tile_source.get_tile_data(tile_grid, i)
@@ -224,19 +224,19 @@ static func __place_tiles(
 			# Create new tile
 			if not alternative_exists:
 				if alternative_count == 1:
-					# Create flipped alternatives (preserves alternative order)
+					# Create flipped alternatives (this preserves alternative order)
 					TileUtil.create_flipped_alternative_tiles(tilemap, tile_source, tile_grid)
 					alternative_count = tile_source.get_alternative_tiles_count(tile_grid)
 
 				alternative_index = tile_source.create_alternative_tile(tile_grid, alternative_count)
 				var new_data = tile_source.get_tile_data(tile_grid, alternative_index)
 				TileUtil.copy_and_modify_tile_data(
-					new_data,
-					tile_source.get_tile_data(tile_grid, 0),
-					tilemap.tile_set.get_physics_layers_count(),
-					tilemap.tile_set.get_navigation_layers_count(),
-					tilemap.tile_set.get_occlusion_layers_count(),
-					tile_flip
+						new_data,
+						tile_source.get_tile_data(tile_grid, 0),
+						tilemap.tile_set.get_physics_layers_count(),
+						tilemap.tile_set.get_navigation_layers_count(),
+						tilemap.tile_set.get_occlusion_layers_count(),
+						tile_flip
 				)
 				new_data.modulate.a = tile.a
 
@@ -245,6 +245,11 @@ static func __place_tiles(
 		if not tilemap.get_cell_tile_data(layer_index, cell_grid):
 			tilemap.set_cell(layer_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
 		elif (Util.options.allow_overlapping_tiles):
-			LayerUtil.set_overlapping_tile(tilemap, layer_index, cell_grid, tile_source_id,
-					tile_grid, alternative_tile
+			LayerUtil.set_overlapping_tile(
+					tilemap,
+					layer_index,
+					cell_grid,
+					tile_source_id,
+					tile_grid,
+					alternative_tile
 			)

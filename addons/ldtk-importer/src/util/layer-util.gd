@@ -38,7 +38,7 @@ static func create_entity_placeholder(layer: Node2D, data: Dictionary) -> LDTKEn
 	else:
 		placeholder.name = data.identifier
 
-	# Set Properties
+	# Set properties
 	for prop in data.keys():
 		placeholder[prop] = data[prop]
 
@@ -97,12 +97,12 @@ static func set_overlapping_tile(
 
 	if not found_empty:
 		var highest_z = tilemap.get_layer_z_index(similar_layers[-1])
-		# Create New Layer
+		# Create new layer
 		tilemap.add_layer(-1)
 		var new_index = layer_count
 		tilemap.set_layer_name(new_index, base_name)
 		tilemap.set_layer_z_index(new_index, highest_z)
 		tilemap.set_layer_modulate(new_index, tilemap.get_layer_modulate(layer_index))
-		# Set Cell
+		# Set cell
 		tilemap.set_cell(new_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
 

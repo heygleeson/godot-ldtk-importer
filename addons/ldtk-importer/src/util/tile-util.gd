@@ -2,8 +2,8 @@
 
 # Flip a vector based on a bitset
 static func _flip_vector_array_with_bitset(
-	vecs: PackedVector2Array,
-	bitset: int
+		vecs: PackedVector2Array,
+		bitset: int
 ) -> PackedVector2Array:
 	var new_vecs = PackedVector2Array(vecs)
 	for point_idx in range(vecs.size()):
@@ -17,13 +17,13 @@ static func _flip_vector_array_with_bitset(
 
 # Copy over and rotate extra tiledata
 static func copy_and_modify_tile_data(
-	tile_data: TileData,
-	orig_tile_data: TileData,
-	physics_layers_cnt: int,
-	navigation_layers_cnt: int,
-	occluder_layers_cnt: int,
-	bitset: int,
-):
+		tile_data: TileData,
+		orig_tile_data: TileData,
+		physics_layers_cnt: int,
+		navigation_layers_cnt: int,
+		occluder_layers_cnt: int,
+		bitset: int,
+) -> void:
 	# Copy over physics
 	for pli in range(physics_layers_cnt):
 		var polygon_cnt = orig_tile_data.get_collision_polygons_count(pli)
@@ -55,7 +55,7 @@ static func copy_and_modify_tile_data(
 		new_polygon.make_polygons_from_outlines()
 		tile_data.set_navigation_polygon(navi, new_polygon)
 
-	#Copy over occluder
+	# Copy over occluder
 	for occi in range(occluder_layers_cnt):
 		var occluder: OccluderPolygon2D = orig_tile_data.get_occluder(occi)
 		if occluder == null:
@@ -110,7 +110,6 @@ static func grid_to_px(
 ) -> Vector2i:
 	var x: int = padding + grid_coords.x * (grid_size + spacing)
 	var y: int = padding + grid_coords.y * (grid_size + spacing)
-
 	return Vector2i(x, y)
 
 # Converts px coords to grid coords
@@ -120,21 +119,17 @@ static func px_to_grid(
 		padding: Vector2 = Vector2.ZERO,
 		spacing: Vector2 = Vector2.ZERO
 ) -> Vector2i:
-
 	var x: int = round((px_coords.x - padding.x) / (grid_size.x + spacing.x))
 	var y: int = round((px_coords.y - padding.y) / (grid_size.y + spacing.y))
-
 	return Vector2i(x, y)
 
 # Convert TileId to grid coords
 static func tileid_to_grid(tile_id: int, grid_w: int) -> Vector2i:
 	var y := int(tile_id / grid_w)
 	var x := tile_id - grid_w * y
-
 	return Vector2i(x, y)
 
 static func index_to_grid(index: int, grid_w: int) -> Vector2i:
 	var x: int = floor(index % grid_w)
 	var y: int = floor(index / grid_w)
-
 	return Vector2i(x, y)
