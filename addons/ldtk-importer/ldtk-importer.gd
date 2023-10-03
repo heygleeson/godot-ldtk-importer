@@ -152,12 +152,8 @@ func _import(
 	var definitions := DefinitionUtil.build_definitions(world_data)
 	Util.log_time("Build Definitions")
 
-	# Generate TileSets
-	var tilesets := Tileset.build_tilesets(definitions, base_dir)
-	Util.log_time("Built Tilesets")
-
 	# Save Tilesets as Resources
-	var tileset_paths := Tileset.save_tilesets(tilesets, base_dir)
+	var tileset_paths := Tileset.build_tilesets(definitions, base_dir)
 	gen_files.append_array(tileset_paths)
 	Util.log_time("Saved Tilesets")
 
@@ -169,7 +165,7 @@ func _import(
 		for world_instance in world_instances:
 			var world_instance_name = world_instance.identifier
 
-			var levels := Level.build_levels(world_instance, definitions, tilesets, base_dir)
+			var levels := Level.build_levels(world_instance, definitions, base_dir)
 			Util.log_time("\nBuilt Levels: " + world_instance_name)
 
 			var world_node := World.create_world(world_instance_name, levels)
@@ -185,7 +181,7 @@ func _import(
 
 		world = World.create_multi_world(world_name, world_nodes)
 	else:
-		var levels := Level.build_levels(world_data, definitions, tilesets, base_dir)
+		var levels := Level.build_levels(world_data, definitions, base_dir)
 		Util.log_time("Built Levels")
 
 		world = World.create_world(world_name, levels)

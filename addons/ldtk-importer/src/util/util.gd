@@ -74,6 +74,7 @@ static func recursive_set_owner(node: Node, owner: Node):
 		recursive_set_owner(child, owner)
 
 ### References
+static var tilesets := {}
 static var tilemap_refs := {}
 static var instance_refs := {}
 static var unresolved_refs := []

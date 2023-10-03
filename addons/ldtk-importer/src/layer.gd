@@ -6,8 +6,7 @@ const TileUtil = preload("util/tile-util.gd")
 
 static func create_layers(
 		level_data: Dictionary,
-		layer_dict: Dictionary,
-		tilesets: Dictionary,
+		layer_instances: Array,
 		definitions: Dictionary
 ) -> Array:
 

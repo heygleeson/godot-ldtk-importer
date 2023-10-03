@@ -9,7 +9,7 @@ enum AtlasTextureType {CompressedTexture2D, CanvasTexture}
 static func build_tilesets(
 		definitions: Dictionary,
 		base_dir: String
-) -> Dictionary:
+) -> Array:
 
 	# Create Tileset for each unique grid size
 	var tileset_def_uids = definitions.tilesets.keys()
@@ -54,7 +54,11 @@ static func build_tilesets(
 			print("\n::POST-IMPORT Tilesets")
 		tilesets = PostImport.run(tilesets, Util.options.tileset_post_import)
 
-	return tilesets
+	# Store Tilesets in Util
+	Util.tilesets = tilesets
+
+	# Save Tilesets
+	return save_tilesets(tilesets, base_dir)
 
 static func get_tileset(
 		tile_size: int,

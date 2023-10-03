@@ -11,7 +11,6 @@ static var base_directory: String
 static func build_levels(
 		world_data: Dictionary,
 		definitions: Dictionary,
-		tilesets: Dictionary,
 		base_dir: String
 ) -> Array[LDTKLevel]:
 
@@ -52,7 +51,7 @@ static func build_levels(
 		if external_levels:
 			level_data = LevelUtil.get_external_level(level_data, base_dir)
 
-		var level = create_level(level_data, position, tilesets, definitions)
+		var level = create_level(level_data, position, definitions)
 		levels.append(level)
 
 	return levels
@@ -60,7 +59,6 @@ static func build_levels(
 static func create_level(
 		level_data: Dictionary,
 		position: Vector2i,
-		tilesets: Dictionary,
 		definitions: Dictionary
 ) -> LDTKLevel:
 
@@ -111,7 +109,7 @@ static func create_level(
 	, {})
 
 	# Create Layers
-	var layers = Layer.create_layers(level_data, layer_dict, tilesets, definitions)
+	var layers = Layer.create_layers(level_data, layer_instances, definitions)
 	for layer in layers:
 		level.add_child(layer)
 
