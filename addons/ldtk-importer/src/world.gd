@@ -17,13 +17,13 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 	var worldDepths := {}
 
 	for level in levels:
-
 		if Util.options.separate_world_layers:
 			var worldDepthLayer
 			var z_index = level.z_index
 			if not z_index in worldDepths:
 				worldDepthLayer = LDTKWorldLayer.new()
 				worldDepthLayer.name = "WorldLayer_" + str(z_index)
+				worldDepthLayer.depth = z_index
 				world.add_child(worldDepthLayer)
 				worldDepthLayer.set_owner(world)
 				worldDepths[z_index] = worldDepthLayer
@@ -60,6 +60,13 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 		for node in level.get_children():
 			Util.recursive_set_owner(node, world)
 
+	# Sort WorldLayers based on depth
+	if not worldDepths.is_empty():
+		var keys = worldDepths.keys()
+		keys.sort_custom(func(a,b): return a < b)
+		for i in range(keys.size()):
+			world.move_child(worldDepths[keys[i]], i)
+
 	world.rect.position = Vector2i(x1, y1)
 	world.rect.end = Vector2i(x2, y2)
 
@@ -79,12 +86,15 @@ static func create_multi_world(
 	var multi_world = LDTKWorld.new()
 	multi_world.name = name
 
+	worlds.sort_custom(func(a,b): return a.depth < b.depth)
+
 	for world in worlds:
 		multi_world.add_child(world)
 		Util.recursive_set_owner(world, multi_world)
 
 	return multi_world
 
+# Unused
 static func save_worlds(worlds: Array[LDTKWorld], base_dir: String) -> Array:
 	var gen_files := []
 	var save_path = base_dir + 'worlds/'

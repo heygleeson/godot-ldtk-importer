@@ -2,4 +2,7 @@
 class_name LDTKWorldLayer
 extends Node2D
 
-@export var depth: int
+@export var depth: int:
+	set(d):
+		depth = d
+		z_index = depth
