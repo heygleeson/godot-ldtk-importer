@@ -1,0 +1,34 @@
+[remap]
+
+importer="ldtk.import"
+type="PackedScene"
+uid="uid://ccgoaggaq4gd4"
+path="res://.godot/imported/AutoLayers_6_OptionalRules.ldtk-9ecd1e043ba7ebe68d569aa2e64dde96.scn"
+
+[deps]
+
+files=["res://examples/ldtk-samples/AutoLayersOptionalRules/tilesets/tileset8x8.res"]
+
+source_file="res://examples/ldtk-samples/AutoLayersOptionalRules/AutoLayers_6_OptionalRules.ldtk"
+dest_files=["res://.godot/imported/AutoLayers_6_OptionalRules.ldtk-9ecd1e043ba7ebe68d569aa2e64dde96.scn", "res://examples/ldtk-samples/AutoLayersOptionalRules/tilesets/tileset8x8.res"]
+
+[params]
+
+World=""
+separate_world_layers=false
+Level=""
+Tileset=""
+force_tileset_reimport=false
+tileset_custom_data=false
+allow_overlapping_tiles=true
+atlas_texture_type=0
+Entity=""
+use_entity_placeholders=false
+Post Import=""
+tileset_post_import=""
+entities_post_import=""
+level_post_import=""
+world_post_import=""
+Debug=""
+verbose_output=false
+verbose_post_import=false
