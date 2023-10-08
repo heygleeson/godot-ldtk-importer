@@ -57,7 +57,6 @@ static func create_layer_tilemap(layer_data: Dictionary) -> TileMap:
 
 	var tilemap := TileMap.new()
 	tilemap.name = layer_data.__identifier
-	tilemap.cell_quadrant_size = grid_size
 	tilemap.set_texture_filter(CanvasItem.TEXTURE_FILTER_NEAREST)
 	tilemap.tile_set = Util.tilesets.get(grid_size, null)
 	var offset = Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
