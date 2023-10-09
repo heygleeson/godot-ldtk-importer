@@ -11,7 +11,8 @@ static var base_directory: String
 static func build_levels(
 		world_data: Dictionary,
 		definitions: Dictionary,
-		base_dir: String
+		base_dir: String,
+		external_levels: bool
 ) -> Array[LDTKLevel]:
 
 	base_directory = base_dir
@@ -37,10 +38,6 @@ static func build_levels(
 			)
 		_:
 			printerr("World Layout not supported: ", world_data.worldLayout)
-
-	var external_levels = false
-	if world_data.has('externalLevels'):
-		external_levels = world_data.externalLevels
 
 	# Create levels
 	for level_index in range(world_data.levels.size()):
@@ -95,6 +92,7 @@ static func create_level(
 
 	var layer_instances = level_data.layerInstances
 	if not layer_instances is Array:
+		var rel_path = level_data.externalRelPath
 		push_error("level '%s' has no layer instances." % [level_name])
 		return level
 
@@ -102,5 +100,6 @@ static func create_level(
 	var layers = Layer.create_layers(level_data, layer_instances, definitions)
 	for layer in layers:
 		level.add_child(layer)
+		Util.recursive_set_owner(layer, level)
 
 	return level
