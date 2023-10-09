@@ -71,7 +71,11 @@ static func check_version(version: String, latest_version: String) -> bool:
 static func recursive_set_owner(node: Node, owner: Node):
 	node.set_owner(owner)
 	for child in node.get_children():
-		recursive_set_owner(child, owner)
+		# Child is NOT an instantiated scene - this would otherwise cause errors
+		if child.scene_file_path == "":
+			recursive_set_owner(child, owner)
+		else:
+			child.set_owner(owner)
 
 # References
 static var tilesets := {}
