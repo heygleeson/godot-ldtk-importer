@@ -49,15 +49,15 @@ static func create_entity_layer(
 
 	# Create a dummy child node so EntityRef fields get a correct NodePath
 	# I need to find a better way to do this, but there are lots of funny behaviours to deal with.
-	var pathResolver = Node2D.new()
-	pathResolver.name = "NodePathResolver"
-	layer.add_child(pathResolver)
-	Util.path_resolvers.append(pathResolver)
+	#var pathResolver = Node2D.new()
+	#pathResolver.name = "NodePathResolver"
+	#layer.add_child(pathResolver)
+	#Util.path_resolvers.append(pathResolver)
 
 	var entities: Array = LayerUtil.parse_entity_instances(
 			layer_data.entityInstances,
 			entity_defs,
-			pathResolver
+			layer
 	)
 
 	# Add instance references

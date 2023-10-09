@@ -188,9 +188,9 @@ func _import(
 		Util.log_time("Built World")
 
 	# Resolve references
-	Util.resolve_references()
-	Util.clean_references()
-	Util.clean_resolvers()
+	#Util.resolve_references()
+	#Util.clean_references()
+	#Util.clean_resolvers()
 
 	# Save World as PackedScene
 	var packed_world = PackedScene.new()
