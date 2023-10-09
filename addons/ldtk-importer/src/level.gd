@@ -103,3 +103,22 @@ static func create_level(
 		Util.recursive_set_owner(layer, level)
 
 	return level
+
+static func save_levels(levels: Array[LDTKLevel], base_dir: String) -> Array:
+	var gen_files := []
+	var save_path = base_dir + 'levels/'
+	var directory = DirAccess.open(base_dir)
+	directory.make_dir_recursive(save_path)
+
+	for level in levels:
+		var packed_world = PackedScene.new()
+		packed_world.pack(level)
+
+		var file_name = level.name
+		var file_path = "%s%s.%s" % [save_path, file_name, "tscn"]
+
+		var err = ResourceSaver.save(packed_world, file_path)
+		if err == OK:
+			gen_files.push_back(file_path)
+
+	return gen_files

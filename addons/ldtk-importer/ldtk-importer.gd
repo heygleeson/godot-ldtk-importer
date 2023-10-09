@@ -169,23 +169,31 @@ func _import(
 			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
 			Util.log_time("\nBuilt Levels: " + world_instance_name)
 
-			var world_node := World.create_world(world_instance_name, levels)
-			Util.log_time("\nBuilt World: " + world_instance_name)
+			var level_paths := Level.save_levels(levels, base_dir)
+			gen_files.append_array(level_paths)
+			Util.log_time("Saved Levels: " + world_instance_name)
 
+			var world_node := World.create_world(world_instance_name, level_paths)
+			Util.log_time("\nBuilt World: " + world_instance_name)
 			world_nodes.append(world_node)
+			print("...\n")
 
 		# Pack and save worlds
-		# Currenty unsupported: Cannot resolve references.
-		#var world_paths := World.save_worlds(world_nodes, base_dir)
-		#gen_files.append_array(world_paths)
-		#world = World.create_multi_world(world_name, world_paths)
-
-		world = World.create_multi_world(world_name, world_nodes)
+		print("\nSaving Worlds...")
+		var world_paths := World.save_worlds(world_nodes, base_dir)
+		gen_files.append_array(world_paths)
+		print("\nCreating Multi-World...")
+		world = World.create_multi_world(world_name, world_paths)
+		Util.log_time("\n Saved Worlds")
 	else:
 		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
 		Util.log_time("Built Levels")
 
-		world = World.create_world(world_name, levels)
+		var level_paths := Level.save_levels(levels, base_dir)
+		gen_files.append_array(level_paths)
+		Util.log_time("Saved Levels")
+
+		world = World.create_world(world_name, level_paths)
 		Util.log_time("Built World")
 
 	# Resolve references
