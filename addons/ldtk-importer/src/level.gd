@@ -71,11 +71,13 @@ static func create_level(
 	level.bg_color = level_data.__bgColor
 	level.z_index = level_data.worldDepth
 
+	#/!\ This should get passed into the World.
 	Util.update_instance_reference(level_data.iid, level)
 
 	# Get neighbours (handle levelIid references)
 	var neighbours = level_data.__neighbours
 	for neighbour in neighbours:
+		#/!\ This should get passed into the World.
 		Util.add_unresolved_reference(neighbour, "levelIid", level)
 	level.neighbours = neighbours
 

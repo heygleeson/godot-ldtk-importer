@@ -11,11 +11,16 @@ static func create_fields(fields: Array, entity: Variant = null) -> Dictionary:
 	for field in fields:
 		var key: String = field.__identifier
 		dict[key] = parse_field(field)
+
 		if hitUnresolved:
+			# Field is 'Array<EntityRef>'
 			if dict[key] is Array:
 				for index in range(dict[key].size()):
+					#/!\ This should get passed into the Level.
 					Util.add_unresolved_reference(dict[key], index, entity)
+			# Field Is 'EntityRef'
 			else:
+				#/!\ This should get passed into the Level.
 				Util.add_unresolved_reference(dict, key, entity)
 			hitUnresolved = false
 
@@ -52,7 +57,7 @@ static func parse_field(field: Dictionary) -> Variant:
 			return __parse_tile(value) as AtlasTexture
 		"EntityRef":
 			hitUnresolved = true
-			return value.entityIid as String
+			return value
 		"LocalEnum":
 			return __parse_enum(localEnum, value) as String
 		"Array<Int>":
@@ -76,7 +81,7 @@ static func parse_field(field: Dictionary) -> Variant:
 			hitUnresolved = true
 			return value.map(
 				func (ref) -> String:
-					return ref.entityIid
+					return ref
 			)
 		"Array<LocalEnum>":
 			var enums: Array[String] = []

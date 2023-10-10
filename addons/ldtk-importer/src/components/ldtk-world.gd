@@ -46,8 +46,12 @@ func _set(property: StringName, value: Variant) -> bool:
 
 # ---
 func load_level(level_name: String) -> void:
+	if not is_inside_tree():
+		return
+
 	if level_name in level_scenes:
 		if not find_child(level_name):
+			print("Loading Level: ", level_name)
 			var level_scene = level_scenes[level_name]
 			var level = load(level_scene).instantiate()
 			add_child(level)
@@ -55,8 +59,12 @@ func load_level(level_name: String) -> void:
 			set_editable_instance(level, true)
 
 func unload_level(level_name: String) -> void:
+	if not is_inside_tree():
+		return
+
 	if level_name in level_scenes:
 		var level = find_child(level_name)
 		if level:
+			print("Loading Level: ", level_name)
 			level.queue_free()
 

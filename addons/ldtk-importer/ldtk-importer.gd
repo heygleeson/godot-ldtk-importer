@@ -142,8 +142,6 @@ func _import(
 	var world_data := Util.parse_file(source_file)
 	Util.log_time("Parse File")
 
-	var world_iid = world_data.iid
-
 	# Check version
 	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
 		print("LDTK VERSION OK")
@@ -159,8 +157,8 @@ func _import(
 	gen_files.append_array(tileset_paths)
 	Util.log_time("Saved Tilesets")
 
-	# Detect Multi-Worlds
 	var external_levels = world_data.externalLevels
+	var world_iid = world_data.iid
 
 	var world
 	if world_data.worldLayout == null:
@@ -169,6 +167,7 @@ func _import(
 		for world_instance in world_instances:
 			var world_instance_name = world_instance.identifier
 			var world_instance_iid = world_instance.iid
+
 			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
 			Util.log_time("\nBuilt Levels: " + world_instance_name)
 
