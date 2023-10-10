@@ -74,6 +74,10 @@ func _draw() -> void:
 			previousPoint = point
 
 func _parse_points(points: Array) -> Array:
+	if points.size() == 0:
+		return points
+	if get_parent() is SubViewport:
+		return points
 	var origin = get_parent().global_position - global_position
 	var gridSize = get_parent().definition.gridSize
 	var cellOffset = gridSize * Vector2(0.5, 0.5)

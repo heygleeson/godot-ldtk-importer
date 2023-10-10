@@ -8,6 +8,8 @@ extends Node2D
 @export var fields: Dictionary
 @export var neighbours: Array
 @export var bg_color: Color
+@export var references: Dictionary
+@export var unresolved_references: Dictionary
 
 func _ready() -> void:
 	queue_redraw()

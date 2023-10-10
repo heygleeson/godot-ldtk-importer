@@ -7,3 +7,5 @@ extends Node2D
 	set(d):
 		depth = d
 		z_index = depth
+
+@export var level_scenes: Dictionary = {}

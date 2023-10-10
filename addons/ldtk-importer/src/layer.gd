@@ -47,13 +47,6 @@ static func create_entity_layer(
 	if (Util.options.verbose_output):
 		print("Creating Entity Layer: ", layer.name)
 
-	# Create a dummy child node so EntityRef fields get a correct NodePath
-	# I need to find a better way to do this, but there are lots of funny behaviours to deal with.
-	#var pathResolver = Node2D.new()
-	#pathResolver.name = "NodePathResolver"
-	#layer.add_child(pathResolver)
-	#Util.path_resolvers.append(pathResolver)
-
 	var entities: Array = LayerUtil.parse_entity_instances(
 			layer_data.entityInstances,
 			entity_defs,
@@ -68,7 +61,8 @@ static func create_entity_layer(
 		LayerUtil.placeholder_counts.clear()
 		for entity in entities:
 				var placeholder = LayerUtil.create_entity_placeholder(layer, entity)
-				Util.update_instance_reference(placeholder.iid, placeholder)
+				var node_path = layer.get_path_to(placeholder)
+				layer.add_reference(placeholder.iid, node_path)
 
 	return layer
 

@@ -18,6 +18,8 @@ static func create_world(name: String, iid: String, level_paths: Array[String]) 
 
 	for level_path in level_paths:
 		var level = load(level_path).instantiate()
+		world.level_scenes[level.name] = level_path
+
 		if Util.options.separate_world_layers:
 			var worldDepthLayer
 			var z_index = level.z_index
@@ -46,12 +48,11 @@ static func create_world(name: String, iid: String, level_paths: Array[String]) 
 			for layer in layers:
 				if not layer is LDTKEntityLayer:
 					continue
-
 				if (Util.options.verbose_output):
 					var entityLayerName = layer.get_parent().name + "." + layer.name
 					print("\n::POST-IMPORT ENTITIES: ", entityLayerName)
-
 				layer = PostImport.run(layer, Util.options.entities_post_import)
+				level.references.merge(layer.references, true)
 
 		if (Util.options.level_post_import):
 			if (Util.options.verbose_output):
@@ -85,12 +86,13 @@ static func create_multi_world(name: String, iid: String, world_paths: Array[Str
 		var world: PackedScene = load(world_path)
 		var world_instance = world.instantiate()
 		multi_world.add_child(world_instance)
-		Util.recursive_set_owner(world_instance, multi_world)
+		world_instance.set_owner(multi_world)
+		multi_world.set_editable_instance(world_instance, true)
 
 	return multi_world
 
-static func save_worlds(worlds: Array[LDTKWorld], base_dir: String) -> Array:
-	var gen_files := []
+static func save_worlds(worlds: Array[LDTKWorld], base_dir: String) -> Array[String]:
+	var gen_files : Array[String] = []
 	var save_path = base_dir + 'worlds/'
 	var directory = DirAccess.open(base_dir)
 	directory.make_dir_recursive(save_path)

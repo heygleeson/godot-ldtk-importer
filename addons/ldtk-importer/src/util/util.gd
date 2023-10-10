@@ -101,10 +101,10 @@ static func add_tilemap_reference(uid: int, atlas: TileSetAtlasSource) -> void:
 static func add_unresolved_reference(object, property, node = object) -> void:
 	var iid = object[property]
 	unresolved_refs.append({
-			"object": object,
-			"property": property,
-			"iid": iid,
-			"node": node
+		"object": object,
+		"property": property,
+		"iid": iid,
+		"node": node
 	})
 
 static func resolve_references() -> void:
@@ -138,8 +138,3 @@ static func clean_references() -> void:
 	tilemap_refs.clear()
 	instance_refs.clear()
 	unresolved_refs.clear()
-
-static func clean_resolvers() -> void:
-	for resolver in path_resolvers:
-		resolver.free()
-	path_resolvers.clear()

@@ -5,3 +5,7 @@ extends Node2D
 
 @export var definition: Dictionary
 @export var entities: Array
+@export var references: Dictionary
+
+func add_reference(iid: String, node: NodePath) -> void:
+	references[iid] = node

@@ -5,3 +5,4 @@ extends Node2D
 
 @export var iid: String
 @export var rect: Rect2i
+@export var level_scenes: Dictionary = {}

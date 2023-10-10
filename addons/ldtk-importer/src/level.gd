@@ -66,6 +66,7 @@ static func create_level(
 	var level = LDTKLevel.new()
 	level.name = level_name
 	level.position = position
+	level.iid = level_data.iid
 	level.size = Vector2i(level_data.pxWid, level_data.pxHei)
 	level.bg_color = level_data.__bgColor
 	level.z_index = level_data.worldDepth
@@ -104,8 +105,8 @@ static func create_level(
 
 	return level
 
-static func save_levels(levels: Array[LDTKLevel], base_dir: String) -> Array:
-	var gen_files := []
+static func save_levels(levels: Array[LDTKLevel], base_dir: String) -> Array[String]:
+	var gen_files: Array[String] = []
 	var save_path = base_dir + 'levels/'
 	var directory = DirAccess.open(base_dir)
 	directory.make_dir_recursive(save_path)
