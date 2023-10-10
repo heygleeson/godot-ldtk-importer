@@ -3,6 +3,7 @@
 class_name LDTKLevel
 extends Node2D
 
+@export var iid: String
 @export var size: Vector2i
 @export var fields: Dictionary
 @export var neighbours: Array

@@ -1,3 +1,4 @@
+@tool
 @icon("ldtk-entity-layer.svg")
 class_name LDTKEntityLayer
 extends Node2D

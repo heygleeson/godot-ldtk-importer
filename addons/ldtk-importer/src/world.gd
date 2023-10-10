@@ -3,13 +3,10 @@
 const Util = preload("util/util.gd")
 const PostImport = preload("post-import.gd")
 
-static func create_world(
-	name: String,
-	level_paths: Array
-) -> LDTKWorld:
-
+static func create_world(name: String, iid: String, level_paths: Array[String]) -> LDTKWorld:
 	var world = LDTKWorld.new()
 	world.name = name
+	world.iid = iid
 
 	# Update World_Rect
 	var x1 = world.rect.position.x
@@ -79,13 +76,10 @@ static func create_world(
 
 	return world
 
-static func create_multi_world(
-	name: String,
-	world_paths: Array[String]
-) -> LDTKWorld:
-
+static func create_multi_world(name: String, iid: String, world_paths: Array[String]) -> LDTKWorld:
 	var multi_world = LDTKWorld.new()
 	multi_world.name = name
+	multi_world.iid = iid
 
 	for world_path in world_paths:
 		var world: PackedScene = load(world_path)
