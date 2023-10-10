@@ -1,0 +1,78 @@
+{
+	"__header__": {
+		"fileType": "LDtk Project JSON",
+		"app": "LDtk",
+		"doc": "https://ldtk.io/json",
+		"schema": "https://ldtk.io/files/JSON_SCHEMA.json",
+		"appAuthor": "Sebastien 'deepnight' Benard",
+		"appVersion": "1.4.1",
+		"url": "https://ldtk.io"
+	},
+	"identifier": "Level_1",
+	"iid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0",
+	"uid": 4,
+	"worldX": 256,
+	"worldY": 0,
+	"worldDepth": 0,
+	"pxWid": 256,
+	"pxHei": 256,
+	"__bgColor": "#696A79",
+	"bgColor": null,
+	"useAutoIdentifier": true,
+	"bgRelPath": null,
+	"bgPos": null,
+	"bgPivotX": 0.5,
+	"bgPivotY": 0.5,
+	"__smartColor": "#A0F093",
+	"__bgPos": null,
+	"externalRelPath": null,
+	"fieldInstances": [{ "__identifier": "Color", "__type": "Color", "__value": "#52E43B", "__tile": null, "defUid": 10, "realEditorValues": [{ "id": "V_Int", "params": [5432379] }] }],
+	"layerInstances": [
+		{
+			"__identifier": "Entities",
+			"__type": "Entities",
+			"__cWid": 16,
+			"__cHei": 16,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "e0f2cde0-6280-11ee-86b9-efdd7a0e8bda",
+			"levelId": 4,
+			"layerDefUid": 2,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 917827,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": [
+				{
+					"__identifier": "Entity",
+					"__grid": [8,8],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": null,
+					"__smartColor": "#FEAE34",
+					"__worldX": 384,
+					"__worldY": 128,
+					"iid": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
+					"width": 16,
+					"height": 16,
+					"defUid": 1,
+					"px": [128,128],
+					"fieldInstances": [
+						{ "__identifier": "Entity_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 3, "realEditorValues": [] },
+						{ "__identifier": "Note", "__type": "String", "__value": null, "__tile": null, "defUid": 9, "realEditorValues": [] }
+					]
+				}
+			]
+		}
+	],
+	"__neighbours": [{ "levelIid": "a3692c30-6280-11ee-86b9-5d93de230064", "dir": "w" }]
+}

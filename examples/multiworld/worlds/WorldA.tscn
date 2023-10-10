@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://ddq1dfds4rpjn"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world.gd" id="1_sd0gw"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="3_nbde6"]
+[ext_resource type="PackedScene" uid="uid://tyxiagxe11pv" path="res://examples/multiworld/levels/Level_3.tscn" id="3_s6cou"]
+[ext_resource type="PackedScene" uid="uid://ri7xdpwknn5n" path="res://examples/multiworld/levels/Level_0.tscn" id="5_bajya"]
+[ext_resource type="PackedScene" uid="uid://bhchbcqpyidds" path="res://examples/multiworld/levels/Level_1.tscn" id="6_wfdju"]
+
+[node name="WorldA" type="Node2D"]
+script = ExtResource("1_sd0gw")
+iid = "a3688ff0-6280-11ee-86b9-31cd700d2359"
+rect = Rect2i(0, 0, 512, 512)
+level_scenes = {
+"Level_0": "res://examples/multiworld/levels/Level_0.tscn",
+"Level_1": "res://examples/multiworld/levels/Level_1.tscn",
+"Level_3": "res://examples/multiworld/levels/Level_3.tscn"
+}
+Level_0 = true
+Level_1 = true
+Level_3 = true
+
+[node name="Level_0" type="Node2D" parent="." instance=ExtResource("5_bajya")]
+script = ExtResource("3_nbde6")
+iid = "a3692c30-6280-11ee-86b9-5d93de230064"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.894118, 0.231373, 0.266667, 1)
+}
+neighbours = [{
+"dir": "e",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Level_1" type="Node2D" parent="." instance=ExtResource("6_wfdju")]
+position = Vector2(256, 0)
+script = ExtResource("3_nbde6")
+iid = "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.321569, 0.894118, 0.231373, 1)
+}
+neighbours = [{
+"dir": "w",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Level_3" type="Node2D" parent="." instance=ExtResource("3_s6cou")]
+z_index = -1
+position = Vector2(0, 256)
+script = ExtResource("3_nbde6")
+iid = "37d34090-6280-11ee-86b9-db57dd7f8768"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.231373, 0.6, 0.894118, 1)
+}
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)

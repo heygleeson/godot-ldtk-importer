@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctxs7rp112n4y"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_yxhrw"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_xocls"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_a7xm3"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_c4whq"]
+
+[node name="Level_2" type="Node2D"]
+position = Vector2(256, 256)
+script = ExtResource("1_yxhrw")
+iid = "e71c1af0-6280-11ee-86b9-69b0fbc00599"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.509804, 0.231373, 0.894118, 1)
+}
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Entities" type="Node2D" parent="."]
+script = ExtResource("2_xocls")
+definition = {
+"gridSize": 16.0,
+"identifier": "Entities",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 2.0
+}
+entities = [{
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": null,
+"Note": null
+},
+"identifier": "Entity",
+"iid": "af870540-6280-11ee-86b9-b75d8e748ca3",
+"pivot": Vector2(0, 0),
+"position": Vector2i(128, 128),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}]
+references = {
+"af870540-6280-11ee-86b9-b75d8e748ca3": NodePath("Entity")
+}
+
+[node name="Entity" type="Node2D" parent="Entities" instance=ExtResource("3_a7xm3")]
+position = Vector2(128, 128)
+script = ExtResource("4_c4whq")
+iid = "af870540-6280-11ee-86b9-b75d8e748ca3"
+identifier = "Entity"
+fields = {
+"Entity_ref": null,
+"Note": null
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}

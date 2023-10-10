@@ -1,0 +1,78 @@
+{
+	"__header__": {
+		"fileType": "LDtk Project JSON",
+		"app": "LDtk",
+		"doc": "https://ldtk.io/json",
+		"schema": "https://ldtk.io/files/JSON_SCHEMA.json",
+		"appAuthor": "Sebastien 'deepnight' Benard",
+		"appVersion": "1.4.1",
+		"url": "https://ldtk.io"
+	},
+	"identifier": "Level_2",
+	"iid": "e71c1af0-6280-11ee-86b9-69b0fbc00599",
+	"uid": 5,
+	"worldX": 256,
+	"worldY": 256,
+	"worldDepth": 0,
+	"pxWid": 256,
+	"pxHei": 256,
+	"__bgColor": "#696A79",
+	"bgColor": null,
+	"useAutoIdentifier": true,
+	"bgRelPath": null,
+	"bgPos": null,
+	"bgPivotX": 0.5,
+	"bgPivotY": 0.5,
+	"__smartColor": "#BA93F0",
+	"__bgPos": null,
+	"externalRelPath": null,
+	"fieldInstances": [{ "__identifier": "Color", "__type": "Color", "__value": "#823BE4", "__tile": null, "defUid": 10, "realEditorValues": [{ "id": "V_Int", "params": [8535012] }] }],
+	"layerInstances": [
+		{
+			"__identifier": "Entities",
+			"__type": "Entities",
+			"__cWid": 16,
+			"__cHei": 16,
+			"__gridSize": 16,
+			"__opacity": 1,
+			"__pxTotalOffsetX": 0,
+			"__pxTotalOffsetY": 0,
+			"__tilesetDefUid": null,
+			"__tilesetRelPath": null,
+			"iid": "e71c1af1-6280-11ee-86b9-13a08e3ffe24",
+			"levelId": 5,
+			"layerDefUid": 2,
+			"pxOffsetX": 0,
+			"pxOffsetY": 0,
+			"visible": true,
+			"optionalRules": [],
+			"intGridCsv": [],
+			"autoLayerTiles": [],
+			"seed": 6040288,
+			"overrideTilesetUid": null,
+			"gridTiles": [],
+			"entityInstances": [
+				{
+					"__identifier": "Entity",
+					"__grid": [8,8],
+					"__pivot": [0,0],
+					"__tags": [],
+					"__tile": null,
+					"__smartColor": "#FEAE34",
+					"__worldX": 384,
+					"__worldY": 384,
+					"iid": "af870540-6280-11ee-86b9-b75d8e748ca3",
+					"width": 16,
+					"height": 16,
+					"defUid": 1,
+					"px": [128,128],
+					"fieldInstances": [
+						{ "__identifier": "Entity_ref", "__type": "EntityRef", "__value": null, "__tile": null, "defUid": 3, "realEditorValues": [] },
+						{ "__identifier": "Note", "__type": "String", "__value": null, "__tile": null, "defUid": 9, "realEditorValues": [] }
+					]
+				}
+			]
+		}
+	],
+	"__neighbours": []
+}

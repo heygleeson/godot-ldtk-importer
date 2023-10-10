@@ -1,0 +1,267 @@
+[gd_scene load_steps=5 format=3 uid="uid://ri7xdpwknn5n"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_a6opr"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_okf0j"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_b5rfg"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_s5nmk"]
+
+[node name="Level_0" type="Node2D"]
+script = ExtResource("1_a6opr")
+iid = "a3692c30-6280-11ee-86b9-5d93de230064"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.894118, 0.231373, 0.266667, 1)
+}
+neighbours = [{
+"dir": "e",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Entities" type="Node2D" parent="."]
+script = ExtResource("2_okf0j")
+definition = {
+"gridSize": 16.0,
+"identifier": "Entities",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 2.0
+}
+entities = [{
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": "6f35b810-6280-11ee-86b9-8f999cd43777",
+"Note": "Same Level"
+},
+"identifier": "Entity",
+"iid": "6d40ecf0-6280-11ee-86b9-0bc00b36f236",
+"pivot": Vector2(0, 0),
+"position": Vector2i(32, 32),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
+"Note": "Different Level"
+},
+"identifier": "Entity",
+"iid": "6f35b810-6280-11ee-86b9-8f999cd43777",
+"pivot": Vector2(0, 0),
+"position": Vector2i(96, 32),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"Note": "Different Layer"
+},
+"identifier": "Entity",
+"iid": "7019d680-6280-11ee-86b9-fbc73f46632e",
+"pivot": Vector2(0, 0),
+"position": Vector2i(144, 32),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": "af870540-6280-11ee-86b9-b75d8e748ca3",
+"Note": "Different World"
+},
+"identifier": "Entity",
+"iid": "71266480-6280-11ee-86b9-ffc6e0aec192",
+"pivot": Vector2(0, 0),
+"position": Vector2i(208, 32),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}]
+references = {
+"6d40ecf0-6280-11ee-86b9-0bc00b36f236": NodePath("Entity"),
+"6f35b810-6280-11ee-86b9-8f999cd43777": NodePath("Entity2"),
+"7019d680-6280-11ee-86b9-fbc73f46632e": NodePath("Entity3"),
+"71266480-6280-11ee-86b9-ffc6e0aec192": NodePath("Entity4")
+}
+
+[node name="Entity" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
+position = Vector2(32, 32)
+script = ExtResource("4_s5nmk")
+iid = "6d40ecf0-6280-11ee-86b9-0bc00b36f236"
+identifier = "Entity"
+fields = {
+"Entity_ref": "6f35b810-6280-11ee-86b9-8f999cd43777",
+"Note": "Same Level"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity2" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
+position = Vector2(96, 32)
+script = ExtResource("4_s5nmk")
+iid = "6f35b810-6280-11ee-86b9-8f999cd43777"
+identifier = "Entity"
+fields = {
+"Entity_ref": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
+"Note": "Different Level"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity3" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
+position = Vector2(144, 32)
+script = ExtResource("4_s5nmk")
+iid = "7019d680-6280-11ee-86b9-fbc73f46632e"
+identifier = "Entity"
+fields = {
+"Entity_ref": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"Note": "Different Layer"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity4" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
+position = Vector2(208, 32)
+script = ExtResource("4_s5nmk")
+iid = "71266480-6280-11ee-86b9-ffc6e0aec192"
+identifier = "Entity"
+fields = {
+"Entity_ref": "af870540-6280-11ee-86b9-b75d8e748ca3",
+"Note": "Different World"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}

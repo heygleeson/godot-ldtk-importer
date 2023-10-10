@@ -30,5 +30,6 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 
 			# Add instance to the EntityLayer node.
 			entity_layer.add_child(light)
+			entity_layer.add_reference(entity.iid, light)
 
 	return entity_layer

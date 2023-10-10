@@ -1,0 +1,94 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhchbcqpyidds"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_46gg5"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_2opir"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_j25kc"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_ryb4b"]
+
+[node name="Level_1" type="Node2D"]
+position = Vector2(256, 0)
+script = ExtResource("1_46gg5")
+iid = "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0"
+size = Vector2i(256, 256)
+fields = {
+"Color": Color(0.321569, 0.894118, 0.231373, 1)
+}
+neighbours = [{
+"dir": "w",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064"
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="Entities" type="Node2D" parent="."]
+script = ExtResource("2_2opir")
+definition = {
+"gridSize": 16.0,
+"identifier": "Entities",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 2.0
+}
+entities = [{
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": null,
+"Note": null
+},
+"identifier": "Entity",
+"iid": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
+"pivot": Vector2(0, 0),
+"position": Vector2i(128, 128),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}]
+references = {
+"86a5a0a0-6280-11ee-86b9-cb47c84e3429": NodePath("Entity")
+}
+
+[node name="Entity" type="Node2D" parent="Entities" instance=ExtResource("3_j25kc")]
+position = Vector2(128, 128)
+script = ExtResource("4_ryb4b")
+iid = "86a5a0a0-6280-11ee-86b9-cb47c84e3429"
+identifier = "Entity"
+fields = {
+"Entity_ref": null,
+"Note": null
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
