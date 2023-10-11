@@ -49,14 +49,14 @@ static func __placeholder_count(name: String) -> int:
 		placeholder_counts[name] += 1
 	return placeholder_counts[name]
 
-static func create_layer_tilemap(layer_data: Dictionary) -> TileMap:
-	var grid_size = int(layer_data.__gridSize)
+static func create_layer_tilemap(layer_instance: Dictionary) -> TileMap:
+	var grid_size = int(layer_instance.__gridSize)
 
 	var tilemap := TileMap.new()
-	tilemap.name = layer_data.__identifier
+	tilemap.name = layer_instance.__identifier
 	tilemap.set_texture_filter(CanvasItem.TEXTURE_FILTER_NEAREST)
 	tilemap.tile_set = Util.tilesets.get(grid_size, null)
-	var offset = Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
+	var offset = Vector2(layer_instance.__pxTotalOffsetX, layer_instance.__pxTotalOffsetY)
 	tilemap.position = offset
 
 	return tilemap

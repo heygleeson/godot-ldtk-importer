@@ -36,19 +36,20 @@ static func create_layers(
 	return layer_nodes
 
 static func create_entity_layer(
-		layer_data: Dictionary,
+		layer_instance: Dictionary,
 		layer_def: Dictionary,
 		entity_defs: Dictionary
 ) -> Node2D:
 
 	var layer = LDTKEntityLayer.new()
-	layer.name = layer_data.__identifier
+	layer.name = layer_instance.__identifier
+	layer.iid = layer_instance.iid
 
 	if (Util.options.verbose_output):
 		print("Creating Entity Layer: ", layer.name)
 
 	var entities: Array = LayerUtil.parse_entity_instances(
-			layer_data.entityInstances,
+			layer_instance.entityInstances,
 			entity_defs,
 			layer
 	)
@@ -67,14 +68,14 @@ static func create_entity_layer(
 	return layer
 
 static func create_intgrid_layer(
-		layer_data: Dictionary,
+		layer_instance: Dictionary,
 		layer_def: Dictionary
 ) -> TileMap:
 
-	var has_tileset := layer_data.__tilesetDefUid != null
+	var has_tileset := layer_instance.__tilesetDefUid != null
 
 	# Create TileMap
-	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
+	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_instance)
 
 	# Retrieve IntGrid values - these do not always match their array index
 	var values: Array = layer_def.intGridValues.map(
@@ -82,19 +83,19 @@ static func create_intgrid_layer(
 	)
 
 	# Set layer properties on the Tilemap
-	var layer_name := str(layer_data.__identifier) + "-values"
+	var layer_name := str(layer_instance.__identifier) + "-values"
 	var layer_index := tilemap.get_layers_count() -1
 	tilemap.set_layer_name(layer_index, layer_name)
-	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
+	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_instance.__opacity))
 	tilemap.set_layer_enabled(layer_index, not has_tileset)
 
 	if (Util.options.verbose_output):
 		print("Creating IntGrid Layer: ", layer_name)
 
 	# Get tile data
-	var tiles: Array = layer_data.intGridCsv
-	var tile_source_id: int = layer_data.layerDefUid
-	var columns: int = layer_data.__cWid
+	var tiles: Array = layer_instance.intGridCsv
+	var tile_source_id: int = layer_instance.layerDefUid
+	var columns: int = layer_instance.__cWid
 
 	# Place IntGrid value tiles
 	for index in range(0, tiles.size()):
@@ -108,38 +109,38 @@ static func create_intgrid_layer(
 	# Place IntGrid tileset tiles
 	if has_tileset:
 		tilemap.add_layer(-1)
-		layer_name = str(layer_data.__identifier) + "-tiles"
+		layer_name = str(layer_instance.__identifier) + "-tiles"
 		layer_index = tilemap.get_layers_count() - 1
 		tilemap.set_layer_name(layer_index, layer_name)
-		tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
+		tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_instance.__opacity))
 
 		# Get tile data
-		if (layer_data.__type == "Tiles"):
-			tiles = layer_data.gridTiles
+		if (layer_instance.__type == "Tiles"):
+			tiles = layer_instance.gridTiles
 		else:
-			tiles = layer_data.autoLayerTiles
+			tiles = layer_instance.autoLayerTiles
 
-		tile_source_id = layer_data.__tilesetDefUid
-		var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
+		tile_source_id = layer_instance.__tilesetDefUid
+		var grid_size := Vector2(layer_instance.__gridSize, layer_instance.__gridSize)
 
 		__place_tiles(tilemap, tiles, tile_source_id, grid_size, layer_index)
 
 	return tilemap
 
 static func create_tile_layer(
-		layer_data: Dictionary,
+		layer_instance: Dictionary,
 		layer_def: Dictionary
 ) -> TileMap:
 
 	# Create Tilemap
-	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
+	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_instance)
 
 	# Set layer properties on the Tilemap
-	var layer_name := str(layer_data.__identifier)
+	var layer_name := str(layer_instance.__identifier)
 	var layer_index := tilemap.get_layers_count() - 1
 	tilemap.set_layer_name(layer_index, layer_name)
-	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
-	tilemap.set_layer_enabled(layer_index, layer_data.visible)
+	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_instance.__opacity))
+	tilemap.set_layer_enabled(layer_index, layer_instance.visible)
 	tilemap.set_layer_z_index(layer_index, layer_index)
 
 	if (Util.options.verbose_output):
@@ -147,13 +148,13 @@ static func create_tile_layer(
 
 	# Get tile data
 	var tiles: Array
-	if (layer_data.__type == "Tiles"):
-		tiles = layer_data.gridTiles
+	if (layer_instance.__type == "Tiles"):
+		tiles = layer_instance.gridTiles
 	else:
-		tiles = layer_data.autoLayerTiles
+		tiles = layer_instance.autoLayerTiles
 
-	var tile_source_id: int = layer_data.__tilesetDefUid
-	var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
+	var tile_source_id: int = layer_instance.__tilesetDefUid
+	var grid_size := Vector2(layer_instance.__gridSize, layer_instance.__gridSize)
 
 	__place_tiles(tilemap, tiles, tile_source_id, grid_size)
 

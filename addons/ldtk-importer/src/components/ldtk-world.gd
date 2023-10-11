@@ -5,6 +5,8 @@ extends Node2D
 
 @export var iid: String
 @export var rect: Rect2i
+@export var references: Dictionary
+@export var resolvers: Array
 @export var level_scenes: Dictionary = {}
 
 var __levels_active: Dictionary = {}

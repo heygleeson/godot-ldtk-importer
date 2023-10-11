@@ -9,7 +9,7 @@ extends Node2D
 @export var neighbours: Array
 @export var bg_color: Color
 @export var references: Dictionary
-@export var unresolved_references: Array
+@export var resolvers: Array
 
 # ---
 func _ready() -> void:
@@ -18,14 +18,15 @@ func _ready() -> void:
 		if child is LDTKEntityLayer:
 			# Add References
 			var child_path = get_path_to(child)
+			references[child.iid] = child_path
 			for key in child.references:
 				# NOTE: This is an ugly NodePath rebuild.
 				var node_path = NodePath(String(child_path) + "/" + String(child.references[key]))
 				references[key] = node_path
 				#print("Merge Path: '%s' -> '%s'" % [child.references[key], node_path])
 
-			# Add Unresolved References
-			unresolved_references.append_array(child.unresolved_references)
+			# Add Resolvers
+			resolvers.append_array(child.resolvers)
 
 	_resolve_references()
 	queue_redraw()
@@ -39,8 +40,8 @@ func add_reference(iid: String, node: Node) -> void:
 	references[iid] = node
 
 func _resolve_references():
-	for reference in unresolved_references:
-
+	for resolver in resolvers:
+		pass
 		## reference.ref
 		## entityIid:
 		## layerIid:
