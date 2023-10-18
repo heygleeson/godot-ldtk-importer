@@ -46,6 +46,26 @@ func _set(property: StringName, value: Variant) -> bool:
 
 	return false
 
+func _ready() -> void:
+	# Attach callbacks
+	child_entered_tree.connect(_on_child_entered)
+	child_exiting_tree.connect(_on_child_exited)
+
+	# Merge
+	for child in get_children():
+		if child is LDTKLevel or child is LDTKWorld or child is LDTKWorldLayer:
+			# Add References
+			var child_path = get_path_to(child)
+			references[child.iid] = child_path
+			for key in child.references:
+				# NOTE: This is an ugly NodePath rebuild.
+				var node_path = NodePath(String(child_path) + "/" + String(child.references[key]))
+				references[key] = node_path
+				#print("Merge Path: '%s' -> '%s'" % [child.references[key], node_path])
+
+			# Add Resolvers
+			resolvers.append_array(child.resolvers)
+
 # ---
 func load_level(level_name: String) -> void:
 	if not is_inside_tree():
@@ -70,3 +90,12 @@ func unload_level(level_name: String) -> void:
 			print("Loading Level: ", level_name)
 			level.queue_free()
 
+func update_resolvers() -> void:
+	pass
+# ---
+
+func _on_child_entered(node: Node) -> void:
+	update_resolvers()
+
+func _on_child_exited(node: Node) -> void:
+	update_resolvers()

@@ -57,7 +57,7 @@ static func parse_field(field: Dictionary) -> Variant:
 			return __parse_tile(value) as AtlasTexture
 		"EntityRef":
 			hitUnresolved = true
-			return value
+			return __parse_ref(value)
 		"LocalEnum":
 			return __parse_enum(localEnum, value) as String
 		"Array<Int>":
@@ -80,8 +80,8 @@ static func parse_field(field: Dictionary) -> Variant:
 		"Array<EntityRef>":
 			hitUnresolved = true
 			return value.map(
-				func (ref) -> String:
-					return ref
+				func (ref) -> Variant:
+					return __parse_ref(ref)
 			)
 		"Array<LocalEnum>":
 			var enums: Array[String] = []
@@ -100,6 +100,15 @@ static func __parse_point(x: int, y: int) -> Vector2:
 static func __parse_enum(enum_str: String, value: String) -> String:
 	var result: String = "%s.%s" % [enum_str, value]
 	return result
+
+static func __parse_ref(value: Dictionary) -> Variant:
+	if Util.options.use_resolvers:
+		print("use resolver")
+		var resolver = LDTKResolver.new()
+		resolver.reference = value
+		return resolver
+	else:
+		return value
 
 static func __parse_tile(value: Dictionary) -> AtlasTexture:
 	var texture := AtlasTexture.new()

@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://sl02m654rdf8"]
 
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world.gd" id="1_esflu"]
-[ext_resource type="PackedScene" uid="uid://ctxs7rp112n4y" path="res://examples/multiworld/levels/Level_2.tscn" id="3_5peta"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="3_73x7w"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-world.gd" id="1_qrahk"]
+[ext_resource type="PackedScene" uid="uid://ctxs7rp112n4y" path="res://examples/multiworld/levels/Level_2.tscn" id="2_6gnls"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="3_l4jby"]
 
 [node name="WorldB" type="Node2D"]
-script = ExtResource("1_esflu")
+script = ExtResource("1_qrahk")
 iid = "e71bf3e0-6280-11ee-86b9-1f8550f7fbdf"
 rect = Rect2i(0, 0, 512, 512)
 level_scenes = {
@@ -13,9 +13,9 @@ level_scenes = {
 }
 Level_2 = true
 
-[node name="Level_2" type="Node2D" parent="." instance=ExtResource("3_5peta")]
+[node name="Level_2" type="Node2D" parent="." instance=ExtResource("2_6gnls")]
 position = Vector2(256, 256)
-script = ExtResource("3_73x7w")
+script = ExtResource("3_l4jby")
 iid = "e71c1af0-6280-11ee-86b9-69b0fbc00599"
 size = Vector2i(256, 256)
 fields = {

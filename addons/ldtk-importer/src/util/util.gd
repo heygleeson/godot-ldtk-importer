@@ -113,26 +113,46 @@ static func resolve_references() -> void:
 
 	var solved_refcount := 0
 
+	# Method 1 - Solve in place
 	for ref in unresolved_refs:
-		var iid: String = ref.iid
+		# Handle Neighbour + Entity Refs
+		var iid: String
+		if ref.iid is String:
+			iid = ref.iid
+		else:
+			iid = ref.iid.entityIid
+
 		var object: Variant = ref.object # Expected: Node, Dict or Array
 		var property: Variant = ref.property # Expected: String or Int
 		var node: Variant = ref.node # Expected: Node, but needs to accept null
 
-		if instance_refs.has(iid):
-			var instance = instance_refs[iid]
-			if instance is Node and node is Node:
-				object[property] = node.get_path_to(instance)
-			else:
-				object[property] = instance
+		print("Ref.node: ", node)
 
-			if (options.verbose_output):
-				print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
-			solved_refcount += 1
+		if options.use_resolvers:
+			# Method 1 - Use resolvers
+			var resolver := LDTKResolver.new()
+			resolver.reference = ref
+			if node is Node:
+				resolver.node = node
+				if resolver.can_resolve():
+					solved_refcount += 1
+			object[property] = resolver
+		else:
+			# Method 2 - Solve in-place
+			if instance_refs.has(iid):
+				var instance = instance_refs[iid]
+				if instance is Node and node is Node:
+					object[property] = node.get_path_to(instance)
+				else:
+					object[property] = instance # /!\ this doesn't work? object disappears
+
+				if (options.verbose_output):
+					print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
+				solved_refcount += 1
 
 	var leftover_refcount: int = unresolved_refs.size() - solved_refcount
-	if leftover_refcount > 0:
-		push_warning("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
+	#if leftover_refcount > 0:
+	#	push_warning("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
 
 static func clean_references() -> void:
 	tilemap_refs.clear()

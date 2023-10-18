@@ -17,16 +17,15 @@
 3. Enable this plugin in `Project > Project Settings > Plugins`
 4. `.ldtk` files can now be opened in the Editor!
 
-# ✨ Features
-
 ## 🌏 World
 - Imports '.ldtk' files as Scenes
 - Supports separating Levels by WorldDepth
+- Supports **Multi-Worlds**
 
 ## 🏔️ Level
 - Imports level background images
 - Parses Level Fields into Godot types
-- Supports external levels
+- Supports **external levels**
 
 ## 📄 Layer
 - Generates TileMaps from all LDtk tile layer types (Tiles, IntGrid, AutoLayer)
@@ -36,6 +35,7 @@
 ## 🧱 Tilesets
 - Generates Atlases from LDtk Tilesets
 - **Supports flipped tiles**
+- Supports Alpha tiles
 - Supports importing as *CanvasTextures*, allowing for usage of normal maps.
 - Allows for further editing of TileSets in the Editor, preserving changes (Physics Layers, Render Layers, etc.)
 - Supports [Tile Custom Data](#-tile-custom-data)
@@ -44,6 +44,11 @@
 - Creates placeholder `LDTKEntity` nodes.
 - Parses Entity Fields into Godot types
 - **Handles EntityRefs**
+
+# 🚫 Not Supported
+
+- Individual Tile offsets. Godot Tilemaps do not support this.
+- 
 
 # 🚩 Import Options 
 

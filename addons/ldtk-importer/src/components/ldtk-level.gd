@@ -23,12 +23,9 @@ func _ready() -> void:
 				# NOTE: This is an ugly NodePath rebuild.
 				var node_path = NodePath(String(child_path) + "/" + String(child.references[key]))
 				references[key] = node_path
-				#print("Merge Path: '%s' -> '%s'" % [child.references[key], node_path])
 
 			# Add Resolvers
 			resolvers.append_array(child.resolvers)
-
-	_resolve_references()
 	queue_redraw()
 
 func _draw() -> void:
@@ -39,26 +36,5 @@ func _draw() -> void:
 func add_reference(iid: String, node: Node) -> void:
 	references[iid] = node
 
-func _resolve_references():
-	for resolver in resolvers:
-		pass
-		## reference.ref
-		## entityIid:
-		## layerIid:
-		## levelIid:
-		## worldIid:
-
-
-		#if references.has(ref.iid):
-			## Instance is in this level
-			#var obj = ref.obj
-			#var prop = ref.property
-			#var node = ref.node
-			#var instance = references[ref.iid]
-			#if instance is Node and node is Node:
-				#obj[prop] = node.get_path_to(instance) # NodePath
-			#else:
-				#obj[prop] = instance # Array/Dict reference
-		#else:
-			## Do nothing here, we'll need to pass it up
-			#pass
+func add_resolver(resolver: LDTKResolver) -> void:
+	resolvers.append(resolver)

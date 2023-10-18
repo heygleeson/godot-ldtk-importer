@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://tyxiagxe11pv"]
 
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_l1v6c"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_q6er1"]
-[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_om2eo"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_nttny"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_q2vdg"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_twdau"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_whov3"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_c7w1k"]
 
 [node name="Level_3" type="Node2D"]
 z_index = -1
 position = Vector2(0, 256)
-script = ExtResource("1_l1v6c")
+script = ExtResource("1_q2vdg")
 iid = "37d34090-6280-11ee-86b9-db57dd7f8768"
 size = Vector2i(256, 256)
 fields = {
@@ -16,11 +16,12 @@ fields = {
 }
 bg_color = Color(0.411765, 0.415686, 0.47451, 1)
 
-[node name="Entities" type="Node2D" parent="."]
-script = ExtResource("2_q6er1")
+[node name="EntityLayerA" type="Node2D" parent="."]
+script = ExtResource("2_twdau")
+iid = "37d34091-6280-11ee-86b9-0dec9cb00b7e"
 definition = {
 "gridSize": 16.0,
-"identifier": "Entities",
+"identifier": "EntityLayerA",
 "intGridValues": [],
 "offset": Vector2i(0, 0),
 "parallax": Vector2(0, 0),
@@ -61,9 +62,9 @@ references = {
 "a633a160-6280-11ee-86b9-b15f4bf577ec": NodePath("Entity")
 }
 
-[node name="Entity" type="Node2D" parent="Entities" instance=ExtResource("3_om2eo")]
+[node name="Entity" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_whov3")]
 position = Vector2(128, 128)
-script = ExtResource("4_nttny")
+script = ExtResource("4_c7w1k")
 iid = "a633a160-6280-11ee-86b9-b15f4bf577ec"
 identifier = "Entity"
 fields = {
@@ -88,4 +89,18 @@ definition = {
 "identifier": "Entity",
 "renderMode": "Ellipse",
 "tags": []
+}
+
+[node name="EntityLayerB" type="Node2D" parent="."]
+script = ExtResource("2_twdau")
+iid = "6f2d7660-6280-11ee-8f3a-7f27b60dc5e2"
+definition = {
+"gridSize": 16.0,
+"identifier": "EntityLayerB",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 11.0
 }

@@ -1,0 +1,417 @@
+[gd_scene load_steps=18 format=3 uid="uid://f3l7jeh6063h"]
+
+[ext_resource type="PackedScene" uid="uid://cmpkyjnt7v1pc" path="res://examples/multiworld/multiworlds.ldtk" id="1_cgwc7"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-resolver.gd" id="2_1g8gk"]
+
+[sub_resource type="Resource" id="Resource_ja5hn"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "1f352000-6280-11ee-823c-1323affaa6ed",
+"layerIid": "b10bed00-6280-11ee-86b9-81e42b8928f5",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("../Entity6")
+
+[sub_resource type="Resource" id="Resource_5wy27"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "218d8ef0-6280-11ee-823c-2d3300cce7d3",
+"layerIid": "6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("../../EntityLayerB/Entity")
+
+[sub_resource type="Resource" id="Resource_f07fw"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "243b70e0-6280-11ee-823c-d91948482d1b",
+"layerIid": "e0f2cde0-6280-11ee-86b9-efdd7a0e8bda",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("../../../Level_1/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_ul32c"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"layerIid": "37d34091-6280-11ee-86b9-0dec9cb00b7e",
+"levelIid": "37d34090-6280-11ee-86b9-db57dd7f8768",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("../../../Level_3/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_1cu2q"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "26652eb0-6280-11ee-823c-6115c252691b",
+"layerIid": "e71c1af1-6280-11ee-86b9-13a08e3ffe24",
+"levelIid": "e71c1af0-6280-11ee-86b9-69b0fbc00599",
+"worldIid": "e71bf3e0-6280-11ee-86b9-1f8550f7fbdf"
+}
+value = NodePath("")
+
+[sub_resource type="Resource" id="Resource_56r42"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "1f352000-6280-11ee-823c-1323affaa6ed",
+"layerIid": "b10bed00-6280-11ee-86b9-81e42b8928f5",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(16, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"16ab4db0-6280-11ee-823c-cdde0efd6c42","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_56r42"),
+"Note": "Same Layer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../Entity6")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../Entity6")
+
+[sub_resource type="Resource" id="Resource_8o8ky"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "218d8ef0-6280-11ee-823c-2d3300cce7d3",
+"layerIid": "6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(48, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"17938ad0-6280-11ee-823c-ebec0bba1649","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_8o8ky"),
+"Note": "Different Layer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../EntityLayerB/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../EntityLayerB/Entity")
+
+[sub_resource type="Resource" id="Resource_yxpwu"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "243b70e0-6280-11ee-823c-d91948482d1b",
+"layerIid": "e0f2cde0-6280-11ee-86b9-efdd7a0e8bda",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(80, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"17fd4920-6280-11ee-823c-4b8b28f63504","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_yxpwu"),
+"Note": "Different Level"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../Level_1/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../Level_1/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_v80xr"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"layerIid": "37d34091-6280-11ee-86b9-0dec9cb00b7e",
+"levelIid": "37d34090-6280-11ee-86b9-db57dd7f8768",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(112, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"18980280-6280-11ee-823c-6f4fbd51192b","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_v80xr"),
+"Note": "Different WorldLayer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../Level_3/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../Level_3/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_ni3lh"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "26652eb0-6280-11ee-823c-6115c252691b",
+"layerIid": "e71c1af1-6280-11ee-86b9-13a08e3ffe24",
+"levelIid": "e71c1af0-6280-11ee-86b9-69b0fbc00599",
+"worldIid": "e71bf3e0-6280-11ee-86b9-1f8550f7fbdf"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(144, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"18f39000-6280-11ee-823c-435ae2977156","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_ni3lh"),
+"Note": "Different World"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../../WorldB/Level_2/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../../WorldB/Level_2/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_jxco7"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "1f352000-6280-11ee-823c-1323affaa6ed",
+"layerIid": "b10bed00-6280-11ee-86b9-81e42b8928f5",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(16, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"16ab4db0-6280-11ee-823c-cdde0efd6c42","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_jxco7"),
+"Note": "Same Layer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../Entity6")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../Entity6")
+
+[sub_resource type="Resource" id="Resource_fidpc"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "218d8ef0-6280-11ee-823c-2d3300cce7d3",
+"layerIid": "6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(48, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"17938ad0-6280-11ee-823c-ebec0bba1649","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_fidpc"),
+"Note": "Different Layer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../EntityLayerB/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../EntityLayerB/Entity")
+
+[sub_resource type="Resource" id="Resource_bjvqr"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "243b70e0-6280-11ee-823c-d91948482d1b",
+"layerIid": "e0f2cde0-6280-11ee-86b9-efdd7a0e8bda",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(80, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"17fd4920-6280-11ee-823c-4b8b28f63504","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_bjvqr"),
+"Note": "Different Level"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../Level_1/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../Level_1/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_8jt7v"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"layerIid": "37d34091-6280-11ee-86b9-0dec9cb00b7e",
+"levelIid": "37d34090-6280-11ee-86b9-db57dd7f8768",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(112, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"18980280-6280-11ee-823c-6f4fbd51192b","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_8jt7v"),
+"Note": "Different WorldLayer"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../Level_3/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../Level_3/EntityLayerA/Entity")
+
+[sub_resource type="Resource" id="Resource_qcqt7"]
+script = ExtResource("2_1g8gk")
+reference = {
+"entityIid": "26652eb0-6280-11ee-823c-6115c252691b",
+"layerIid": "e71c1af1-6280-11ee-86b9-13a08e3ffe24",
+"levelIid": "e71c1af0-6280-11ee-86b9-69b0fbc00599",
+"worldIid": "e71bf3e0-6280-11ee-86b9-1f8550f7fbdf"
+}
+node = Object(Node2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(144, 16),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"script":Resource("res://addons/ldtk-importer/src/components/ldtk-entity.gd"),"iid":"18f39000-6280-11ee-823c-435ae2977156","identifier":"Entity","fields":{
+"Entity_ref": SubResource("Resource_qcqt7"),
+"Note": "Different World"
+},"pivot":Vector2(0, 0),"size":Vector2(16, 16),"smart_color":Color(0.996078, 0.682353, 0.203922, 1),"definition":{
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},"_refs":[NodePath("../../../../WorldB/Level_2/EntityLayerA/Entity")],"_points":[Vector2(0, 0)],"_drawPaths":true)
+
+value = NodePath("../../../../WorldB/Level_2/EntityLayerA/Entity")
+
+[node name="multiworlds" instance=ExtResource("1_cgwc7")]
+references = {
+"16ab4db0-6280-11ee-823c-cdde0efd6c42": NodePath("WorldA/Level_0/EntityLayerA/Entity"),
+"17938ad0-6280-11ee-823c-ebec0bba1649": NodePath("WorldA/Level_0/EntityLayerA/Entity2"),
+"17fd4920-6280-11ee-823c-4b8b28f63504": NodePath("WorldA/Level_0/EntityLayerA/Entity3"),
+"18980280-6280-11ee-823c-6f4fbd51192b": NodePath("WorldA/Level_0/EntityLayerA/Entity4"),
+"18f39000-6280-11ee-823c-435ae2977156": NodePath("WorldA/Level_0/EntityLayerA/Entity5"),
+"1f352000-6280-11ee-823c-1323affaa6ed": NodePath("WorldA/Level_0/EntityLayerA/Entity6"),
+"218d8ef0-6280-11ee-823c-2d3300cce7d3": NodePath("WorldA/Level_0/EntityLayerB/Entity"),
+"243b70e0-6280-11ee-823c-d91948482d1b": NodePath("WorldA/Level_1/EntityLayerA/Entity"),
+"26652eb0-6280-11ee-823c-6115c252691b": NodePath("WorldB/Level_2/EntityLayerA/Entity"),
+"37d34090-6280-11ee-86b9-db57dd7f8768": NodePath("WorldA/Level_3"),
+"37d34091-6280-11ee-86b9-0dec9cb00b7e": NodePath("WorldA/Level_3/EntityLayerA"),
+"6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4": NodePath("WorldA/Level_0/EntityLayerB"),
+"6f2d4f51-6280-11ee-8f3a-2b6470d6bff7": NodePath("WorldA/Level_1/EntityLayerB"),
+"6f2d7660-6280-11ee-8f3a-7f27b60dc5e2": NodePath("WorldA/Level_3/EntityLayerB"),
+"6f2d7661-6280-11ee-8f3a-a7aad39ec8c5": NodePath("WorldB/Level_2/EntityLayerB"),
+"a3688ff0-6280-11ee-86b9-31cd700d2359": NodePath("WorldA"),
+"a3692c30-6280-11ee-86b9-5d93de230064": NodePath("WorldA/Level_0"),
+"a633a160-6280-11ee-86b9-b15f4bf577ec": NodePath("WorldA/Level_3/EntityLayerA/Entity"),
+"b10bed00-6280-11ee-86b9-81e42b8928f5": NodePath("WorldA/Level_0/EntityLayerA"),
+"e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0": NodePath("WorldA/Level_1"),
+"e0f2cde0-6280-11ee-86b9-efdd7a0e8bda": NodePath("WorldA/Level_1/EntityLayerA"),
+"e71bf3e0-6280-11ee-86b9-1f8550f7fbdf": NodePath("WorldB"),
+"e71c1af0-6280-11ee-86b9-69b0fbc00599": NodePath("WorldB/Level_2"),
+"e71c1af1-6280-11ee-86b9-13a08e3ffe24": NodePath("WorldB/Level_2/EntityLayerA")
+}
+resolvers = [SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_jxco7"), SubResource("Resource_fidpc"), SubResource("Resource_bjvqr"), SubResource("Resource_8jt7v"), SubResource("Resource_qcqt7")]
+
+[node name="WorldA" parent="." index="0"]
+resolvers = [SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_jxco7"), SubResource("Resource_fidpc"), SubResource("Resource_bjvqr"), SubResource("Resource_8jt7v"), SubResource("Resource_qcqt7")]
+
+[node name="Level_0" parent="WorldA" index="0"]
+resolvers = [SubResource("Resource_ja5hn"), SubResource("Resource_5wy27"), SubResource("Resource_f07fw"), SubResource("Resource_ul32c"), SubResource("Resource_1cu2q"), SubResource("Resource_56r42"), SubResource("Resource_8o8ky"), SubResource("Resource_yxpwu"), SubResource("Resource_v80xr"), SubResource("Resource_ni3lh"), SubResource("Resource_jxco7"), SubResource("Resource_fidpc"), SubResource("Resource_bjvqr"), SubResource("Resource_8jt7v"), SubResource("Resource_qcqt7")]
+
+[node name="WorldB" parent="." index="1"]
+references = {
+"26652eb0-6280-11ee-823c-6115c252691b": NodePath("Level_2/EntityLayerA/Entity"),
+"6f2d7661-6280-11ee-8f3a-a7aad39ec8c5": NodePath("Level_2/EntityLayerB"),
+"e71c1af0-6280-11ee-86b9-69b0fbc00599": NodePath("Level_2"),
+"e71c1af1-6280-11ee-86b9-13a08e3ffe24": NodePath("Level_2/EntityLayerA")
+}
+
+[node name="Level_2" parent="WorldB" index="0"]
+references = {
+"26652eb0-6280-11ee-823c-6115c252691b": NodePath("EntityLayerA/Entity"),
+"6f2d7661-6280-11ee-8f3a-a7aad39ec8c5": NodePath("EntityLayerB"),
+"e71c1af1-6280-11ee-86b9-13a08e3ffe24": NodePath("EntityLayerA")
+}
+
+[editable path="WorldA"]
+[editable path="WorldB"]

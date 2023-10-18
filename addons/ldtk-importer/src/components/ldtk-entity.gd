@@ -7,6 +7,8 @@ extends Node2D
 ## Used to demonstrate import functionality - please write an Entity Post-Import script to spawn
 ## your own instances when using this in your project.
 
+# Imported Fields must use the @export annotation - otherwise they are not saved to the scene.
+# If you can't see it in the inspector, it is not saved.
 @export var iid := ""
 @export var identifier := "EntityPlaceholder"
 @export var fields := {}
@@ -21,21 +23,37 @@ var _drawPaths := false
 
 func _ready() -> void:
 	_points.append(Vector2.ZERO)
+
 	for key in fields:
-		if fields[key] is NodePath:
-			_refs.append(fields[key])
-		elif fields[key] is Vector2i:
-			_points.append(fields[key])
-		elif fields[key] is Array:
-			for value in fields[key]:
+		var field = fields[key]
+
+		if field is LDTKResolver:
+			field.node = self
+			get_parent().resolvers.append(field)
+			if field.can_resolve():
+				await get_tree().process_frame
+				field = field.resolve()
+
+		if field is NodePath:
+			if field == ^"":
+				continue
+			_refs.append(field)
+		elif field is Vector2i:
+			_points.append(field)
+		elif field is Array:
+			for value in field:
 				if value is NodePath:
 					_refs.append(value)
 				elif value is Vector2i:
 					_points.append(value)
 				else:
 					break
+
 	_drawPaths = _refs.size() > 0 or _points.size() > 0
 	_points = _parse_points(_points)
+	queue_redraw()
+
+func _process(_delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
@@ -74,7 +92,7 @@ func _draw() -> void:
 			previousPoint = point
 
 func _parse_points(points: Array) -> Array:
-	if points.size() == 0:
+	if points.size() < 2:
 		return points
 	if get_parent() is SubViewport:
 		return points

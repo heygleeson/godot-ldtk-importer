@@ -1,12 +1,63 @@
-[gd_scene load_steps=5 format=3 uid="uid://ri7xdpwknn5n"]
+[gd_scene load_steps=11 format=3 uid="uid://ri7xdpwknn5n"]
 
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_a6opr"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_okf0j"]
-[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_b5rfg"]
-[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_s5nmk"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_q22gs"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="2_ib32s"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-resolver.gd" id="2_t7d2l"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="3_bc7i6"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="4_cftbp"]
+
+[sub_resource type="Resource" id="Resource_ja5hn"]
+script = ExtResource("2_t7d2l")
+reference = {
+"entityIid": "1f352000-6280-11ee-823c-1323affaa6ed",
+"layerIid": "b10bed00-6280-11ee-86b9-81e42b8928f5",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("")
+
+[sub_resource type="Resource" id="Resource_5wy27"]
+script = ExtResource("2_t7d2l")
+reference = {
+"entityIid": "218d8ef0-6280-11ee-823c-2d3300cce7d3",
+"layerIid": "6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4",
+"levelIid": "a3692c30-6280-11ee-86b9-5d93de230064",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("")
+
+[sub_resource type="Resource" id="Resource_f07fw"]
+script = ExtResource("2_t7d2l")
+reference = {
+"entityIid": "243b70e0-6280-11ee-823c-d91948482d1b",
+"layerIid": "e0f2cde0-6280-11ee-86b9-efdd7a0e8bda",
+"levelIid": "e0f2a6d0-6280-11ee-86b9-5387a5cf8ec0",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("")
+
+[sub_resource type="Resource" id="Resource_ul32c"]
+script = ExtResource("2_t7d2l")
+reference = {
+"entityIid": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"layerIid": "37d34091-6280-11ee-86b9-0dec9cb00b7e",
+"levelIid": "37d34090-6280-11ee-86b9-db57dd7f8768",
+"worldIid": "a3688ff0-6280-11ee-86b9-31cd700d2359"
+}
+value = NodePath("")
+
+[sub_resource type="Resource" id="Resource_1cu2q"]
+script = ExtResource("2_t7d2l")
+reference = {
+"entityIid": "26652eb0-6280-11ee-823c-6115c252691b",
+"layerIid": "e71c1af1-6280-11ee-86b9-13a08e3ffe24",
+"levelIid": "e71c1af0-6280-11ee-86b9-69b0fbc00599",
+"worldIid": "e71bf3e0-6280-11ee-86b9-1f8550f7fbdf"
+}
+value = NodePath("")
 
 [node name="Level_0" type="Node2D"]
-script = ExtResource("1_a6opr")
+script = ExtResource("1_q22gs")
 iid = "a3692c30-6280-11ee-86b9-5d93de230064"
 size = Vector2i(256, 256)
 fields = {
@@ -18,11 +69,12 @@ neighbours = [{
 }]
 bg_color = Color(0.411765, 0.415686, 0.47451, 1)
 
-[node name="Entities" type="Node2D" parent="."]
-script = ExtResource("2_okf0j")
+[node name="EntityLayerA" type="Node2D" parent="."]
+script = ExtResource("2_ib32s")
+iid = "b10bed00-6280-11ee-86b9-81e42b8928f5"
 definition = {
 "gridSize": 16.0,
-"identifier": "Entities",
+"identifier": "EntityLayerA",
 "intGridValues": [],
 "offset": Vector2i(0, 0),
 "parallax": Vector2(0, 0),
@@ -49,13 +101,13 @@ entities = [{
 "tags": []
 },
 "fields": {
-"Entity_ref": "6f35b810-6280-11ee-86b9-8f999cd43777",
-"Note": "Same Level"
+"Entity_ref": SubResource("Resource_ja5hn"),
+"Note": "Same Layer"
 },
 "identifier": "Entity",
-"iid": "6d40ecf0-6280-11ee-86b9-0bc00b36f236",
+"iid": "16ab4db0-6280-11ee-823c-cdde0efd6c42",
 "pivot": Vector2(0, 0),
-"position": Vector2i(32, 32),
+"position": Vector2i(16, 16),
 "size": Vector2i(16, 16),
 "smart_color": Color(0.996078, 0.682353, 0.203922, 1)
 }, {
@@ -77,41 +129,13 @@ entities = [{
 "tags": []
 },
 "fields": {
-"Entity_ref": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
-"Note": "Different Level"
-},
-"identifier": "Entity",
-"iid": "6f35b810-6280-11ee-86b9-8f999cd43777",
-"pivot": Vector2(0, 0),
-"position": Vector2i(96, 32),
-"size": Vector2i(16, 16),
-"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
-}, {
-"definition": {
-"color": Color(0.996078, 0.682353, 0.203922, 1),
-"field_defs": {
-3: {
-"identifier": "Entity_ref",
-"type": "EntityRef"
-},
-9: {
-"identifier": "Note",
-"type": "String"
-}
-},
-"hollow": false,
-"identifier": "Entity",
-"renderMode": "Ellipse",
-"tags": []
-},
-"fields": {
-"Entity_ref": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"Entity_ref": SubResource("Resource_5wy27"),
 "Note": "Different Layer"
 },
 "identifier": "Entity",
-"iid": "7019d680-6280-11ee-86b9-fbc73f46632e",
+"iid": "17938ad0-6280-11ee-823c-ebec0bba1649",
 "pivot": Vector2(0, 0),
-"position": Vector2i(144, 32),
+"position": Vector2i(48, 16),
 "size": Vector2i(16, 16),
 "smart_color": Color(0.996078, 0.682353, 0.203922, 1)
 }, {
@@ -133,31 +157,117 @@ entities = [{
 "tags": []
 },
 "fields": {
-"Entity_ref": "af870540-6280-11ee-86b9-b75d8e748ca3",
+"Entity_ref": SubResource("Resource_f07fw"),
+"Note": "Different Level"
+},
+"identifier": "Entity",
+"iid": "17fd4920-6280-11ee-823c-4b8b28f63504",
+"pivot": Vector2(0, 0),
+"position": Vector2i(80, 16),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": SubResource("Resource_ul32c"),
+"Note": "Different WorldLayer"
+},
+"identifier": "Entity",
+"iid": "18980280-6280-11ee-823c-6f4fbd51192b",
+"pivot": Vector2(0, 0),
+"position": Vector2i(112, 16),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": SubResource("Resource_1cu2q"),
 "Note": "Different World"
 },
 "identifier": "Entity",
-"iid": "71266480-6280-11ee-86b9-ffc6e0aec192",
+"iid": "18f39000-6280-11ee-823c-435ae2977156",
 "pivot": Vector2(0, 0),
-"position": Vector2i(208, 32),
+"position": Vector2i(144, 16),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}, {
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": null,
+"Note": null
+},
+"identifier": "Entity",
+"iid": "1f352000-6280-11ee-823c-1323affaa6ed",
+"pivot": Vector2(0, 0),
+"position": Vector2i(96, 128),
 "size": Vector2i(16, 16),
 "smart_color": Color(0.996078, 0.682353, 0.203922, 1)
 }]
 references = {
-"6d40ecf0-6280-11ee-86b9-0bc00b36f236": NodePath("Entity"),
-"6f35b810-6280-11ee-86b9-8f999cd43777": NodePath("Entity2"),
-"7019d680-6280-11ee-86b9-fbc73f46632e": NodePath("Entity3"),
-"71266480-6280-11ee-86b9-ffc6e0aec192": NodePath("Entity4")
+"16ab4db0-6280-11ee-823c-cdde0efd6c42": NodePath("Entity"),
+"17938ad0-6280-11ee-823c-ebec0bba1649": NodePath("Entity2"),
+"17fd4920-6280-11ee-823c-4b8b28f63504": NodePath("Entity3"),
+"18980280-6280-11ee-823c-6f4fbd51192b": NodePath("Entity4"),
+"18f39000-6280-11ee-823c-435ae2977156": NodePath("Entity5"),
+"1f352000-6280-11ee-823c-1323affaa6ed": NodePath("Entity6")
 }
 
-[node name="Entity" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
-position = Vector2(32, 32)
-script = ExtResource("4_s5nmk")
-iid = "6d40ecf0-6280-11ee-86b9-0bc00b36f236"
+[node name="Entity" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(16, 16)
+script = ExtResource("4_cftbp")
+iid = "16ab4db0-6280-11ee-823c-cdde0efd6c42"
 identifier = "Entity"
 fields = {
-"Entity_ref": "6f35b810-6280-11ee-86b9-8f999cd43777",
-"Note": "Same Level"
+"Entity_ref": SubResource("Resource_ja5hn"),
+"Note": "Same Layer"
 }
 size = Vector2(16, 16)
 smart_color = Color(0.996078, 0.682353, 0.203922, 1)
@@ -179,42 +289,13 @@ definition = {
 "tags": []
 }
 
-[node name="Entity2" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
-position = Vector2(96, 32)
-script = ExtResource("4_s5nmk")
-iid = "6f35b810-6280-11ee-86b9-8f999cd43777"
+[node name="Entity2" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(48, 16)
+script = ExtResource("4_cftbp")
+iid = "17938ad0-6280-11ee-823c-ebec0bba1649"
 identifier = "Entity"
 fields = {
-"Entity_ref": "86a5a0a0-6280-11ee-86b9-cb47c84e3429",
-"Note": "Different Level"
-}
-size = Vector2(16, 16)
-smart_color = Color(0.996078, 0.682353, 0.203922, 1)
-definition = {
-"color": Color(0.996078, 0.682353, 0.203922, 1),
-"field_defs": {
-3: {
-"identifier": "Entity_ref",
-"type": "EntityRef"
-},
-9: {
-"identifier": "Note",
-"type": "String"
-}
-},
-"hollow": false,
-"identifier": "Entity",
-"renderMode": "Ellipse",
-"tags": []
-}
-
-[node name="Entity3" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
-position = Vector2(144, 32)
-script = ExtResource("4_s5nmk")
-iid = "7019d680-6280-11ee-86b9-fbc73f46632e"
-identifier = "Entity"
-fields = {
-"Entity_ref": "a633a160-6280-11ee-86b9-b15f4bf577ec",
+"Entity_ref": SubResource("Resource_5wy27"),
 "Note": "Different Layer"
 }
 size = Vector2(16, 16)
@@ -237,14 +318,176 @@ definition = {
 "tags": []
 }
 
-[node name="Entity4" type="Node2D" parent="Entities" instance=ExtResource("3_b5rfg")]
-position = Vector2(208, 32)
-script = ExtResource("4_s5nmk")
-iid = "71266480-6280-11ee-86b9-ffc6e0aec192"
+[node name="Entity3" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(80, 16)
+script = ExtResource("4_cftbp")
+iid = "17fd4920-6280-11ee-823c-4b8b28f63504"
 identifier = "Entity"
 fields = {
-"Entity_ref": "af870540-6280-11ee-86b9-b75d8e748ca3",
+"Entity_ref": SubResource("Resource_f07fw"),
+"Note": "Different Level"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity4" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(112, 16)
+script = ExtResource("4_cftbp")
+iid = "18980280-6280-11ee-823c-6f4fbd51192b"
+identifier = "Entity"
+fields = {
+"Entity_ref": SubResource("Resource_ul32c"),
+"Note": "Different WorldLayer"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity5" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(144, 16)
+script = ExtResource("4_cftbp")
+iid = "18f39000-6280-11ee-823c-435ae2977156"
+identifier = "Entity"
+fields = {
+"Entity_ref": SubResource("Resource_1cu2q"),
 "Note": "Different World"
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Entity6" type="Node2D" parent="EntityLayerA" instance=ExtResource("3_bc7i6")]
+position = Vector2(96, 128)
+script = ExtResource("4_cftbp")
+iid = "1f352000-6280-11ee-823c-1323affaa6ed"
+identifier = "Entity"
+fields = {
+"Entity_ref": null,
+"Note": null
+}
+size = Vector2(16, 16)
+smart_color = Color(0.996078, 0.682353, 0.203922, 1)
+definition = {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="EntityLayerB" type="Node2D" parent="."]
+script = ExtResource("2_ib32s")
+iid = "6f2d4f50-6280-11ee-8f3a-3f29eaefb9c4"
+definition = {
+"gridSize": 16.0,
+"identifier": "EntityLayerB",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 11.0
+}
+entities = [{
+"definition": {
+"color": Color(0.996078, 0.682353, 0.203922, 1),
+"field_defs": {
+3: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+9: {
+"identifier": "Note",
+"type": "String"
+}
+},
+"hollow": false,
+"identifier": "Entity",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Entity_ref": null,
+"Note": null
+},
+"identifier": "Entity",
+"iid": "218d8ef0-6280-11ee-823c-2d3300cce7d3",
+"pivot": Vector2(0, 0),
+"position": Vector2i(144, 128),
+"size": Vector2i(16, 16),
+"smart_color": Color(0.996078, 0.682353, 0.203922, 1)
+}]
+references = {
+"218d8ef0-6280-11ee-823c-2d3300cce7d3": NodePath("Entity")
+}
+
+[node name="Entity" type="Node2D" parent="EntityLayerB" instance=ExtResource("3_bc7i6")]
+position = Vector2(144, 128)
+script = ExtResource("4_cftbp")
+iid = "218d8ef0-6280-11ee-823c-2d3300cce7d3"
+identifier = "Entity"
+fields = {
+"Entity_ref": null,
+"Note": null
 }
 size = Vector2(16, 16)
 smart_color = Color(0.996078, 0.682353, 0.203922, 1)

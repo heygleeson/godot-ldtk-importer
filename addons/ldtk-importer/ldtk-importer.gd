@@ -113,6 +113,11 @@ func _get_import_options(path, index):
 		{
 			"name": "verbose_post_import", "default_value": false
 		},
+		# --- Experimental --- #
+		{"name": "Experimental", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
+		{
+			"name": "use_resolvers", "default_value": false
+		},
 	]
 
 func _get_option_visibility(path, option_name, options):
@@ -191,12 +196,18 @@ func _import(
 		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
 		Util.log_time("Built Levels")
 
+		Util.resolve_references()
+
 		var level_paths := Level.save_levels(levels, base_dir)
 		gen_files.append_array(level_paths)
 		Util.log_time("Saved Levels")
 
 		world = World.create_world(world_name, world_iid, level_paths)
 		Util.log_time("Built World")
+
+	if not options.use_resolvers:
+		Util.resolve_references()
+		Util.clean_references()
 
 	# Save World as PackedScene
 	var packed_world = PackedScene.new()
