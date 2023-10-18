@@ -65,7 +65,7 @@ static func create_layer_tilemap(layer_data: Dictionary) -> TileMap:
 	return tilemap
 
 static func set_overlapping_tile(
-		tilemap : TileMap,
+		tilemap: TileMap,
 		layer_index: int,
 		cell_grid: Vector2i,
 		tile_source_id: int,

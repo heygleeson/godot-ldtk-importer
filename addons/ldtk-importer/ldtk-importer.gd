@@ -21,7 +21,7 @@ func _get_priority():
 	return 1.0
 
 func _get_import_order():
-	return 100
+	return IMPORT_ORDER_SCENE
 
 func _get_resource_type():
 	return "PackedScene"
@@ -158,33 +158,28 @@ func _import(
 	Util.log_time("Saved Tilesets")
 
 	# Detect Multi-Worlds
-	var world
+	var external_levels: bool = world_data.externalLevels
+	var world_iid: String = world_data.iid
+
+	var world: LDTKWorld
 	if world_data.worldLayout == null:
 		var world_nodes: Array[LDTKWorld] = []
-		var world_instances = world_data.worlds
+		var world_instances: Array = world_data.worlds
+		# Build each world instance
 		for world_instance in world_instances:
-			var world_instance_name = world_instance.identifier
-
-			var levels := Level.build_levels(world_instance, definitions, base_dir)
+			var world_instance_name: String = world_instance.identifier
+			var world_instance_iid: String = world_instance.iid
+			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
 			Util.log_time("\nBuilt Levels: " + world_instance_name)
-
-			var world_node := World.create_world(world_instance_name, levels)
+			var world_node := World.create_world(world_instance_name, world_instance_iid, levels)
 			Util.log_time("\nBuilt World: " + world_instance_name)
-
 			world_nodes.append(world_node)
 
-		# Pack and save worlds
-		# Currenty unsupported: Cannot resolve references.
-		#var world_paths := World.save_worlds(world_nodes, base_dir)
-		#gen_files.append_array(world_paths)
-		#world = World.create_multi_world(world_name, world_paths)
-
-		world = World.create_multi_world(world_name, world_nodes)
+		world = World.create_multi_world(world_name, world_iid, world_nodes)
 	else:
-		var levels := Level.build_levels(world_data, definitions, base_dir)
+		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
 		Util.log_time("Built Levels")
-
-		world = World.create_world(world_name, levels)
+		world = World.create_world(world_name, world_iid, levels)
 		Util.log_time("Built World")
 
 	# Resolve references

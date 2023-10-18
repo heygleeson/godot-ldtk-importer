@@ -22,8 +22,8 @@ const TYPE_STRING = [
 static var options := {}
 
 # Performance Measurement
-static var time_start : int
-static var time_last : int
+static var time_start: int
+static var time_last: int
 static func start_time():
 	time_start = Time.get_ticks_msec()
 	time_last = time_start
@@ -37,8 +37,8 @@ static func log_time(message: String):
 		print("%s :: %sms" % [message, time_log])
 
 static func finish_time():
-	var time = Time.get_ticks_msec()
-	var time_finish = time - time_start
+	var time := Time.get_ticks_msec()
+	var time_finish := time - time_start
 	print("-- LDTK: Finished Import -- (%sms)" % [time_finish])
 
 # General
@@ -99,7 +99,7 @@ static func add_tilemap_reference(uid: int, atlas: TileSetAtlasSource) -> void:
 # This is useful for handling entity instances, as they might not exist yet when encountered
 # or be overwritten at a later stage (e.g. post-import) when importing an LDTK level/world.
 static func add_unresolved_reference(object, property, node = object) -> void:
-	var iid = object[property]
+	var iid: String = object[property]
 	unresolved_refs.append({
 			"object": object,
 			"property": property,

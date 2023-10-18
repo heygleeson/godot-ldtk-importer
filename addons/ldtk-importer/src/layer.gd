@@ -43,6 +43,7 @@ static func create_entity_layer(
 
 	var layer = LDTKEntityLayer.new()
 	layer.name = layer_data.__identifier
+	layer.iid = layer_data.iid
 
 	if (Util.options.verbose_output):
 		print("Creating Entity Layer: ", layer.name)

@@ -3,10 +3,11 @@
 const Util = preload("util/util.gd")
 const PostImport = preload("post-import.gd")
 
-static func create_world(name: String, levels: Array) -> LDTKWorld:
+static func create_world(name: String, iid: String, levels: Array) -> LDTKWorld:
 
 	var world = LDTKWorld.new()
 	world.name = name
+	world.iid = iid
 
 	# Update World_Rect
 	var x1 = world.rect.position.x
@@ -79,12 +80,14 @@ static func create_world(name: String, levels: Array) -> LDTKWorld:
 	return world
 
 static func create_multi_world(
-	name: String,
-	worlds: Array[LDTKWorld]
+		name: String,
+		iid: String,
+		worlds: Array[LDTKWorld]
 ) -> LDTKWorld:
 
 	var multi_world = LDTKWorld.new()
 	multi_world.name = name
+	multi_world.iid = iid
 
 	worlds.sort_custom(func(a,b): return a.depth < b.depth)
 

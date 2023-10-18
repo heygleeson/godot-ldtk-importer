@@ -11,14 +11,15 @@ static var base_directory: String
 static func build_levels(
 		world_data: Dictionary,
 		definitions: Dictionary,
-		base_dir: String
+		base_dir: String,
+		external_levels: bool
 ) -> Array[LDTKLevel]:
 
 	base_directory = base_dir
-	var levels : Array[LDTKLevel] = []
+	var levels: Array[LDTKLevel] = []
 
 	# Calculate level positions
-	var level_positions : Array
+	var level_positions: Array
 	match world_data.worldLayout:
 		"LinearHorizontal":
 			var x = 0
@@ -26,7 +27,7 @@ static func build_levels(
 				level_positions.append(Vector2i(x, 0))
 				x += level.pxWid
 		"LinearVertical":
-			var y = 0
+			var y := 0
 			for level in world_data.levels:
 				level_positions.append(Vector2i(0, y))
 				y += level.pxHei
@@ -37,10 +38,6 @@ static func build_levels(
 			)
 		_:
 			printerr("World Layout not supported: ", world_data.worldLayout)
-
-	var external_levels = false
-	if world_data.has('externalLevels'):
-		external_levels = world_data.externalLevels
 
 	# Create levels
 	for level_index in range(world_data.levels.size()):
@@ -68,6 +65,7 @@ static func create_level(
 	var level_name = level_data.identifier
 	var level = LDTKLevel.new()
 	level.name = level_name
+	level.iid = level_data.iid
 	level.position = position
 	level.size = Vector2i(level_data.pxWid, level_data.pxHei)
 	level.bg_color = level_data.__bgColor

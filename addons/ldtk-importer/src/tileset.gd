@@ -16,7 +16,7 @@ static func build_tilesets(
 
 	var tilesets = tileset_def_uids.reduce(
 		func(accum: Dictionary, current: float):
-			var tileset_def = definitions.tilesets[current]
+			var tileset_def: Dictionary = definitions.tilesets[current]
 			var grid_size: int = tileset_def.gridSize
 			if not accum.has(grid_size):
 				accum[grid_size] = get_tileset(grid_size, base_dir)
@@ -39,7 +39,7 @@ static func build_tilesets(
 	, {})
 
 	# Add Tilesets for IntGrids
-	var layer_def_uids = definitions.layers.keys()
+	var layer_def_uids: Array = definitions.layers.keys()
 
 	tilesets = layer_def_uids.reduce(
 		func(accum: Dictionary, current: float):
@@ -69,8 +69,8 @@ static func get_tileset(
 		base_dir: String
 ) -> TileSet:
 
-	var tileset_name = "tileset" + str(tile_size) + "x" + str(tile_size)
-	var path: String = base_dir + "tilesets/" + tileset_name + ".res"
+	var tileset_name := "tileset" + str(tile_size) + "x" + str(tile_size)
+	var path := base_dir + "tilesets/" + tileset_name + ".res"
 
 	if not (Util.options.force_tileset_reimport):
 		if ResourceLoader.exists(path):
@@ -245,7 +245,6 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Array:
 	var save_path = base_dir + "tilesets/"
 	var gen_files := []
 	var directory = DirAccess.open(base_dir)
-	directory.make_dir_recursive(save_path)
 
 	for key in tilesets.keys():
 		var tileset: Resource = tilesets.get(key)

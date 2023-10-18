@@ -7,7 +7,6 @@ static var hitUnresolved := false
 
 static func create_fields(fields: Array, entity: Variant = null) -> Dictionary:
 	var dict := {}
-
 	for field in fields:
 		var key: String = field.__identifier
 		dict[key] = parse_field(field)
@@ -18,7 +17,6 @@ static func create_fields(fields: Array, entity: Variant = null) -> Dictionary:
 			else:
 				Util.add_unresolved_reference(dict, key, entity)
 			hitUnresolved = false
-
 	return dict
 
 static func parse_field(field: Dictionary) -> Variant:

@@ -7,7 +7,7 @@ extends Node2D
 ## Used to demonstrate import functionality - please write an Entity Post-Import script to spawn
 ## your own instances when using this in your project.
 
-@export var iid := ""
+@export var iid: String
 @export var identifier := "EntityPlaceholder"
 @export var fields := {}
 @export var pivot := Vector2.ZERO
@@ -74,6 +74,10 @@ func _draw() -> void:
 			previousPoint = point
 
 func _parse_points(points: Array) -> Array:
+	if points.size() == 0:
+		return points
+	if get_parent() is SubViewport:
+		return points
 	var origin = get_parent().global_position - global_position
 	var gridSize = get_parent().definition.gridSize
 	var cellOffset = gridSize * Vector2(0.5, 0.5)
