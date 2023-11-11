@@ -126,7 +126,7 @@ static func px_to_grid(
 # Convert TileId to grid coords
 static func tileid_to_grid(tile_id: int, grid_w: int) -> Vector2i:
 	var y := int(tile_id / grid_w)
-	var x := tile_id - grid_w * y
+	var x := (tile_id - y) % grid_w
 	return Vector2i(x, y)
 
 static func index_to_grid(index: int, grid_w: int) -> Vector2i:
