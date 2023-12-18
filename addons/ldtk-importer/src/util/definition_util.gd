@@ -69,7 +69,9 @@ static func resolve_tileset_definitions(tileset_defs: Array) -> Dictionary:
 			"tags": tileset_def.tags,
 			"enumTagUid": tileset_def.tagsSourceEnumUid,
 			"enumTags": tileset_def.enumTags,
-			"customData": tileset_def.customData
+			"customData": tileset_def.customData,
+			"__cWid": tileset_def.__cWid,
+			"__cHei": tileset_def.__cHei,
 		}
 
 	return resolved_tileset_defs

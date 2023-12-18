@@ -111,8 +111,11 @@ static func create_tileset_source(
 	var tile_size: int = definition.gridSize
 	var margin = definition.padding
 	var separation = definition.spacing
-	var grid_w: int = (definition.pxWid - margin) / (tile_size + separation)
-	var grid_h: int = (definition.pxHei - margin) / (tile_size + separation)
+	#var grid_w: int = ceili( (definition.pxWid - margin) / (tile_size + separation) )
+	#var grid_h: int = ceili( (definition.pxHei - margin) / (tile_size + separation) )
+	print("Tileset Def:", definition)
+	var grid_w: int = definition.__cWid
+	var grid_h: int = definition.__cHei
 
 	var source: TileSetAtlasSource
 
