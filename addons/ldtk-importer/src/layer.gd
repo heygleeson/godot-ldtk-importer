@@ -188,7 +188,7 @@ static func __place_tiles(
 		var cell_px := Vector2(tile.px[0], tile.px[1])
 		var tile_px := Vector2(tile.src[0], tile.src[1])
 		var cell_grid := TileUtil.px_to_grid(cell_px, grid_size, Vector2i.ZERO)
-		var tile_grid := TileUtil.px_to_grid(tile_px, tile_size, Vector2i.ZERO)
+		var tile_grid := TileUtil.px_to_grid(tile_px, tile_size, tile_source.margins, tile_source.separation)
 
 		# Tile does not exist
 		if not tile_source.has_tile(tile_grid):
