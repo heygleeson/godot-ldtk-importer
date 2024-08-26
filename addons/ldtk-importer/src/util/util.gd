@@ -2,6 +2,7 @@
 
 enum LDTK_VERSION {
 	FUTURE,
+	v1_5,
 	v1_4,
 	v1_3,
 	v1_2,
@@ -63,6 +64,8 @@ static func check_version(version: String, latest_version: String) -> bool:
 			file_version = LDTK_VERSION.v1_3
 		"1.4":
 			file_version = LDTK_VERSION.v1_4
+		"1.5":
+			file_version = LDTK_VERSION.v1_5
 		_:
 			push_warning("LDtk file version is newer than what is supported. Errors may occur.")
 			file_version = LDTK_VERSION.FUTURE

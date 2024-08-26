@@ -9,5 +9,4 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	remove_import_plugin(ldtk_plugin)
-	ldtk_plugin= null
-
+	ldtk_plugin = null
