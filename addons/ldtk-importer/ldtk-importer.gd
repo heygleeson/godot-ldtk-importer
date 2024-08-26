@@ -1,7 +1,7 @@
 @tool
 extends EditorImportPlugin
 
-const LDTK_LATEST_VERSION = "1.3.4"
+const LDTK_LATEST_VERSION = "1.5.3"
 
 enum Presets {DEFAULT}
 
