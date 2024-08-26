@@ -23,8 +23,14 @@ static func create_layers(
 				layer_nodes.push_front(layer)
 
 			"IntGrid":
-				var layer = create_intgrid_layer(layer_instance, layer_def)
-				layer_nodes.push_front(layer)
+				var has_tileset := layer_instance.__tilesetDefUid != null
+
+				if has_tileset:
+					var layer = create_tile_layer(layer_instance, layer_def)
+					layer_nodes.push_front(layer)
+				else:
+					var layer = create_intgrid_layer(layer_instance, layer_def)
+					layer_nodes.push_front(layer)
 
 			"Tiles", "AutoLayer":
 				var layer = create_tile_layer(layer_instance, layer_def)
@@ -76,12 +82,10 @@ static func create_entity_layer(
 static func create_intgrid_layer(
 		layer_data: Dictionary,
 		layer_def: Dictionary
-) -> TileMap:
+) -> TileMapLayer:
 
-	var has_tileset := layer_data.__tilesetDefUid != null
-
-	# Create TileMap
-	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
+	# Create TileMapLayer
+	var tilemap: TileMapLayer = LayerUtil.create_layer_tilemap(layer_data)
 
 	# Retrieve IntGrid values - these do not always match their array index
 	var values: Array = layer_def.intGridValues.map(
@@ -90,10 +94,8 @@ static func create_intgrid_layer(
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier) + "-values"
-	var layer_index := tilemap.get_layers_count() -1
-	tilemap.set_layer_name(layer_index, layer_name)
-	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
-	tilemap.set_layer_enabled(layer_index, not has_tileset)
+	tilemap.set_name(layer_name)
+	tilemap.set_modulate(Color(1, 1, 1, layer_data.__opacity))
 
 	if (Util.options.verbose_output):
 		print("Creating IntGrid Layer: ", layer_name)
@@ -110,44 +112,23 @@ static func create_intgrid_layer(
 		if value_index != -1:
 			var cell_coords := TileUtil.index_to_grid(index, columns)
 			var tile_coords := Vector2i(value_index, 0)
-			tilemap.set_cell(layer_index, cell_coords, tile_source_id, tile_coords)
-
-	# Place IntGrid tileset tiles
-	if has_tileset:
-		tilemap.add_layer(-1)
-		layer_name = str(layer_data.__identifier) + "-tiles"
-		layer_index = tilemap.get_layers_count() - 1
-		tilemap.set_layer_name(layer_index, layer_name)
-		tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
-
-		# Get tile data
-		if (layer_data.__type == "Tiles"):
-			tiles = layer_data.gridTiles
-		else:
-			tiles = layer_data.autoLayerTiles
-
-		tile_source_id = layer_data.__tilesetDefUid
-		var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
-
-		__place_tiles(tilemap, tiles, tile_source_id, grid_size, layer_index)
+			tilemap.set_cell(cell_coords, tile_source_id, tile_coords)
 
 	return tilemap
 
 static func create_tile_layer(
 		layer_data: Dictionary,
 		layer_def: Dictionary
-) -> TileMap:
+) -> TileMapLayer:
 
 	# Create Tilemap
-	var tilemap: TileMap = LayerUtil.create_layer_tilemap(layer_data)
+	var tilemap: TileMapLayer = LayerUtil.create_layer_tilemap(layer_data)
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier)
-	var layer_index := tilemap.get_layers_count() - 1
-	tilemap.set_layer_name(layer_index, layer_name)
-	tilemap.set_layer_modulate(layer_index, Color(1, 1, 1, layer_data.__opacity))
-	tilemap.set_layer_enabled(layer_index, layer_data.visible)
-	tilemap.set_layer_z_index(layer_index, layer_index)
+	tilemap.set_name(layer_name)
+	tilemap.set_modulate(Color(1, 1, 1, layer_data.__opacity))
+	tilemap.set_enabled(layer_data.visible)
 
 	if (Util.options.verbose_output):
 		print("Creating Tile Layer: ", layer_name)
@@ -167,7 +148,7 @@ static func create_tile_layer(
 	return tilemap
 
 static func __place_tiles(
-		tilemap: TileMap,
+		tilemap: TileMapLayer,
 		tiles: Array,
 		tile_source_id: int,
 		grid_size: Vector2,
@@ -243,14 +224,8 @@ static func __place_tiles(
 
 			alternative_tile = alternative_index
 
-		if not tilemap.get_cell_tile_data(layer_index, cell_grid):
-			tilemap.set_cell(layer_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
-		elif (Util.options.allow_overlapping_tiles):
-			LayerUtil.set_overlapping_tile(
-					tilemap,
-					layer_index,
-					cell_grid,
-					tile_source_id,
-					tile_grid,
-					alternative_tile
-			)
+		if not tilemap.get_cell_tile_data(cell_grid):
+			tilemap.set_cell(cell_grid, tile_source_id, tile_grid, alternative_tile)
+		else:
+			# TODO: Re-implement overlapping tiles
+			pass

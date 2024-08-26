@@ -74,7 +74,7 @@ static func copy_and_modify_tile_data(
 		tile_data.set_flip_v(true)
 
 static func create_flipped_alternative_tiles(
-		tilemap: TileMap,
+		tilemap: TileMapLayer,
 		tile_source: TileSetAtlasSource,
 		tile_grid: Vector2
 ) -> void:

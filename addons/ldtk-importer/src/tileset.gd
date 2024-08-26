@@ -113,7 +113,6 @@ static func create_tileset_source(
 	var separation = definition.spacing
 	#var grid_w: int = ceili( (definition.pxWid - margin) / (tile_size + separation) )
 	#var grid_h: int = ceili( (definition.pxHei - margin) / (tile_size + separation) )
-	print("Tileset Def:", definition)
 	var grid_w: int = definition.__cWid
 	var grid_h: int = definition.__cHei
 

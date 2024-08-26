@@ -52,56 +52,13 @@ static func __placeholder_count(name: String) -> int:
 		placeholder_counts[name] += 1
 	return placeholder_counts[name]
 
-static func create_layer_tilemap(layer_data: Dictionary) -> TileMap:
+static func create_layer_tilemap(layer_data: Dictionary) -> TileMapLayer:
 	var grid_size = int(layer_data.__gridSize)
 
-	var tilemap := TileMap.new()
+	var tilemap := TileMapLayer.new()
 	tilemap.name = layer_data.__identifier
-	tilemap.set_texture_filter(CanvasItem.TEXTURE_FILTER_NEAREST)
 	tilemap.tile_set = Util.tilesets.get(grid_size, null)
 	var offset = Vector2(layer_data.__pxTotalOffsetX, layer_data.__pxTotalOffsetY)
 	tilemap.position = offset
 
 	return tilemap
-
-static func set_overlapping_tile(
-		tilemap: TileMap,
-		layer_index: int,
-		cell_grid: Vector2i,
-		tile_source_id: int,
-		tile_grid: Vector2i,
-		alternative_tile: int,
-) -> void:
-
-	var base_name: String = tilemap.get_layer_name(layer_index)
-	var layer_count: int = tilemap.get_layers_count()
-
-	# Get similar layers, sorted by z index
-	var similar_layers := []
-	for i in range(layer_count):
-		if tilemap.get_layer_name(i) == base_name:
-			similar_layers.append(i)
-
-	similar_layers.sort_custom(
-		func(a,b):
-			return tilemap.get_layer_z_index(a) < tilemap.get_layer_z_index(b)
-	)
-
-	var found_empty := false
-	for i in similar_layers:
-		if not tilemap.get_cell_tile_data(i, cell_grid):
-			tilemap.set_cell(i, cell_grid, tile_source_id, tile_grid, alternative_tile)
-			found_empty = true
-			break
-
-	if not found_empty:
-		var highest_z = tilemap.get_layer_z_index(similar_layers[-1])
-		# Create new layer
-		tilemap.add_layer(-1)
-		var new_index = layer_count
-		tilemap.set_layer_name(new_index, base_name)
-		tilemap.set_layer_z_index(new_index, highest_z)
-		tilemap.set_layer_modulate(new_index, tilemap.get_layer_modulate(layer_index))
-		# Set cell
-		tilemap.set_cell(new_index, cell_grid, tile_source_id, tile_grid, alternative_tile)
-

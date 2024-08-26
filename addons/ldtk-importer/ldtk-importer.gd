@@ -64,10 +64,6 @@ func _get_import_options(path, index):
 			"default_value": false,
 		},
 		{
-			"name": "allow_overlapping_tiles",
-			"default_value": true,
-		},
-		{
 			"name": "atlas_texture_type",
 			"default_value": 0,
 			"property_hint": PROPERTY_HINT_ENUM,

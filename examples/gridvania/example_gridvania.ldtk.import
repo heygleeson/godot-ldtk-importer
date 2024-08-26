@@ -20,7 +20,6 @@ Level=""
 Tileset=""
 force_tileset_reimport=false
 tileset_custom_data=true
-allow_overlapping_tiles=false
 atlas_texture_type=1
 Entity=""
 use_entity_placeholders=true
