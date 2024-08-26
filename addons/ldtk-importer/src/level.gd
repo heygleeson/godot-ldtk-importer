@@ -86,6 +86,17 @@ static func create_level(
 		sprite.name = "BG Image"
 		sprite.centered = false
 		sprite.texture = load(path)
+
+		# Calculate BG Position
+		var bgData = level_data.__bgPos
+		var pos = bgData.topLeftPx
+		var scale = bgData.scale
+		var region = bgData.cropRect
+		sprite.region_enabled = true
+		sprite.position = Vector2i(pos[0], pos[1])
+		sprite.scale = Vector2i(scale[0], scale[1])
+		sprite.region_rect = Rect2i(region[0], region[1], region[2], region[3])
+
 		level.add_child(sprite)
 
 	# Create fields
