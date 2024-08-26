@@ -1,0 +1,196 @@
+[gd_scene load_steps=6 format=4 uid="uid://d2pf27a562cba"]
+
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-level.gd" id="1_l2nu4"]
+[ext_resource type="TileSet" uid="uid://sumpqg34sf0h" path="res://examples/gridvania/tilesets/tileset16x16.res" id="2_smwv7"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity-layer.gd" id="3_2qur3"]
+[ext_resource type="PackedScene" uid="uid://c36l6fpttus66" path="res://addons/ldtk-importer/src/components/ldtk-entity.tscn" id="4_3o4ia"]
+[ext_resource type="Script" path="res://addons/ldtk-importer/src/components/ldtk-entity.gd" id="5_d2iev"]
+
+[node name="Level_3" type="Node2D"]
+position = Vector2(1024, 512)
+script = ExtResource("1_l2nu4")
+iid = "cccf7e60-3b70-11ee-ba64-bfce6eccf4fc"
+size = Vector2i(256, 256)
+fields = {
+"LevelBoolean": false,
+"LevelColor": Color(0.894118, 0.231373, 0.266667, 1),
+"LevelInteger": 0
+}
+neighbours = [{
+"dir": "n",
+"levelIid": NodePath("")
+}, {
+"dir": "w",
+"levelIid": NodePath("")
+}]
+bg_color = Color(0.411765, 0.415686, 0.47451, 1)
+
+[node name="IntGrid" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAABQAGAAMAAAABAAAABQAHAAMAAAACAAAABQAEAAMAAAADAAAABQAFAAMAAAAEAAAABQAFAAMAAAALAAAABQAFAAMAAAAMAAAABQAEAAMAAAANAAAABQAFAAMAAAAOAAAABQAGAAMAAAAPAAAABQAEAAMAAAAAAAEABQAHAAMAAAABAAEABQAHAAMAAAACAAEABQAHAAMAAAADAAEABQAEAAMAAAAEAAEABQAGAAMAAAALAAEABQAFAAMAAAAMAAEABQAEAAMAAAANAAEABQAGAAMAAAAOAAEABQAGAAMAAAAPAAEABQAGAAMAAAAAAAIABQAHAAMAAAABAAIABQAFAAMAAAAOAAIABQAGAAMAAAAPAAIABQAGAAMAAAAAAAMABQAEAAMAAAABAAMABQAFAAMAAAAOAAMABQAHAAMAAAAPAAMABQAFAAMAAAAAAAQABQAHAAMAAAABAAQABQAHAAMAAAAOAAQABQAGAAMAAAAPAAQABQAGAAMAAAAAAAUABQAFAAMAAAABAAUABQAFAAMAAAAOAAUABQAFAAMAAAAPAAUABQAEAAMAAAAAAAYABQAEAAMAAAABAAYABQAGAAMAAAAOAAYABQAEAAMAAAAPAAYABQAEAAMAAAAAAAcABQAFAAMAAAABAAcABQAEAAMAAAAOAAcABQAFAAMAAAAPAAcABQAFAAMAAAAOAAgABQAEAAMAAAAPAAgABQAHAAMAAAAOAAkABQAHAAMAAAAPAAkABQAFAAMAAAAOAAoABQAEAAMAAAAPAAoABQAHAAMAAAAOAAsABQAFAAMAAAAPAAsABQAGAAMAAAAHAAwABQAHAAMAAAAIAAwABQAFAAMAAAAOAAwABQAEAAMAAAAPAAwABQAHAAMAAAAHAA0ABQAFAAMAAAAIAA0ABQAHAAMAAAAOAA0ABQAHAAMAAAAPAA0ABQAGAAMAAAAAAA4ABQAEAAMAAAABAA4ABQAGAAMAAAACAA4ABQAFAAMAAAADAA4ABQAEAAMAAAAEAA4ABQAGAAMAAAAFAA4ABQAHAAMAAAAGAA4ABQAHAAMAAAAHAA4ABQAGAAMAAAAIAA4ABQAGAAMAAAAJAA4ABQAGAAMAAAAKAA4ABQAFAAMAAAALAA4ABQAFAAMAAAAMAA4ABQAGAAMAAAANAA4ABQAEAAMAAAAOAA4ABQAEAAMAAAAPAA4ABQAHAAMAAAAAAA8ABQAHAAMAAAABAA8ABQAEAAMAAAACAA8ABQAFAAMAAAADAA8ABQAEAAMAAAAEAA8ABQAFAAMAAAAFAA8ABQAGAAMAAAAGAA8ABQAHAAMAAAAHAA8ABQAEAAMAAAAIAA8ABQAEAAMAAAAJAA8ABQAHAAMAAAAKAA8ABQAFAAMAAAALAA8ABQAGAAMAAAAMAA8ABQAEAAMAAAANAA8ABQAGAAMAAAAOAA8ABQAEAAMAAAAPAA8ABQAGAAMAAAACAAIABQADAAMAAwANAAIABQADAAMAAgAGAA0ABQADAAMAAAAJAA0ABQADAAMAAQANAA0ABQADAAMAAAAFAAAABQADAAIAAQAKAAAABQADAAIAAAAFAAEABQADAAIAAQAKAAEABQADAAIAAAACAAMABQADAAIAAQANAAMABQADAAIAAAACAAQABQADAAIAAQANAAQABQADAAIAAAACAAUABQADAAIAAQANAAUABQADAAIAAAACAAYABQADAAIAAQANAAYABQADAAIAAAACAAcABQADAAIAAQANAAcABQADAAIAAAANAAgABQADAAIAAAANAAkABQADAAIAAAANAAoABQADAAIAAAANAAsABQADAAIAAAAGAAwABQADAAIAAAAJAAwABQADAAIAAQANAAwABQADAAIAAAADAAIABQACAAIAAgAEAAIABQACAAIAAgALAAIABQACAAIAAgAMAAIABQACAAIAAgAAAAgABQACAAIAAgABAAgABQACAAIAAgAHAAsABQACAAIAAAAIAAsABQACAAIAAAAAAA0ABQACAAIAAAABAA0ABQACAAIAAAACAA0ABQACAAIAAAADAA0ABQACAAIAAAAEAA0ABQACAAIAAAAFAA0ABQACAAIAAAAKAA0ABQACAAIAAAALAA0ABQACAAIAAAAMAA0ABQACAAIAAAAFAAIABQABAAEAAwAKAAIABQABAAEAAgACAAgABQABAAEAAwAGAAsABQABAAEAAAAJAAsABQABAAEAAQA=")
+tile_set = ExtResource("2_smwv7")
+
+[node name="Entities" type="Node2D" parent="."]
+script = ExtResource("3_2qur3")
+iid = "cccf7e62-3b70-11ee-ba64-ff8a865280e4"
+definition = {
+"gridSize": 16.0,
+"identifier": "Entities",
+"intGridValues": [],
+"offset": Vector2i(0, 0),
+"parallax": Vector2(0, 0),
+"parallaxScaling": true,
+"type": "Entities",
+"uid": 2.0
+}
+entities = [{
+"definition": {
+"color": Color(0.172549, 0.909804, 0.960784, 1),
+"field_defs": {
+7: {
+"identifier": "Integer",
+"type": "Int"
+},
+8: {
+"identifier": "Float",
+"type": "Float"
+},
+9: {
+"identifier": "Boolean",
+"type": "Bool"
+},
+10: {
+"identifier": "String",
+"type": "String"
+},
+11: {
+"identifier": "Multilines",
+"type": "String"
+},
+12: {
+"identifier": "Color",
+"type": "Color"
+},
+13: {
+"identifier": "Enum",
+"type": "LocalEnum.Symbol"
+},
+14: {
+"identifier": "File_path",
+"type": "FilePath"
+},
+15: {
+"identifier": "Tile",
+"type": "Tile"
+},
+16: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+17: {
+"identifier": "Point",
+"type": "Point"
+}
+},
+"hollow": true,
+"identifier": "EntityFieldTest",
+"renderMode": "Ellipse",
+"tags": []
+},
+"fields": {
+"Boolean": false,
+"Color": Color(1, 1, 1, 1),
+"Entity_ref": NodePath(""),
+"Enum": "Symbol.Alpha",
+"File_path": null,
+"Float": 0.0,
+"Integer": 0,
+"Multilines": null,
+"Point": null,
+"String": null,
+"Tile": null
+},
+"identifier": "EntityFieldTest",
+"iid": "7d7fed20-3b70-11ee-ba64-c5efa564a895",
+"pivot": Vector2(0.5, 0.5),
+"position": Vector2i(168, 136),
+"size": Vector2i(48, 48),
+"smart_color": Color(0.172549, 0.909804, 0.960784, 1)
+}]
+
+[node name="EntityFieldTest" type="Node2D" parent="Entities" instance=ExtResource("4_3o4ia")]
+position = Vector2(168, 136)
+script = ExtResource("5_d2iev")
+iid = "7d7fed20-3b70-11ee-ba64-c5efa564a895"
+identifier = "EntityFieldTest"
+fields = {
+"Boolean": false,
+"Color": Color(1, 1, 1, 1),
+"Entity_ref": NodePath(""),
+"Enum": "Symbol.Alpha",
+"File_path": null,
+"Float": 0.0,
+"Integer": 0,
+"Multilines": null,
+"Point": null,
+"String": null,
+"Tile": null
+}
+pivot = Vector2(0.5, 0.5)
+size = Vector2(48, 48)
+smart_color = Color(0.172549, 0.909804, 0.960784, 1)
+definition = {
+"color": Color(0.172549, 0.909804, 0.960784, 1),
+"field_defs": {
+7: {
+"identifier": "Integer",
+"type": "Int"
+},
+8: {
+"identifier": "Float",
+"type": "Float"
+},
+9: {
+"identifier": "Boolean",
+"type": "Bool"
+},
+10: {
+"identifier": "String",
+"type": "String"
+},
+11: {
+"identifier": "Multilines",
+"type": "String"
+},
+12: {
+"identifier": "Color",
+"type": "Color"
+},
+13: {
+"identifier": "Enum",
+"type": "LocalEnum.Symbol"
+},
+14: {
+"identifier": "File_path",
+"type": "FilePath"
+},
+15: {
+"identifier": "Tile",
+"type": "Tile"
+},
+16: {
+"identifier": "Entity_ref",
+"type": "EntityRef"
+},
+17: {
+"identifier": "Point",
+"type": "Point"
+}
+},
+"hollow": true,
+"identifier": "EntityFieldTest",
+"renderMode": "Ellipse",
+"tags": []
+}
+
+[node name="Tiles" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_smwv7")

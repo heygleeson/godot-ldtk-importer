@@ -52,7 +52,10 @@ func _get_import_options(path, index):
 		},
 		# --- Levels --- #
 		{"name": "Level", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
-
+		{
+			"name": "pack_levels",
+			"default_value": false,
+		},
 		# --- Tileset --- #
 		{"name": "Tileset", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
@@ -167,7 +170,7 @@ func _import(
 			var world_instance_iid: String = world_instance.iid
 			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
 			Util.log_time("\nBuilt Levels: " + world_instance_name)
-			var world_node := World.create_world(world_instance_name, world_instance_iid, levels)
+			var world_node := World.create_world(world_instance_name, world_instance_iid, levels, base_dir)
 			Util.log_time("\nBuilt World: " + world_instance_name)
 			world_nodes.append(world_node)
 
@@ -175,22 +178,75 @@ func _import(
 	else:
 		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
 		Util.log_time("Built Levels")
-		world = World.create_world(world_name, world_iid, levels)
+
+		# Save Levels (after Level Post-Import)
+		if (Util.options.pack_levels):
+			var packed_levels := []
+			var levels_path := base_dir + 'levels/'
+			var directory = DirAccess.open(base_dir)
+
+			# Resolve references
+			Util.resolve_references()
+			Util.clean_references()
+			Util.clean_resolvers()
+
+			for level in levels:
+				var level_path = save_level(level, levels_path, gen_files)
+				var packed_level = load(level_path).instantiate()
+				packed_levels.append(packed_level)
+
+			Util.log_time("Saved Levels")
+			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
+		else:
+			world = World.create_world(world_name, world_iid, levels, base_dir)
+			# Resolve references
+			Util.resolve_references()
+			Util.clean_references()
+			Util.clean_resolvers()
+
 		Util.log_time("Built World")
 
-	# Resolve references
-	Util.resolve_references()
-	Util.clean_references()
-	Util.clean_resolvers()
-
 	# Save World as PackedScene
+	var err = save_world(save_path, world, gen_files)
+
+	Util.log_time("Saved World Scene")
+	Util.finish_time()
+
+	return err
+
+func save_world(save_path: String, world: LDTKWorld, gen_files: Array[String]) -> Error:
 	var packed_world = PackedScene.new()
 	packed_world.pack(world)
 	Util.log_time("Packed World Scene")
 
 	var world_path = "%s.%s" % [save_path, _get_save_extension()]
 	var err = ResourceSaver.save(packed_world, world_path)
-	Util.log_time("Saved World Scene")
-	Util.finish_time()
-
+	if err == OK:
+		gen_files.append(world_path)
 	return err
+
+static func save_levels(
+	levels: Array[LDTKLevel],
+	save_path: String,
+	gen_files: Array[String]
+) -> Array[String]:
+
+	for level in levels:
+		pass
+
+	return gen_files
+
+static func save_level(level: LDTKLevel, save_path: String, gen_files: Array[String]) -> String:
+	for child in level.get_children():
+		Util.recursive_set_owner(child, level)
+
+	var packed_level = PackedScene.new()
+	packed_level.pack(level)
+	var level_path = "%s%s.%s" % [save_path, level.name, "tscn"]
+
+	var err = ResourceSaver.save(packed_level, level_path)
+	if err == OK:
+		gen_files.append(level_path)
+
+	Util.log_time("Saved Level: " + level_path)
+	return level_path

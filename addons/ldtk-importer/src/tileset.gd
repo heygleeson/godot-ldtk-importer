@@ -111,8 +111,6 @@ static func create_tileset_source(
 	var tile_size: int = definition.gridSize
 	var margin = definition.padding
 	var separation = definition.spacing
-	#var grid_w: int = ceili( (definition.pxWid - margin) / (tile_size + separation) )
-	#var grid_h: int = ceili( (definition.pxHei - margin) / (tile_size + separation) )
 	var grid_w: int = definition.__cWid
 	var grid_h: int = definition.__cHei
 
@@ -257,6 +255,6 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Array:
 		var file_path = "%s%s.%s" % [save_path, file_name, "res"]
 		var err = ResourceSaver.save(tileset, file_path)
 		if err == OK:
-			gen_files.push_back(file_path)
+			gen_files.append(file_path)
 
 	return gen_files

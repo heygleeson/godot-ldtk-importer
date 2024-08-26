@@ -3,7 +3,12 @@
 const Util = preload("util/util.gd")
 const PostImport = preload("post-import.gd")
 
-static func create_world(name: String, iid: String, levels: Array) -> LDTKWorld:
+static func create_world(
+	name: String,
+	iid: String,
+	levels: Array,
+	base_dir: String
+) -> LDTKWorld:
 
 	var world = LDTKWorld.new()
 	world.name = name
@@ -20,7 +25,7 @@ static func create_world(name: String, iid: String, levels: Array) -> LDTKWorld:
 	for level in levels:
 		if Util.options.separate_world_layers:
 			var worldDepthLayer
-			var z_index = level.z_index
+			var z_index = level.z_index if (level is not PackedScene) else 0
 			if not z_index in worldDepths:
 				worldDepthLayer = LDTKWorldLayer.new()
 				worldDepthLayer.name = "WorldLayer_" + str(z_index)
@@ -58,8 +63,10 @@ static func create_world(name: String, iid: String, levels: Array) -> LDTKWorld:
 				print("\n::POST-IMPORT LEVEL: ", level.name)
 			level = PostImport.run(level, Util.options.level_post_import)
 
-		for node in level.get_children():
-			Util.recursive_set_owner(node, world)
+		# Set owner - this ensures nodes get saved correctly
+		if level.scene_file_path == "":
+			for node in level.get_children():
+				Util.recursive_set_owner(node, world)
 
 	# Sort WorldLayers based on depth
 	if not worldDepths.is_empty():
@@ -96,23 +103,3 @@ static func create_multi_world(
 		Util.recursive_set_owner(world, multi_world)
 
 	return multi_world
-
-# Unused
-static func save_worlds(worlds: Array[LDTKWorld], base_dir: String) -> Array:
-	var gen_files := []
-	var save_path = base_dir + 'worlds/'
-	var directory = DirAccess.open(base_dir)
-	directory.make_dir_recursive(save_path)
-
-	for world in worlds:
-		var packed_world = PackedScene.new()
-		packed_world.pack(world)
-
-		var file_name = world.name
-		var file_path = "%s%s.%s" % [save_path, file_name, "tscn"]
-
-		var err = ResourceSaver.save(packed_world, file_path)
-		if err == OK:
-			gen_files.push_back(file_path)
-
-	return gen_files

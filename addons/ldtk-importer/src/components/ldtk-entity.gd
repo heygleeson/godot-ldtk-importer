@@ -59,7 +59,9 @@ func _draw() -> void:
 
 	if _drawPaths:
 		for path in _refs:
-			if not path is NodePath:
+			if path is not NodePath:
+				continue
+			elif path.is_empty():
 				continue
 			var node = get_node(path)
 			if node != null:

@@ -228,4 +228,5 @@ static func __place_tiles(
 			tilemap.set_cell(cell_grid, tile_source_id, tile_grid, alternative_tile)
 		else:
 			# TODO: Re-implement overlapping tiles
+			push_warning("Overlapping tiles are not currently supported as of Godot 4.3")
 			pass

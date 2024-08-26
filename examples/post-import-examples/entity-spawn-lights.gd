@@ -6,6 +6,9 @@
 
 const Light = preload("res://examples/light.tscn")
 
+# Used to update entity reference
+const LDTKUtil = preload("res://addons/ldtk-importer/src/util/util.gd")
+
 func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 	# This is used to supply a index suffix to the node name (e.g. "Light2", "Light3", etc.)
 	var spawn_count: int = 0
@@ -17,7 +20,8 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 			# Create a new Light instance.
 			var light = Light.instantiate()
 
-			# Copy fields over to the new instnace.
+			# Copy fields over to the new instance.
+			light.name = entity.identifier
 			light.position = entity.position
 			light.scale = Vector2(entity.size) / Vector2(64,64)
 			light.color = entity.smart_color
@@ -30,5 +34,8 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 
 			# Add instance to the EntityLayer node.
 			entity_layer.add_child(light)
+
+			# Update Entity Reference
+			LDTKUtil.update_instance_reference(entity.iid, light)
 
 	return entity_layer
