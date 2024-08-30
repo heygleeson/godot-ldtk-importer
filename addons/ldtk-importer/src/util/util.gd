@@ -45,6 +45,9 @@ static func finish_time():
 # General
 static func parse_file(source_file: String) -> Dictionary:
 	var json := FileAccess.open(source_file, FileAccess.READ)
+	if json == null:
+		push_error("\nFailed to open file: ", source_file)
+		return {}
 	var data := JSON.parse_string(json.get_as_text())
 	return data
 

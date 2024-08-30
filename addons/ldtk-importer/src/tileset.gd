@@ -124,7 +124,6 @@ static func create_tileset_source(
 		if (Util.options.verbose_output):
 			print("Adding source: %s on tileset %s" % [definition.uid, tileset.resource_name])
 		tileset.add_source(source, definition.uid)
-
 	# Convert texture from CompressedTexture2D to CanvasTexture
 	if (Util.options.atlas_texture_type == AtlasTextureType.CanvasTexture):
 		var canvas_texture = CanvasTexture.new()
@@ -245,6 +244,8 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Array:
 	var save_path = base_dir + "tilesets/"
 	var gen_files := []
 	var directory = DirAccess.open(base_dir)
+	if not directory.dir_exists(save_path):
+		directory.make_dir_recursive(save_path)
 
 	for key in tilesets.keys():
 		var tileset: Resource = tilesets.get(key)
