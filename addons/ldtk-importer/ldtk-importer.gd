@@ -120,6 +120,9 @@ func _get_option_visibility(path, option_name, options):
 			return true
 	return true
 
+func _can_import_threaded() -> bool:
+	return false
+
 func _import(
 		source_file: String,
 		save_path: String,
@@ -184,7 +187,8 @@ func _import(
 			var packed_levels := []
 			var levels_path := base_dir + 'levels/'
 			var directory = DirAccess.open(base_dir)
-
+			if not directory.dir_exists(levels_path):
+				directory.make_dir(levels_path)
 			# Resolve references
 			Util.resolve_references()
 			Util.clean_references()
