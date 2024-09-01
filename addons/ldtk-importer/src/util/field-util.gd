@@ -10,6 +10,7 @@ static func create_fields(fields: Array, entity: Variant = null) -> Dictionary:
 	for field in fields:
 		var key: String = field.__identifier
 		dict[key] = parse_field(field)
+		if Util.options.hold_entities_metadata: continue
 		if hitUnresolved:
 			if dict[key] is Array:
 				for index in range(dict[key].size()):
