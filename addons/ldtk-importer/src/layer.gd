@@ -199,20 +199,17 @@ static func __place_tiles(
 			continue
 
 		# Handle flipped tiles
-		var alternative_count := tile_source.get_alternative_tiles_count(tile_grid)
 		var alternative_tile: int = 0
-		var tile_flip := int(tile.f)
+		var tile_flip := TileUtil.get_tile_flip_mask(int(tile.f))
+
 		if (tile_flip != 0):
-			if (alternative_count == 1):
-				TileUtil.create_flipped_alternative_tiles(tilemap, tile_source, tile_grid)
-				alternative_count = tile_source.get_alternative_tiles_count(tile_grid)
-			if (tile_source.has_alternative_tile(tile_grid, tile_flip)):
-				alternative_tile = tile_flip
+			alternative_tile = tile_flip
 
 		# Handle alpha
-		if tile.a < 1:
-			var alternative_index := 4
+		if tile.a < 1.0:
+			var alternative_index := 1
 			var alternative_exists := false
+			var alternative_count := tile_source.get_alternative_tiles_count(tile_grid)
 
 			# Find alternate tile with same alpha
 			if alternative_count > alternative_index:
@@ -220,7 +217,7 @@ static func __place_tiles(
 					var data = tile_source.get_tile_data(tile_grid, i)
 					if is_equal_approx(data.modulate.a, tile.a):
 						# Reverse flip bools back into an int
-						var flip = int(data.flip_h) + int(data.flip_v) * 2
+						var flip = TileUtil.get_tile_flip_mask(int(data.flip_h) + int(data.flip_v) * 2)
 						if tile_flip == flip:
 							alternative_index = i
 							alternative_exists = true
@@ -228,11 +225,6 @@ static func __place_tiles(
 
 			# Create new tile
 			if not alternative_exists:
-				if alternative_count == 1:
-					# Create flipped alternatives (this preserves alternative order)
-					TileUtil.create_flipped_alternative_tiles(tilemap, tile_source, tile_grid)
-					alternative_count = tile_source.get_alternative_tiles_count(tile_grid)
-
 				alternative_index = tile_source.create_alternative_tile(tile_grid, alternative_count)
 				var new_data = tile_source.get_tile_data(tile_grid, alternative_index)
 				TileUtil.copy_and_modify_tile_data(

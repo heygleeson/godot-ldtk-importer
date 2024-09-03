@@ -36,9 +36,9 @@ static func copy_and_modify_tile_data(
 			tile_data.set_collision_polygon_points(pli, pi, points)
 		tile_data.set_constant_angular_velocity(pli, orig_tile_data.get_constant_angular_velocity(pli))
 		var linvel = Vector2(orig_tile_data.get_constant_linear_velocity(pli))
-		if bitset & 1:
+		if bitset & TileSetAtlasSource.TRANSFORM_FLIP_H:
 			linvel.x = -linvel.x
-		if bitset & 2:
+		if bitset & TileSetAtlasSource.TRANSFORM_FLIP_V:
 			linvel.y = -linvel.y
 		tile_data.set_constant_linear_velocity(pli, linvel)
 
@@ -68,9 +68,9 @@ static func copy_and_modify_tile_data(
 		tile_data.set_occluder(occi, new_occluder)
 
 	# Flip depending on bitset
-	if bitset & 1:
+	if bitset & TileSetAtlasSource.TRANSFORM_FLIP_H:
 		tile_data.set_flip_h(true)
-	if bitset & 2:
+	if bitset & TileSetAtlasSource.TRANSFORM_FLIP_V:
 		tile_data.set_flip_v(true)
 
 static func create_flipped_alternative_tiles(
@@ -133,3 +133,11 @@ static func index_to_grid(index: int, grid_w: int) -> Vector2i:
 	var x: int = floor(index % grid_w)
 	var y: int = floor(index / grid_w)
 	return Vector2i(x, y)
+
+# Converts '1' to (TRANSFORM_FLIP_H), and so on.
+static func get_tile_flip_mask(index: int) -> int:
+	# 0 -> 0
+	# 1 -> TileSetAtlasSource.TRANSFORM_FLIP_H  (4096)
+	# 2 -> TileSetAtlasSource.TRANSFORM_FLIP_V (8192)
+	# 3 -> TileSetAtlasSource.TRANSFORM_FLIP_H | TileSetAtlasSource.TRANSFORM_FLIP_H (12_228)
+	return index << 12
