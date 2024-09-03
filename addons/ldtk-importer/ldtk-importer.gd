@@ -75,6 +75,10 @@ func _get_import_options(path, index):
 		# --- Entities --- #
 		{"name": "Entity", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			"name": "hold_entities_metadata",
+			"default_value": false,
+		},
+		{
 			"name": "use_entity_placeholders",
 			"default_value": false,
 		},

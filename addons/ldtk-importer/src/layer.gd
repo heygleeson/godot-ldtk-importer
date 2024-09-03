@@ -2,6 +2,7 @@
 
 const Util = preload("util/util.gd")
 const LayerUtil = preload("util/layer-util.gd")
+const FieldUtil = preload("util/field-util.gd")
 const TileUtil = preload("util/tile-util.gd")
 
 static func create_layers(
@@ -75,9 +76,31 @@ static func create_entity_layer(
 		LayerUtil.placeholder_counts.clear()
 		for entity in entities:
 				var placeholder = LayerUtil.create_entity_placeholder(layer, entity)
+				try_push_placeholder_ref(placeholder, pathResolver)
 				Util.update_instance_reference(placeholder.iid, placeholder)
 
 	return layer
+
+static func try_push_placeholder_ref(placeholder, entity):
+	if not Util.options.hold_entities_metadata: return
+	if not placeholder.fields: return
+	placeholder.fields = str_to_var(var_to_str(placeholder.fields))
+	var field_defs = {}
+	for key in placeholder.definition.field_defs:
+		var def = placeholder.definition.field_defs[key]
+		field_defs[def.identifier] = def
+	for key in placeholder.fields:
+		var def = field_defs[key]
+		if not def.type.contains("EntityRef"):
+			continue
+		var prop = placeholder.fields[key]
+		if not prop:
+			continue
+		if prop is Array:
+			for index in range(prop.size()):
+				Util.add_unresolved_reference(prop, index, entity)
+		else:
+			Util.add_unresolved_reference(placeholder.fields, key, entity)
 
 static func create_intgrid_layer(
 		layer_data: Dictionary,
