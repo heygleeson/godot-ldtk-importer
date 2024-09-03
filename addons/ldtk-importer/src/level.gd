@@ -66,7 +66,7 @@ static func create_level(
 	var level = LDTKLevel.new()
 	level.name = level_name
 	level.iid = level_data.iid
-	level.position = position
+	level.world_position = position
 	level.size = Vector2i(level_data.pxWid, level_data.pxHei)
 	level.bg_color = level_data.__bgColor
 	level.z_index = level_data.worldDepth
