@@ -104,8 +104,7 @@ static func add_tilemap_reference(uid: int, atlas: TileSetAtlasSource) -> void:
 
 # This is useful for handling entity instances, as they might not exist yet when encountered
 # or be overwritten at a later stage (e.g. post-import) when importing an LDTK level/world.
-static func add_unresolved_reference(object, property, node = object) -> void:
-	var iid: String = object[property]
+static func add_unresolved_reference(object, property, node = object, iid:String = object[property]) -> void:
 	unresolved_refs.append({
 			"object": object,
 			"property": property,
