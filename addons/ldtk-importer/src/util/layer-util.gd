@@ -62,3 +62,10 @@ static func create_layer_tilemap(layer_data: Dictionary) -> TileMapLayer:
 	tilemap.position = offset
 
 	return tilemap
+
+static func create_tilemap_child(tilemap: TileMapLayer) -> TileMapLayer:
+	var child := TileMapLayer.new()
+	var count := tilemap.get_child_count() + 1
+	child.name = tilemap.name + str(count)
+	child.tile_set = tilemap.tile_set
+	return child

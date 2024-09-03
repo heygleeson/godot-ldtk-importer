@@ -250,6 +250,29 @@ static func __place_tiles(
 		if not tilemap.get_cell_tile_data(cell_grid):
 			tilemap.set_cell(cell_grid, tile_source_id, tile_grid, alternative_tile)
 		else:
-			# TODO: Re-implement overlapping tiles
-			push_warning("Overlapping tiles are not currently supported as of Godot 4.3")
-			pass
+			__place_overlapping_tile(tilemap, cell_grid, tile_source_id, tile_grid, alternative_tile)
+
+static func __place_overlapping_tile(
+	tilemap: TileMapLayer,
+	cell_grid: Vector2i,
+	tile_source_id: int,
+	tile_grid: Vector2i,
+	alternative_tile: int
+) -> void:
+	var tilemap_child: TileMapLayer
+	var empty := false
+
+	# Loop through existing children to find empty cell
+	for child in tilemap.get_children():
+		if not child.get_cell_tile_data(cell_grid):
+			tilemap_child = child
+			empty = true
+			break
+
+	# Create new child if no empty cell (or child) could be found
+	if not empty:
+		tilemap_child = LayerUtil.create_tilemap_child(tilemap)
+		tilemap.add_child(tilemap_child)
+
+	# Set tile
+	tilemap_child.set_cell(cell_grid, tile_source_id, tile_grid, alternative_tile)
