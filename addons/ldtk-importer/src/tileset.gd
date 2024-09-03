@@ -183,11 +183,22 @@ static func add_tileset_custom_data(
 			tileset.set_custom_data_layer_name(0, "LDTK Custom")
 			tileset.set_custom_data_layer_type(0, TYPE_STRING)
 
+		clear_custom_data(source)
+
 		for entry in customData:
 			var coords := TileUtil.tileid_to_grid(entry.tileId, grid_w)
 			var tile_data: TileData = source.get_tile_data(coords, 0)
 			if not tile_data == null:
 				tile_data.set_custom_data("LDTK Custom", entry.data)
+
+# Clear all custom data from tiles
+static func clear_custom_data(source: TileSetAtlasSource) -> void:
+	for t_index in range(source.get_tiles_count()):
+		var coords = source.get_tile_id(t_index)
+		var tile_data = source.get_tile_data(coords, 0)
+		if tile_data == null:
+			continue
+		tile_data.set_custom_data("LDTK Custom", "")
 
 # Create an AtlasSource from IntGrid data
 static func create_intgrid_source(
