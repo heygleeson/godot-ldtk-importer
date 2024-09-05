@@ -167,7 +167,7 @@ static func create_tileset_source(
 static func add_tileset_custom_data(
 		definition: Dictionary,
 		tileset: TileSet,
-		source :TileSetAtlasSource,
+		source: TileSetAtlasSource,
 		grid_w: int
 ) -> void:
 
@@ -177,28 +177,43 @@ static func add_tileset_custom_data(
 	var enumTags: Array = definition.enumTags
 	var customData: Array = definition.customData
 
+	var custom_name = "LDTK Custom"
+	clear_custom_data(tileset, custom_name)
 	if not customData.is_empty():
-		if tileset.get_custom_data_layer_by_name("LDTK Custom"):
-			tileset.add_custom_data_layer(0)
-			tileset.set_custom_data_layer_name(0, "LDTK Custom")
-			tileset.set_custom_data_layer_type(0, TYPE_STRING)
-
-		clear_custom_data(source)
+		ensure_custom_layer(tileset, custom_name)
 
 		for entry in customData:
 			var coords := TileUtil.tileid_to_grid(entry.tileId, grid_w)
 			var tile_data: TileData = source.get_tile_data(coords, 0)
 			if not tile_data == null:
-				tile_data.set_custom_data("LDTK Custom", entry.data)
+				tile_data.set_custom_data(custom_name, entry.data)
+	var custom_enum_name = "LDTK Custom Enum"
+	clear_custom_data(tileset, custom_enum_name)
+	if not enumTags.is_empty():
+		ensure_custom_layer(tileset, custom_enum_name)
 
-# Clear all custom data from tiles
-static func clear_custom_data(source: TileSetAtlasSource) -> void:
-	for t_index in range(source.get_tiles_count()):
-		var coords = source.get_tile_id(t_index)
-		var tile_data = source.get_tile_data(coords, 0)
-		if tile_data == null:
-			continue
-		tile_data.set_custom_data("LDTK Custom", "")
+		for enumTag in enumTags:
+			for tileId in enumTag.tileIds:
+				var coords := TileUtil.tileid_to_grid(tileId, grid_w)
+				var tile_data: TileData = source.get_tile_data(coords, 0)
+				if not tile_data == null:
+					tile_data.set_custom_data(custom_enum_name, enumTag.enumValueId)
+
+# Ensure custom data layer exists by name
+static func ensure_custom_layer(tileset: TileSet, layer_name: String) -> void:
+	if tileset.get_custom_data_layer_by_name(layer_name) != -1:
+		return
+	var index_to_add = tileset.get_custom_data_layers_count()
+	tileset.add_custom_data_layer(index_to_add)
+	tileset.set_custom_data_layer_name(index_to_add, layer_name)
+	tileset.set_custom_data_layer_type(index_to_add, TYPE_STRING)
+
+# Clear custom data by layer name
+static func clear_custom_data(tileset: TileSet, layer_name: String) -> void:
+	var layer = tileset.get_custom_data_layer_by_name(layer_name)
+	if layer == -1:
+		return
+	tileset.remove_custom_data_layer(layer)
 
 # Create an AtlasSource from IntGrid data
 static func create_intgrid_source(
