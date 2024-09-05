@@ -62,7 +62,12 @@ static func build_tilesets(
 	Util.tilesets = tilesets
 
 	# Save tilesets
-	return save_tilesets(tilesets, base_dir)
+	var files = save_tilesets(tilesets, base_dir)
+	for key in tilesets.keys():
+		var tileset = tilesets[key]
+		# reload tileset
+		tilesets[key] = ResourceLoader.load(files[key])
+	return files.values()
 
 static func get_tileset(
 		tile_size: int,
@@ -251,9 +256,9 @@ static func create_intgrid_source(
 	return source
 
 # Save TileSets as Resources
-static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Array:
+static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 	var save_path = base_dir + "tilesets/"
-	var gen_files := []
+	var gen_files := {}
 	var directory = DirAccess.open(base_dir)
 	if not directory.dir_exists(save_path):
 		directory.make_dir_recursive(save_path)
@@ -267,6 +272,6 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Array:
 		var file_path = "%s%s.%s" % [save_path, file_name, "res"]
 		var err = ResourceSaver.save(tileset, file_path)
 		if err == OK:
-			gen_files.append(file_path)
+			gen_files[key] = file_path
 
 	return gen_files
