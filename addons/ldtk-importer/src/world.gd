@@ -48,10 +48,7 @@ static func create_world(
 
 		# Set owner - this ensures nodes get saved correctly
 		level.set_owner(world)
-		if (Util.options.pack_levels):
-			for node in level.get_children():
-				Util.recursive_set_owner(node, level)
-		else:
+		if not (Util.options.pack_levels):
 			Util.recursive_set_owner(level, world)
 
 

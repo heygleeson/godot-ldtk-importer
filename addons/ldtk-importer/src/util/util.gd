@@ -74,7 +74,7 @@ static func check_version(version: String, latest_version: String) -> bool:
 			file_version = LDTK_VERSION.FUTURE
 	return true
 
-static func recursive_set_owner(node: Node, owner: Node):
+static func recursive_set_owner(node: Node, owner: Node) -> void:
 	node.set_owner(owner)
 	for child in node.get_children():
 		# Child is NOT an instantiated scene - this would otherwise cause errors
@@ -104,12 +104,17 @@ static func add_tilemap_reference(uid: int, atlas: TileSetAtlasSource) -> void:
 
 # This is useful for handling entity instances, as they might not exist yet when encountered
 # or be overwritten at a later stage (e.g. post-import) when importing an LDTK level/world.
-static func add_unresolved_reference(object, property, node = object, iid:String = object[property]) -> void:
+static func add_unresolved_reference(
+	object: Variant,
+	property: Variant,
+	node: Variant = object,
+	iid: String = str(object[property])
+) -> void:
 	unresolved_refs.append({
 			"object": object,
 			"property": property,
-			"iid": iid,
-			"node": node
+			"node": node,
+			"iid": iid
 	})
 
 static func resolve_references() -> void:
@@ -124,16 +129,26 @@ static func resolve_references() -> void:
 		var property: Variant = ref.property # Expected: String or Int
 		var node: Variant = ref.node # Expected: Node, but needs to accept null
 
+		if (options.verbose_output):
+			print("Ref: %s" % [iid.substr(0,8)])
+
 		if instance_refs.has(iid):
 			var instance = instance_refs[iid]
+
 			if instance is Node and node is Node:
-				object[property] = node.get_path_to(instance)
+				# Check if they are in the same tree
+				if instance.owner != null and node.owner != null:
+					var path = node.get_path_to(instance)
+					if path:
+						object[property] = path
 			else:
 				object[property] = instance
 
 			if (options.verbose_output):
 				print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
 			solved_refcount += 1
+		else:
+			print("%s not found as a reference" % [iid.substr(0,8)])
 
 	var leftover_refcount: int = unresolved_refs.size() - solved_refcount
 	if leftover_refcount > 0:

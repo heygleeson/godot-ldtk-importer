@@ -188,30 +188,25 @@ func _import(
 
 		# Save Levels (after Level Post-Import)
 		if (Util.options.pack_levels):
-			var packed_levels := []
 			var levels_path := base_dir + 'levels/'
 			var directory = DirAccess.open(base_dir)
 			if not directory.dir_exists(levels_path):
 				directory.make_dir(levels_path)
 
-			# Resolve references
+			# Resolve Refs + Cleanup Resolvers. We don't want to save 'NodePathResolver' in the Level scene.
 			Util.resolve_references()
 			Util.clean_references()
 			Util.clean_resolvers()
 
-			for level in levels:
-				var level_path = save_level(level, levels_path, gen_files)
-				var packed_level = load(level_path).instantiate()
-				packed_levels.append(packed_level)
+			var packed_levels = save_levels(levels, levels_path, gen_files)
 
 			Util.log_time("Saved Levels")
 			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
 		else:
 			world = World.create_world(world_name, world_iid, levels, base_dir)
-			# Resolve references
 			Util.resolve_references()
-			Util.clean_references()
 			Util.clean_resolvers()
+			Util.clean_references()
 
 		Util.log_time("Built World")
 
@@ -238,17 +233,17 @@ static func save_levels(
 	levels: Array[LDTKLevel],
 	save_path: String,
 	gen_files: Array[String]
-) -> Array[String]:
-
+) -> Array[LDTKLevel]:
+	var packed_levels: Array[LDTKLevel] = []
 	for level in levels:
-		pass
-
-	return gen_files
+		for child in level.get_children():
+			Util.recursive_set_owner(child, level)
+		var level_path = save_level(level, save_path, gen_files)
+		var packed_level = load(level_path).instantiate()
+		packed_levels.append(packed_level)
+	return packed_levels
 
 static func save_level(level: LDTKLevel, save_path: String, gen_files: Array[String]) -> String:
-	for child in level.get_children():
-		Util.recursive_set_owner(child, level)
-
 	var packed_level = PackedScene.new()
 	packed_level.pack(level)
 	var level_path = "%s%s.%s" % [save_path, level.name, "tscn"]
