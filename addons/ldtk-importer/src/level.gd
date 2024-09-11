@@ -3,7 +3,7 @@
 const Util = preload("util/util.gd")
 const LevelUtil = preload("util/level-util.gd")
 const FieldUtil = preload("util/field-util.gd")
-
+const PostImport = preload("post-import.gd")
 const Layer = preload("layer.gd")
 
 static var base_directory: String
@@ -49,6 +49,13 @@ static func build_levels(
 			level_data = LevelUtil.get_external_level(level_data, base_dir)
 
 		var level = create_level(level_data, position, definitions)
+
+		if (Util.options.entities_post_import):
+			level = PostImport.run_entity_post_import(level, Util.options.entities_post_import)
+
+		if (Util.options.level_post_import):
+			level = PostImport.run_level_post_import(level, Util.options.level_post_import)
+
 		levels.append(level)
 
 	return levels

@@ -193,6 +193,7 @@ func _import(
 			var directory = DirAccess.open(base_dir)
 			if not directory.dir_exists(levels_path):
 				directory.make_dir(levels_path)
+
 			# Resolve references
 			Util.resolve_references()
 			Util.clean_references()

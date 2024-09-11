@@ -54,9 +54,7 @@ static func build_tilesets(
 
 	# Post-Import
 	if (Util.options.tileset_post_import):
-		if (Util.options.verbose_output):
-			print("\n::POST-IMPORT Tilesets")
-		tilesets = PostImport.run(tilesets, Util.options.tileset_post_import)
+		tilesets = PostImport.run_tileset_post_import(tilesets, Util.options.tileset_post_import)
 
 	# Store tilesets in Util
 	Util.tilesets = tilesets
