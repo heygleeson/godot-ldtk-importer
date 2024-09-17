@@ -15,6 +15,7 @@ static func build_levels(
 		external_levels: bool
 ) -> Array[LDTKLevel]:
 
+	Util.timer_start(Util.DebugTime.GENERAL)
 	base_directory = base_dir
 	var levels: Array[LDTKLevel] = []
 
@@ -41,6 +42,7 @@ static func build_levels(
 
 	# Create levels
 	for level_index in range(world_data.levels.size()):
+		Util.timer_start(Util.DebugTime.GENERAL)
 		var level_data
 		var position: Vector2i = level_positions[level_index]
 		level_data = world_data.levels[level_index]
@@ -49,6 +51,7 @@ static func build_levels(
 			level_data = LevelUtil.get_external_level(level_data, base_dir)
 
 		var level = create_level(level_data, position, definitions)
+		Util.timer_finish("Built Level", 2)
 
 		if (Util.options.entities_post_import):
 			level = PostImport.run_entity_post_import(level, Util.options.entities_post_import)
@@ -58,6 +61,7 @@ static func build_levels(
 
 		levels.append(level)
 
+	Util.timer_finish("Built %s Levels" % levels.size())
 	return levels
 
 static func create_level(
@@ -65,10 +69,6 @@ static func create_level(
 		position: Vector2i,
 		definitions: Dictionary
 ) -> LDTKLevel:
-
-	if (Util.options.verbose_output):
-		print("\n=== LEVEL: %s ===" % [level_data.identifier])
-
 	var level_name = level_data.identifier
 	var level = LDTKLevel.new()
 	level.name = level_name
@@ -78,6 +78,7 @@ static func create_level(
 	level.bg_color = level_data.__bgColor
 	level.z_index = level_data.worldDepth
 
+	if (Util.options.verbose_output): Util.print("block", level_name, 1)
 	Util.update_instance_reference(level_data.iid, level)
 
 	# Get neighbours (handle levelIid references)

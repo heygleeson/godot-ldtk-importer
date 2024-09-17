@@ -51,7 +51,6 @@ static func create_world(
 		if not (Util.options.pack_levels):
 			Util.recursive_set_owner(level, world)
 
-
 	# Sort WorldLayers based on depth
 	if not worldDepths.is_empty():
 		var keys = worldDepths.keys()

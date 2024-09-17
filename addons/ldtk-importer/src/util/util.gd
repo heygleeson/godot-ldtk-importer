@@ -1,5 +1,7 @@
 @tool
 
+const DebugTime = preload("time-util.gd")
+
 enum LDTK_VERSION {
 	FUTURE,
 	v1_5,
@@ -22,27 +24,85 @@ const TYPE_STRING = [
 
 static var options := {}
 
-# Performance Measurement
-static var time_start: int
-static var time_last: int
-static func start_time():
-	time_start = Time.get_ticks_msec()
-	time_last = time_start
-	print("-- LDTK: Start Import --")
+#region Performance Measurement
 
-static func log_time(message: String):
-	if options.verbose_output:
-		var time = Time.get_ticks_msec()
-		var time_log = time - time_last
-		time_last = time
-		print("%s :: %sms" % [message, time_log])
+static var last_time: int = 0
+static var time_history: Array[Dictionary] = []
 
-static func finish_time():
-	var time := Time.get_ticks_msec()
-	var time_finish := time - time_start
-	print("-- LDTK: Finished Import -- (%sms)" % [time_finish])
+static func timer_start(category: int = 0) -> int:
+	var t: int = Time.get_ticks_msec()
+	var d: int = t - last_time
+	last_time = t
 
-# General
+	if time_history.size() > 0:
+		# Entering subcategory - log prev category up to here
+		var last: Dictionary = time_history[-1]
+		DebugTime.log_time(last.category, d)
+
+	time_history.append({"category": category, "time": t})
+	return d
+
+static func timer_finish(message: String, indent: int = 0, print: bool = true) -> int:
+	if time_history.size() == 0:
+		push_error("Unbalanced DebugTime stack")
+	var last: Dictionary = time_history.pop_back()
+	var t: int = Time.get_ticks_msec()
+	var d: int = t - last.time
+	last_time = t
+	DebugTime.log_time(last.category, d)
+
+	if time_history.size() > 0:
+		time_history[-1].time = t
+
+	if (print and options.verbose_output):
+		print_time("item_info_time", message, d, indent)
+	return d
+
+static func timer_reset() -> void:
+	last_time = 0
+	time_history.clear()
+	DebugTime.clear_time()
+
+#endregion
+
+#region Debug Output
+
+const PRINT_SNIPPET := {
+	"import_start": "[bgcolor=#ffcc00][color=black][LDTK][/color][/bgcolor][color=#ffcc00] Start Import: [color=#fe8019][i]'%s'[/i][/color]",
+	"import_finish": "[bgcolor=#ffcc00][color=black][LDTK][/color][/bgcolor][color=#ffcc00] Finished Import. [color=slategray](Total Time: %sms)[/color]",
+	"item_ok" : "[color=#b8bb26]• %s ✔[/color]",
+	"item_fail": "[color=#fb4934]• %s ✘[/color]",
+	"item_info": "[color=#8ec07c]• %s [/color]",
+	"item_save": "[color=#ffcc00]• %s [/color]",
+	"item_post_import": "[color=tomato]‣ %s[/color]",
+	"block": "[color=#ffcc00]█[/color] [color=#fe8019]%s[/color]",
+	"item_ok_time": "[color=#b8bb26]• %s ✔[/color]\t[color=slategray](%sms)[/color]",
+	"item_fail_time": "[color=#fb4934]• %s ✘[/color]\t[color=slategray](%sms)[/color]",
+	"item_info_time": "[color=#8ec07c]• %s [/color]\t[color=slategray](%sms)[/color]",
+	"world_post_import": "[color=tomato]‣ World Post-Import: %s[/color]",
+	"level_post_import": "[color=tomato]‣ Level Post-Import: %s[/color]",
+	"tileset_post_import": "[color=tomato]‣ Tileset Post-Import: %s[/color]",
+	"entity_post_import": "[color=tomato]‣ Entity Post-Import: %s[/color]",
+}
+
+static func print(type: String, message: String, indent: int = 0) -> void:
+	if PRINT_SNIPPET.has(type):
+		var snippet: String = PRINT_SNIPPET[type]
+		snippet = snippet.indent(str("\t").repeat(indent))
+		print_rich(snippet % [message])
+	else:
+		print_rich(message)
+
+static func print_time(type: String, message: String, time: int = -1, indent: int = 0) -> void:
+	if PRINT_SNIPPET.has(type):
+		var snippet: String = PRINT_SNIPPET[type]
+		snippet = snippet.indent(str("\t").repeat(indent))
+		print_rich(snippet % [message, time])
+	else:
+		print_rich(message)
+
+#endregion
+
 static func parse_file(source_file: String) -> Dictionary:
 	var json := FileAccess.open(source_file, FileAccess.READ)
 	if json == null:
@@ -85,22 +145,25 @@ static func recursive_set_owner(node: Node, owner: Node) -> void:
 
 # References
 static var tilesets := {}
-static var tilemap_refs := {}
+static var tileset_refs := {}
 static var instance_refs := {}
 static var unresolved_refs := []
 static var path_resolvers := []
 
 static func update_instance_reference(iid: String, instance: Variant) -> void:
-	if instance_refs.has(iid):
-		if (options.verbose_output):
-			print("Overwriting InstanceRef: ", iid.substr(0,8) ," -> ", instance)
+	#if instance_refs.has(iid):
+		#if (options.verbose_output):
+			#print("  Overwriting InstanceRef: %s -> '%s'" % [iid.substr(0,8), instance.name])
 	instance_refs[iid] = instance
 
-static func add_tilemap_reference(uid: int, atlas: TileSetAtlasSource) -> void:
-	if tilemap_refs.has(uid):
-		if (options.verbose_output):
-			print("Overwriting TileSetAtlasSourceRef: ", uid ," -> ", atlas)
-	tilemap_refs[uid] = atlas
+static func add_tileset_reference(uid: int, atlas: TileSetAtlasSource) -> void:
+	#if tileset_refs.has(uid):
+		#if (options.verbose_output):
+			#print("  Overwriting TileSetAtlasSourceRef: %s -> '%s'" % [uid, atlas.resource_name])
+	#else:
+		#if (options.verbose_output):
+			#print("  Creating TileSetAtlasSourceRef: %s -> '%s'" % [uid, atlas.resource_name])
+	tileset_refs[uid] = atlas
 
 # This is useful for handling entity instances, as they might not exist yet when encountered
 # or be overwritten at a later stage (e.g. post-import) when importing an LDTK level/world.
@@ -118,9 +181,6 @@ static func add_unresolved_reference(
 	})
 
 static func resolve_references() -> void:
-	if (options.verbose_output):
-		print("Resolving ", unresolved_refs.size(), " entity references...")
-
 	var solved_refcount := 0
 
 	for ref in unresolved_refs:
@@ -129,8 +189,8 @@ static func resolve_references() -> void:
 		var property: Variant = ref.property # Expected: String or Int
 		var node: Variant = ref.node # Expected: Node, but needs to accept null
 
-		if (options.verbose_output):
-			print("Ref: %s" % [iid.substr(0,8)])
+		#if (options.verbose_output):
+			#print("Ref: %s" % [iid.substr(0,8)])
 
 		if instance_refs.has(iid):
 			var instance = instance_refs[iid]
@@ -144,8 +204,9 @@ static func resolve_references() -> void:
 			else:
 				object[property] = instance
 
-			if (options.verbose_output):
-				print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
+			#if (options.verbose_output):
+				#print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
+
 			solved_refcount += 1
 		else:
 			print("%s not found as a reference" % [iid.substr(0,8)])
@@ -155,7 +216,7 @@ static func resolve_references() -> void:
 		push_warning("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
 
 static func clean_references() -> void:
-	tilemap_refs.clear()
+	tileset_refs.clear()
 	instance_refs.clear()
 	unresolved_refs.clear()
 

@@ -5,3 +5,5 @@
 [node name="LDTK Entity" type="Node2D"]
 script = ExtResource("1_hclg8")
 smart_color = Color(1, 0.8, 0, 0.533333)
+
+[node name="Sprite" type="Sprite2D" parent="."]

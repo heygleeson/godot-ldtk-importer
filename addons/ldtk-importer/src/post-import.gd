@@ -24,17 +24,21 @@ static func run(element: Variant, script_path: String) -> Variant:
 
 	return element
 
-static func run_tileset_post_import(tilesets: Array, script_path: String) -> Array:
-	if (Util.options.verbose_output):
-		print("\n::POST-IMPORT Tilesets")
-	return run(tilesets, Util.options.tileset_post_import)
+static func run_tileset_post_import(tilesets: Dictionary, script_path: String) -> Dictionary:
+	Util.timer_start(Util.DebugTime.POST_IMPORT)
+	tilesets = run(tilesets, Util.options.tileset_post_import)
+	Util.timer_finish("Tileset Post-Import")
+	return tilesets
 
 static func run_level_post_import(level: LDTKLevel, script_path: String) -> LDTKLevel:
-	if (Util.options.verbose_output):
-		print("\n::POST-IMPORT LEVEL: ", level.name)
+	Util.timer_start(Util.DebugTime.POST_IMPORT)
+	Util.print("level_post_import", level.name, 1)
+	level = run(level, Util.options.level_post_import)
+	Util.timer_finish("Level Post-Import (%s)" % [level.name])
 	return run(level, Util.options.level_post_import)
 
 static func run_entity_post_import(level: LDTKLevel, script_path: String) -> LDTKLevel:
+	Util.timer_start(Util.DebugTime.POST_IMPORT)
 	var layers = level.get_children()
 	for layer in layers:
 		if layer is not LDTKEntityLayer:
@@ -42,12 +46,15 @@ static func run_entity_post_import(level: LDTKLevel, script_path: String) -> LDT
 
 		if (Util.options.verbose_output):
 			var entityLayerName = layer.get_parent().name + "." + layer.name
-			print("\n::POST-IMPORT ENTITIES: ", entityLayerName)
+			Util.print("entity_post_import", entityLayerName, 2)
 
 		layer = run(layer, script_path)
+	Util.timer_finish("Entity Post-Import (%s)" % [level.name], 2)
 	return level
 
 static func run_world_post_import(world: LDTKWorld, script_path: String) -> LDTKWorld:
-	if (Util.options.verbose_output):
-			print("\n::POST-IMPORT WORLD: ", world.name)
-	return run(world, Util.options.world_post_import)
+	Util.timer_start(Util.DebugTime.POST_IMPORT)
+	if (Util.options.verbose_output): Util.print("world_post_import", world.name)
+	world = run(world, Util.options.world_post_import)
+	Util.timer_finish("World Post-Import (%s)" % [world.name])
+	return world

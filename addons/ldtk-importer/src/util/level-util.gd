@@ -47,8 +47,6 @@ static func get_external_level(
 	var level_file: String = base_dir + level_data.externalRelPath
 	var new_level_data: Dictionary = Util.parse_file(level_file)
 	if not new_level_data == null:
-		if Util.options.verbose_output:
-			Util.log_time("Parsed external level: " + level_file.get_file())
 		return new_level_data
 	else:
 		push_warning("Could not parse external level: ", level_file)

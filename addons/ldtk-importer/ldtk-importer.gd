@@ -47,26 +47,36 @@ func _get_import_options(path, index):
 		# --- World --- #
 		{"name": "World", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			# Group LDTKLevels in 'LDTKWorldLayer' nodes if using LDTK's WorldDepth.
 			"name": "separate_world_layers",
 			"default_value": false,
 		},
 		# --- Levels --- #
 		{"name": "Level", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			# Save LDTKLevels as PackedScenes.
 			"name": "pack_levels",
 			"default_value": false,
 		},
 		# --- Tileset --- #
 		{"name": "Tileset", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			# Force Tilesets to be recreated, resetting modifications (if experiencing import issues)
 			"name": "force_tileset_reimport",
 			"default_value": false,
 		},
 		{
+			# Add LDTK Custom Data to Tilesets
 			"name": "tileset_custom_data",
 			"default_value": false,
 		},
 		{
+			# Create TileAtlasSources & TileMapLayers for IntGrid Layers
+			"name": "integer_grid_tilesets",
+			"default_value": false,
+		},
+		{
+			# Define default texture type for TilesetAtlasSource (e.g. to apply normal maps to tilesets after import)
 			"name": "atlas_texture_type",
 			"default_value": 0,
 			"property_hint": PROPERTY_HINT_ENUM,
@@ -75,34 +85,40 @@ func _get_import_options(path, index):
 		# --- Entities --- #
 		{"name": "Entity", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			#
 			"name": "hold_entities_metadata",
 			"default_value": false,
 		},
 		{
+			# Create LDTKEntityPlaceholder nodes to help debug importing.
 			"name": "use_entity_placeholders",
 			"default_value": false,
 		},
 		# --- Post Import --- #
 		{"name": "Post Import", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			# Define a post-import script to apply on imported Tilesets.
 			"name": "tileset_post_import",
 			"default_value": "",
 			"property_hint": PROPERTY_HINT_FILE,
 			"hint_string": "*.gd;GDScript"
 		},
 		{
+			# Define a post-import script to apply on imported Entities.
 			"name": "entities_post_import",
 			"default_value": "",
 			"property_hint": PROPERTY_HINT_FILE,
 			"hint_string": "*.gd;GDScript"
 		},
 		{
+			# Define a post-import script to apply on imported Levels.
 			"name": "level_post_import",
 			"default_value": "",
 			"property_hint": PROPERTY_HINT_FILE,
 			"hint_string": "*.gd;GDScript"
 		},
 		{
+			# Define a post-import script to apply on imported Worlds.
 			"name": "world_post_import",
 			"default_value": "",
 			"property_hint": PROPERTY_HINT_FILE,
@@ -111,9 +127,11 @@ func _get_import_options(path, index):
 		# --- Debug --- #
 		{"name": "Debug", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
+			# Debug: Enable Verbose Output (used by the importer)
 			"name": "verbose_output", "default_value": false
 		},
 		{
+			# Debug: Enable Verbose Post-Import Output (used on your own post-import scripts)
 			"name": "verbose_post_import", "default_value": false
 		},
 	]
@@ -135,7 +153,9 @@ func _import(
 		gen_files: Array[String]
 ) -> Error:
 
-	Util.start_time()
+	Util.timer_reset()
+	Util.timer_start(Util.DebugTime.TOTAL)
+	Util.print("import_start", source_file)
 
 	# Add options to static var in "Util", accessible from any script.
 	Util.options = options
@@ -145,28 +165,34 @@ func _import(
 	var file_name := source_file.get_file()
 	var world_name := file_name.split(".")[0]
 
+	Util.timer_start(Util.DebugTime.LOAD)
 	var world_data := Util.parse_file(source_file)
-	Util.log_time("Parse File")
+	Util.timer_finish("File parsed")
 
 	# Check version
 	if Util.check_version(world_data.jsonVersion, LDTK_LATEST_VERSION):
-		print("LDTK VERSION OK")
+		Util.print("item_ok", "LDTK VERSION (%s) OK" % [world_data.jsonVersion])
 	else:
 		return ERR_PARSE_ERROR
 
 	# Generate definitions
+	Util.timer_start(Util.DebugTime.GENERAL)
 	var definitions := DefinitionUtil.build_definitions(world_data)
-	Util.log_time("Build Definitions")
+	Util.timer_finish("Definitions Created")
 
 	# Save Tilesets as Resources
+	if Util.options.verbose_output: Util.print("block", "Tilesets")
 	var tileset_paths := Tileset.build_tilesets(definitions, base_dir)
 	gen_files.append_array(tileset_paths)
-	Util.log_time("Saved Tilesets")
+
+	# Fetch EntityDef Tile textures
+	Tileset.get_entity_def_tiles(definitions, Util.tilesets)
 
 	# Detect Multi-Worlds
 	var external_levels: bool = world_data.externalLevels
 	var world_iid: String = world_data.iid
 
+	if Util.options.verbose_output: Util.print("block", "Levels")
 	var world: LDTKWorld
 	if world_data.worldLayout == null:
 		var world_nodes: Array[LDTKWorld] = []
@@ -176,15 +202,12 @@ func _import(
 			var world_instance_name: String = world_instance.identifier
 			var world_instance_iid: String = world_instance.iid
 			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
-			Util.log_time("\nBuilt Levels: " + world_instance_name)
 			var world_node := World.create_world(world_instance_name, world_instance_iid, levels, base_dir)
-			Util.log_time("\nBuilt World: " + world_instance_name)
 			world_nodes.append(world_node)
 
 		world = World.create_multi_world(world_name, world_iid, world_nodes)
 	else:
 		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
-		Util.log_time("Built Levels")
 
 		# Save Levels (after Level Post-Import)
 		if (Util.options.pack_levels):
@@ -194,34 +217,53 @@ func _import(
 				directory.make_dir(levels_path)
 
 			# Resolve Refs + Cleanup Resolvers. We don't want to save 'NodePathResolver' in the Level scene.
+			if (Util.options.verbose_output):
+				Util.print("block", "References")
+				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
+
 			Util.resolve_references()
 			Util.clean_references()
 			Util.clean_resolvers()
 
-			var packed_levels = save_levels(levels, levels_path, gen_files)
+			if Util.options.verbose_output: Util.print("block", "Save Levels")
 
-			Util.log_time("Saved Levels")
+			var packed_levels = save_levels(levels, levels_path, gen_files)
 			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
 		else:
 			world = World.create_world(world_name, world_iid, levels, base_dir)
+			if (Util.options.verbose_output):
+				Util.print("block", "References")
+				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
 			Util.resolve_references()
 			Util.clean_resolvers()
 			Util.clean_references()
 
-		Util.log_time("Built World")
-
 	# Save World as PackedScene
+	if Util.options.verbose_output: Util.print("block", "Save World")
+	Util.timer_start(Util.DebugTime.SAVE)
 	var err = save_world(save_path, world, gen_files)
+	Util.timer_finish("World Saved")
 
-	Util.log_time("Saved World Scene")
-	Util.finish_time()
+	if Util.options.verbose_output: Util.print("block", "Results")
 
+	Util.timer_finish("Completed.")
+
+	var total_time: int = Util.DebugTime.get_total_time()
+	var result_message: String = Util.DebugTime.get_result()
+
+	if Util.options.verbose_output: Util.print("item_info", result_message)
+	Util.print("import_finish", str(total_time))
 	return err
 
-func save_world(save_path: String, world: LDTKWorld, gen_files: Array[String]) -> Error:
+func save_world(
+		save_path: String,
+		world: LDTKWorld,
+		gen_files: Array[String]
+) -> Error:
 	var packed_world = PackedScene.new()
 	packed_world.pack(world)
-	Util.log_time("Packed World Scene")
+
+	if (Util.options.verbose_output): Util.print("item_save", "Saving World [color=#fe8019]'%s'[/color]" % [save_path])
 
 	var world_path = "%s.%s" % [save_path, _get_save_extension()]
 	var err = ResourceSaver.save(packed_world, world_path)
@@ -229,28 +271,39 @@ func save_world(save_path: String, world: LDTKWorld, gen_files: Array[String]) -
 		gen_files.append(world_path)
 	return err
 
-static func save_levels(
-	levels: Array[LDTKLevel],
-	save_path: String,
-	gen_files: Array[String]
+func save_levels(
+		levels: Array[LDTKLevel],
+		save_path: String,
+		gen_files: Array[String]
 ) -> Array[LDTKLevel]:
+	Util.timer_start(Util.DebugTime.SAVE)
 	var packed_levels: Array[LDTKLevel] = []
+
+	if (Util.options.verbose_output):
+		var level_names := levels.map(func(elem): return elem.name)
+		Util.print("item_save", "Saving Levels: [color=#fe8019]%s[/color]" % [level_names])
+
 	for level in levels:
 		for child in level.get_children():
 			Util.recursive_set_owner(child, level)
 		var level_path = save_level(level, save_path, gen_files)
 		var packed_level = load(level_path).instantiate()
 		packed_levels.append(packed_level)
+
+	Util.timer_finish("%s Levels Saved" % [levels.size()])
 	return packed_levels
 
-static func save_level(level: LDTKLevel, save_path: String, gen_files: Array[String]) -> String:
+func save_level(
+		level: LDTKLevel,
+		save_path: String,
+		gen_files: Array[String]
+) -> String:
 	var packed_level = PackedScene.new()
 	packed_level.pack(level)
-	var level_path = "%s%s.%s" % [save_path, level.name, "tscn"]
+	var level_path = "%s%s.%s" % [save_path, level.name, _get_save_extension()]
 
 	var err = ResourceSaver.save(packed_level, level_path)
 	if err == OK:
 		gen_files.append(level_path)
 
-	Util.log_time("Saved Level: " + level_path)
 	return level_path

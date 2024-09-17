@@ -97,7 +97,7 @@ static func __parse_enum(enum_str: String, value: String) -> String:
 
 static func __parse_tile(value: Dictionary) -> AtlasTexture:
 	var texture := AtlasTexture.new()
-	var atlas: TileSetAtlasSource = Util.tilemap_refs[int(value.tilesetUid)]
+	var atlas: TileSetAtlasSource = Util.tileset_refs[int(value.tilesetUid)]
 
 	if atlas == null:
 		push_error("Could not find atlas ", value.tilesetUid, ", returning empty texture")

@@ -24,12 +24,13 @@ static func create_layers(
 				layer_nodes.push_front(layer)
 
 			"IntGrid":
+				# Determines if this has an 'AutoLayer' assigned
 				var has_tileset := layer_instance.__tilesetDefUid != null
 
 				if has_tileset:
 					var layer = create_tile_layer(layer_instance, layer_def)
 					layer_nodes.push_front(layer)
-				else:
+				if (not has_tileset or Util.options.integer_grid_tilesets):
 					var layer = create_intgrid_layer(layer_instance, layer_def)
 					layer_nodes.push_front(layer)
 
@@ -40,6 +41,9 @@ static func create_layers(
 			_:
 				push_warning("[LDtk] Tried importing an unsupported layer type: ", layer_type)
 
+	if (Util.options.verbose_output):
+		var layer_names = layer_nodes.map(func(elem): return elem.name)
+		Util.print("item_info", "Created Layers: [color=slategray]%s[/color]" % [layer_names], 2)
 	return layer_nodes
 
 static func create_entity_layer(
@@ -51,9 +55,7 @@ static func create_entity_layer(
 	var layer = LDTKEntityLayer.new()
 	layer.name = layer_data.__identifier
 	layer.iid = layer_data.iid
-
-	if (Util.options.verbose_output):
-		print("Creating Entity Layer: ", layer.name)
+	layer.position = layer_def.offset
 
 	# Create a dummy child node so EntityRef fields get a correct NodePath
 	# I need to find a better way to do this, but there are lots of funny behaviours to deal with.
@@ -109,6 +111,7 @@ static func create_intgrid_layer(
 
 	# Create TileMapLayer
 	var tilemap: TileMapLayer = LayerUtil.create_layer_tilemap(layer_data)
+	tilemap.position = layer_def.offset
 
 	# Retrieve IntGrid values - these do not always match their array index
 	var values: Array = layer_def.intGridValues.map(
@@ -119,9 +122,6 @@ static func create_intgrid_layer(
 	var layer_name := str(layer_data.__identifier) + "-values"
 	tilemap.set_name(layer_name)
 	tilemap.set_modulate(Color(1, 1, 1, layer_data.__opacity))
-
-	if (Util.options.verbose_output):
-		print("Creating IntGrid Layer: ", layer_name)
 
 	# Get tile data
 	var tiles: Array = layer_data.intGridCsv
@@ -146,15 +146,13 @@ static func create_tile_layer(
 
 	# Create Tilemap
 	var tilemap: TileMapLayer = LayerUtil.create_layer_tilemap(layer_data)
+	tilemap.position = layer_def.offset
 
 	# Set layer properties on the Tilemap
 	var layer_name := str(layer_data.__identifier)
 	tilemap.set_name(layer_name)
 	tilemap.set_modulate(Color(1, 1, 1, layer_data.__opacity))
 	tilemap.set_enabled(layer_data.visible)
-
-	if (Util.options.verbose_output):
-		print("Creating Tile Layer: ", layer_name)
 
 	# Get tile data
 	var tiles: Array
@@ -245,11 +243,11 @@ static func __place_tiles(
 			__place_overlapping_tile(tilemap, cell_grid, tile_source_id, tile_grid, alternative_tile)
 
 static func __place_overlapping_tile(
-	tilemap: TileMapLayer,
-	cell_grid: Vector2i,
-	tile_source_id: int,
-	tile_grid: Vector2i,
-	alternative_tile: int
+		tilemap: TileMapLayer,
+		cell_grid: Vector2i,
+		tile_source_id: int,
+		tile_grid: Vector2i,
+		alternative_tile: int
 ) -> void:
 	var tilemap_child: TileMapLayer
 	var empty := false

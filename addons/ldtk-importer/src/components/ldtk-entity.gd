@@ -15,6 +15,8 @@ extends Node2D
 @export var smart_color := Color.hex(0xffcc0088)
 @export var definition := {}
 
+@onready var sprite: Sprite2D = $Sprite
+
 var _refs := []
 var _points := []
 var _drawPaths := false
@@ -56,6 +58,11 @@ func _draw() -> void:
 		"Cross":
 			draw_line(Vector2.ZERO, size, smart_color, 3.0)
 			draw_line(Vector2(0, size.y), Vector2(size.x, 0), smart_color, 3.0)
+		"Tile":
+			if definition.tile == null:
+				pass
+			if definition.tile is Texture2D:
+				sprite.texture = definition.tile
 
 	if _drawPaths:
 		for path in _refs:

@@ -1,11 +1,13 @@
 @tool
 
+const Util = preload("util.gd")
+
 static func build_definitions(world_data: Dictionary) -> Dictionary:
 	var definitions := {
 		"enums": resolve_enum_definitions(world_data.defs.enums),
 		"entities": resolve_entity_definitions(world_data.defs.entities),
 		"layers": resolve_layer_definitions(world_data.defs.layers),
-		"tilesets": resolve_tileset_definitions(world_data.defs.tilesets),
+		"tilesets": resolve_tileset_definitions(world_data.defs.tilesets, world_data.defs.layers),
 		"level_fields": resolve_level_field_definitions(world_data.defs.levelFields),
 	}
 	return definitions
@@ -37,7 +39,8 @@ static func resolve_entity_definitions(entity_defs: Array) -> Dictionary:
 			"renderMode": entity_def.renderMode,
 			"hollow": entity_def.hollow,
 			"tags": entity_def.tags,
-			"field_defs": resolve_entity_field_defs(entity_def.fieldDefs)
+			"field_defs": resolve_entity_field_defs(entity_def.fieldDefs),
+			"tile": entity_def.uiTileRect
 		}
 
 	return resolved_entity_defs
@@ -53,7 +56,7 @@ static func resolve_entity_field_defs(field_defs: Array) -> Dictionary:
 
 	return resolved_entity_field_defs
 
-static func resolve_tileset_definitions(tileset_defs: Array) -> Dictionary:
+static func resolve_tileset_definitions(tileset_defs: Array, layer_defs: Array) -> Dictionary:
 	var resolved_tileset_defs := {}
 
 	for tileset_def in tileset_defs:
@@ -73,7 +76,6 @@ static func resolve_tileset_definitions(tileset_defs: Array) -> Dictionary:
 			"__cWid": tileset_def.__cWid,
 			"__cHei": tileset_def.__cHei,
 		}
-
 	return resolved_tileset_defs
 
 static func resolve_enum_definitions(enum_defs: Array) -> Dictionary:

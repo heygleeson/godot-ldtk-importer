@@ -2,138 +2,142 @@
 
 const Util = preload("util/util.gd")
 const TileUtil = preload("util/tile-util.gd")
+const FieldUtil = preload("util/field-util.gd")
 const PostImport = preload("post-import.gd")
 
 enum AtlasTextureType {CompressedTexture2D, CanvasTexture}
 
-static func build_tilesets(
-		definitions: Dictionary,
-		base_dir: String
-) -> Array:
+static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
+	Util.timer_start(Util.DebugTime.TILES)
+	var tilesets := {}
+	var tileset_sources := {}
 
-	# Create Tileset for each unique grid size
-	var tileset_def_uids = definitions.tilesets.keys()
-
-	var tilesets = tileset_def_uids.reduce(
-		func(accum: Dictionary, current: float):
-			var tileset_def: Dictionary = definitions.tilesets[current]
-			var grid_size: int = tileset_def.gridSize
-			if not accum.has(grid_size):
-				accum[grid_size] = get_tileset(grid_size, base_dir)
-
-			var source: TileSetSource = create_tileset_source(
-					tileset_def,
-					accum[grid_size],
-					base_dir
-			)
-
-			if source == null:
-				if tileset_def.identifier == "Internal_Icons":
-					push_warning("TileSetSource 'Internal_Icons' creation failed. This is an LDtk internal file that cannot be redistributed - you can safely ignore this message.")
-				else:
-					push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
-			elif source.texture == null:
-				push_warning("TileSetSource '%s' creation failed." % [tileset_def.identifier])
-
-			return accum
-	, {})
-
-	# Add Tilesets for IntGrids
+	## Reduce Layer Defs to find all unique layer grid sizes and create TileSets for each.
 	var layer_def_uids: Array = definitions.layers.keys()
 
 	tilesets = layer_def_uids.reduce(
 		func(accum: Dictionary, current: float):
 			var layer_def = definitions.layers[current]
-			if layer_def.type == "IntGrid" and layer_def.intGridValues.size() > 0:
-				var grid_size: int = layer_def.gridSize
-				if not accum.has(grid_size):
-					accum[grid_size] = get_tileset(grid_size, base_dir)
-				create_intgrid_source(layer_def, accum[grid_size])
+			var grid_size: int = layer_def.gridSize
+
+			if not accum.has(grid_size):
+				accum[grid_size] = get_tileset(grid_size, base_dir)
+
+			# Create TileSetSource for IntGrids
+			if (Util.options.integer_grid_tilesets):
+				if layer_def.type == "IntGrid" and layer_def.intGridValues.size() > 0:
+					var intgrid_uid = layer_def.uid
+					var intgrid_source = create_intgrid_source(layer_def)
+					tileset_sources[intgrid_uid] = intgrid_source
+					Util.add_tileset_reference(intgrid_uid, intgrid_source)
+
 			return accum
 	, tilesets)
 
+	## Create TileSetSources for each Tileset Def
+	var tileset_def_uids = definitions.tilesets.keys()
+	for uid in tileset_def_uids:
+		var tileset_def: Dictionary = definitions.tilesets[uid]
+		var source: TileSetSource = create_new_tileset_source(tileset_def, base_dir)
+		tileset_sources[uid] = source
+		Util.add_tileset_reference(tileset_def.uid, source)
+
+	## Add TileSetSources to all TileSets
+	# NOTE: We also add Sources to mismatched TileSet sizes (if a Layer uses that Tileset Def)
+	for id in tilesets.keys():
+		var tileset = tilesets[id]
+		for uid in tileset_sources.keys():
+			var source: TileSetAtlasSource = tileset_sources[uid]
+			if tileset.has_source(uid):
+				source = tileset.get_source(uid)
+			else:
+				source = source.duplicate()
+				tileset.add_source(source, uid)
+
+			if (Util.options.tileset_custom_data):
+				if definitions.tilesets.has(uid):
+					#print(definitions.tilesets.keys(), " --- ", uid)
+					var tileset_def: Dictionary = definitions.tilesets[uid]
+					add_tileset_custom_data(tileset_def, tileset, source, tileset_def.__cWid)
+
 	# Post-Import
 	if (Util.options.tileset_post_import):
+		Util.timer_start(Util.DebugTime.POST_IMPORT)
 		tilesets = PostImport.run_tileset_post_import(tilesets, Util.options.tileset_post_import)
+		Util.timer_finish("Tileset Post-Import")
 
 	# Store tilesets in Util
 	Util.tilesets = tilesets
 
+	Util.timer_finish("Tilesets Created")
+
+	if (Util.options.verbose_output):
+		var tileset_names = tilesets.values().map(func(elem): return elem.resource_name)
+		Util.print("item_save", "Saving Tilesets: [color=#fe8019]%s[/color]" % [tileset_names])
+
 	# Save tilesets
+	Util.timer_start(Util.DebugTime.SAVE)
 	var files = save_tilesets(tilesets, base_dir)
+	Util.timer_finish("Tilesets Saved")
+
 	for key in tilesets.keys():
 		var tileset = tilesets[key]
-		# reload tileset
+		# reload tileset (improves performance)
 		tilesets[key] = ResourceLoader.load(files[key])
+
 	return files.values()
 
-static func get_tileset(
-		tile_size: int,
-		base_dir: String
-) -> TileSet:
-
-	var tileset_name := "tileset" + str(tile_size) + "x" + str(tile_size)
+static func get_tileset(tile_size: int,base_dir: String) -> TileSet:
+	var tileset_name := "tileset_%spx" % [str(tile_size)]
 	var path := base_dir + "tilesets/" + tileset_name + ".res"
 
 	if not (Util.options.force_tileset_reimport):
 		if ResourceLoader.exists(path):
 			var tileset = ResourceLoader.load(path)
 			if tileset is TileSet:
-				if (Util.options.verbose_output):
-					print("Found TileSet: ", path)
 				return tileset
 
-	# Create new tileset
+	# Create new TileSet
 	var tileset := TileSet.new()
 	tileset.resource_name = tileset_name
 	tileset.tile_size = Vector2i(tile_size, tile_size)
 
 	if (Util.options.verbose_output):
-		print("Built new tileset: ", tileset_name)
+		Util.print("item_info", "Created new TileSet: \"%s\"" % [tileset_name])
 
 	return tileset
 
 # Create an AtlasSource using tileset definition
-static func create_tileset_source(
-		definition: Dictionary,
-		tileset: TileSet,
-		base_dir: String
-) -> TileSetSource:
+static func create_new_tileset_source(definition: Dictionary, base_dir: String) -> TileSetSource:
+	var source := TileSetAtlasSource.new()
 
-	# Get tileset texture
+	# No source texture defined
 	if definition.relPath == null:
-		return null
+		push_warning("Tileset Definition has no source texture: '%s'" % [definition])
+		return source
 
+	# Cannot load texture
 	var filepath: String = base_dir + definition.relPath
 	var texture := load(filepath)
 	if texture == null:
-		return null
+		push_warning("Cannot access source texture: %s" % [filepath])
+		return source
 
 	var image: Image = texture.get_image()
 
-	var tile_size: int = definition.gridSize
-	var margin = definition.padding
-	var separation = definition.spacing
-	var grid_w: int = definition.__cWid
-	var grid_h: int = definition.__cHei
-
-	var source: TileSetAtlasSource
-
-	# Check if AtlasSource already exists on TileSet
-	if tileset.has_source(definition.uid):
-		source = tileset.get_source(definition.uid)
-	else:
-		source = TileSetAtlasSource.new()
-		if (Util.options.verbose_output):
-			print("Adding source: %s on tileset %s" % [definition.uid, tileset.resource_name])
-		tileset.add_source(source, definition.uid)
 	# Convert texture from CompressedTexture2D to CanvasTexture
 	if (Util.options.atlas_texture_type == AtlasTextureType.CanvasTexture):
 		var canvas_texture = CanvasTexture.new()
 		canvas_texture.diffuse_texture = texture
 		texture = canvas_texture
 
-	# Update properties
+	var tile_size: int = definition.gridSize
+	var margin: int = definition.padding
+	var separation: int = definition.spacing
+	var grid_w: int = definition.__cWid
+	var grid_h: int = definition.__cHei
+
+	# Apply TileSet properties
 	if source.texture == null or source.texture.get_class() != texture.get_class():
 		source.texture = texture
 
@@ -153,17 +157,12 @@ static func create_tileset_source(
 			if not tile_image.is_invisible():
 				if source.get_tile_at_coords(coords) == Vector2i(-1,-1):
 					source.create_tile(coords)
-			elif not source.get_tile_at_coords(coords) == Vector2i(-1,-1):
-				# TODO: Make this an import flag
-				#source.remove_tile(coords)
-				pass
-
-	# Add custom data to tiles
-	if (Util.options.tileset_custom_data):
-		add_tileset_custom_data(definition, tileset, source, grid_w)
+				elif not source.get_tile_at_coords(coords) == Vector2i(-1,-1):
+					# TODO: Make this an import flag
+					source.remove_tile(coords)
 
 	# Add definition UID to references
-	Util.add_tilemap_reference(definition.uid, source)
+	Util.add_tileset_reference(definition.uid, source)
 
 	return source
 
@@ -219,12 +218,7 @@ static func clear_custom_data(tileset: TileSet, layer_name: String) -> void:
 	tileset.remove_custom_data_layer(layer)
 
 # Create an AtlasSource from IntGrid data
-static func create_intgrid_source(
-		definition: Dictionary,
-		tileset: TileSet
-) -> TileSetAtlasSource:
-
-	var source: TileSetAtlasSource
+static func create_intgrid_source(definition: Dictionary) -> TileSetAtlasSource:
 	var values: Array = definition.intGridValues
 	var grid_size: int = definition.gridSize
 
@@ -241,30 +235,18 @@ static func create_intgrid_source(
 
 	var texture = ImageTexture.create_from_image(image)
 
-	# Check if AtlasSource already exists on TileSet
-	if tileset.has_source(definition.uid):
-		source = tileset.get_source(definition.uid)
-	else:
-		source = TileSetAtlasSource.new()
-
+	var source := TileSetAtlasSource.new()
 	source.resource_name = definition.identifier + "_Tiles"
 	source.texture = texture
 	source.texture_region_size = Vector2i(grid_size, grid_size)
 
 	# Create tiles
 	for index in range(0, values.size()):
-		#var value: Dictionary = values[index]
 		var coords := Vector2i(index, 0)
 		if not source.has_tile(coords):
 			source.create_tile(coords)
 
-	if (Util.options.tileset_custom_data):
-		add_tileset_custom_data(definition, tileset, source, grid_size)
-
-	if not tileset.has_source(definition.uid):
-		if (Util.options.verbose_output):
-			print("Adding source: %s on tileset %s" % [definition.uid, tileset.resource_name])
-		tileset.add_source(source, definition.uid)
+	print("IntGrid AtlasSource '%s' has texture: %s" % [source.resource_name, source.texture])
 
 	return source
 
@@ -288,3 +270,15 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 			gen_files[key] = file_path
 
 	return gen_files
+
+static func get_entity_def_tiles(definitions: Dictionary, tilesets: Dictionary) -> Dictionary:
+	# TODO: Loop through EntityDefs, and turn 'Tile' into an Image.
+	for def in definitions.entities:
+		var entity: Dictionary = definitions.entities[def]
+		if (entity.tile == null):
+			continue
+		# Find associated TileSet
+		var texture = FieldUtil.__parse_tile(entity.tile)
+		entity.tile = texture
+
+	return definitions

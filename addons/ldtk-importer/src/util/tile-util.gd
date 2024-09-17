@@ -73,23 +73,6 @@ static func copy_and_modify_tile_data(
 	if bitset & TileSetAtlasSource.TRANSFORM_FLIP_V:
 		tile_data.set_flip_v(true)
 
-static func create_flipped_alternative_tiles(
-		tilemap: TileMapLayer,
-		tile_source: TileSetAtlasSource,
-		tile_grid: Vector2
-) -> void:
-	# Create full set of alternative tiles for this tile
-	for i in range(1,4):
-		var new_tile = tile_source.create_alternative_tile(tile_grid, i)
-		copy_and_modify_tile_data(
-			tile_source.get_tile_data(tile_grid, new_tile),
-			tile_source.get_tile_data(tile_grid, 0),
-			tilemap.tile_set.get_physics_layers_count(),
-			tilemap.tile_set.get_navigation_layers_count(),
-			tilemap.tile_set.get_occlusion_layers_count(),
-			i
-		)
-
 # Get Rect of Tile for an AtlasSource using LDTK tileset data
 static func get_tile_region(
 		coords: Vector2i,
