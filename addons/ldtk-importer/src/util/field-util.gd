@@ -46,7 +46,7 @@ static func parse_field(field: Dictionary) -> Variant:
 		"Color":
 			return Color.from_string(value, Color.MAGENTA) as Color
 		"Point":
-			return __parse_point(value.cx, value.cy) as Vector2
+			return __parse_point(value.cx, value.cy) as Vector2i
 		"Tile":
 			return __parse_tile(value) as AtlasTexture
 		"EntityRef":
