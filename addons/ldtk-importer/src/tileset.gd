@@ -176,39 +176,47 @@ static func add_tileset_custom_data(
 	if not definition.has("enumTags"):
 		return
 
-	var enumTags: Array = definition.enumTags
 	var customData: Array = definition.customData
-
-	var custom_name = "LDTK Custom"
+	var custom_name: String = "LDTK Custom"
 	clear_custom_data(tileset, custom_name)
+
 	if not customData.is_empty():
 		ensure_custom_layer(tileset, custom_name)
-
 		for entry in customData:
 			var coords := TileUtil.tileid_to_grid(entry.tileId, grid_w)
 			var tile_data: TileData = source.get_tile_data(coords, 0)
 			if not tile_data == null:
 				tile_data.set_custom_data(custom_name, entry.data)
-	var custom_enum_name = "LDTK Custom Enum"
+
+	var custom_enum_name: String = "LDTK Custom Enum"
 	clear_custom_data(tileset, custom_enum_name)
+
+	var enumTags: Array = definition.enumTags
 	if not enumTags.is_empty():
-		ensure_custom_layer(tileset, custom_enum_name)
+		ensure_custom_layer(tileset, custom_enum_name, TYPE_ARRAY)
 
 		for enumTag in enumTags:
 			for tileId in enumTag.tileIds:
 				var coords := TileUtil.tileid_to_grid(tileId, grid_w)
 				var tile_data: TileData = source.get_tile_data(coords, 0)
 				if not tile_data == null:
-					tile_data.set_custom_data(custom_enum_name, enumTag.enumValueId)
+					# Add to already existing tags
+					var tile_tags: Array = tile_data.get_custom_data(custom_enum_name)
+					tile_tags.append(enumTag.enumValueId)
+					tile_data.set_custom_data(custom_enum_name, tile_tags)
 
 # Ensure custom data layer exists by name
-static func ensure_custom_layer(tileset: TileSet, layer_name: String) -> void:
+static func ensure_custom_layer(
+		tileset: TileSet,
+		layer_name: String,
+		layer_type: int = TYPE_STRING
+) -> void:
 	if tileset.get_custom_data_layer_by_name(layer_name) != -1:
 		return
 	var index_to_add = tileset.get_custom_data_layers_count()
 	tileset.add_custom_data_layer(index_to_add)
 	tileset.set_custom_data_layer_name(index_to_add, layer_name)
-	tileset.set_custom_data_layer_type(index_to_add, TYPE_STRING)
+	tileset.set_custom_data_layer_type(index_to_add, layer_type)
 
 # Clear custom data by layer name
 static func clear_custom_data(tileset: TileSet, layer_name: String) -> void:
