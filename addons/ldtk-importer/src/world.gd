@@ -25,7 +25,7 @@ static func create_world(
 	for level in levels:
 		level.position = level.world_position
 
-		if Util.options.separate_world_layers:
+		if Util.options.group_world_layers:
 			var worldDepthLayer
 			var z_index = level.z_index if (level is not PackedScene) else 0
 			if not z_index in worldDepths:

@@ -48,7 +48,7 @@ func _get_import_options(path, index):
 		{"name": "World", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
 			# Group LDTKLevels in 'LDTKWorldLayer' nodes if using LDTK's WorldDepth.
-			"name": "separate_world_layers",
+			"name": "group_world_layers",
 			"default_value": false,
 		},
 		# --- Levels --- #
@@ -56,15 +56,17 @@ func _get_import_options(path, index):
 		{
 			# Save LDTKLevels as PackedScenes.
 			"name": "pack_levels",
+			"default_value": true,
+		},
+		# --- Layers --- #
+		{"name": "Layer", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
+		{
+			# Save LDTKLevels as PackedScenes.
+			"name": "layers_always_visible",
 			"default_value": false,
 		},
 		# --- Tileset --- #
 		{"name": "Tileset", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
-		{
-			# Force Tilesets to be recreated, resetting modifications (if experiencing import issues)
-			"name": "force_tileset_reimport",
-			"default_value": false,
-		},
 		{
 			# Add LDTK Custom Data to Tilesets
 			"name": "tileset_custom_data",
@@ -127,13 +129,14 @@ func _get_import_options(path, index):
 		# --- Debug --- #
 		{"name": "Debug", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
-			# Debug: Enable Verbose Output (used by the importer)
-			"name": "verbose_output", "default_value": false
+			# Force Tilesets to be recreated, resetting modifications (if experiencing import issues)
+			"name": "force_tileset_reimport",
+			"default_value": false,
 		},
 		{
-			# Debug: Enable Verbose Post-Import Output (used on your own post-import scripts)
-			"name": "verbose_post_import", "default_value": false
-		},
+			# Debug: Enable Verbose Output (used by the importer)
+			"name": "verbose_output", "default_value": false
+		}
 	]
 
 func _get_option_visibility(path, option_name, options):

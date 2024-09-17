@@ -152,7 +152,9 @@ static func create_tile_layer(
 	var layer_name := str(layer_data.__identifier)
 	tilemap.set_name(layer_name)
 	tilemap.set_modulate(Color(1, 1, 1, layer_data.__opacity))
-	tilemap.set_enabled(layer_data.visible)
+
+	if not Util.options.layers_always_visible:
+		tilemap.set_enabled(layer_data.visible)
 
 	# Get tile data
 	var tiles: Array
