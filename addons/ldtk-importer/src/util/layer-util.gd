@@ -12,8 +12,7 @@ static func parse_entity_instances(
 		entity_defs: Dictionary,
 		pathResolver: Node2D
 ) -> Array:
-
-	return 	entities.map(
+	return entities.map(
 		func(entity):
 			var definition = entity_defs[entity.defUid]
 			return {
@@ -29,14 +28,12 @@ static func parse_entity_instances(
 	)
 
 static func create_entity_placeholder(layer: Node2D, data: Dictionary) -> LDTKEntity:
-	var placeholder = EntityPlaceHolder.instantiate()
-
-	var count = __placeholder_count(data.identifier)
+	var placeholder: LDTKEntity = EntityPlaceHolder.instantiate()
+	var count: int = __placeholder_count(data.identifier)
+	placeholder.name = data.identifier
 
 	if count > 1:
-		placeholder.name = data.identifier + str(count)
-	else:
-		placeholder.name = data.identifier
+		placeholder.name += str(count)
 
 	# Set properties
 	for prop in data.keys():

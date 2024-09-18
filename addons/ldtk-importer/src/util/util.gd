@@ -13,16 +13,48 @@ enum LDTK_VERSION {
 }
 static var file_version = LDTK_VERSION.UNSUPPORTED
 
-const TYPE_STRING = [
-		"Nil", "Bool", "Int", "Float", "String", "Vec2", "Vec2i", "Rect2", "Rect2i", "Vec3",
-		"Vec3i", "Transform2D", "Vec4", "Vec4i", "Plane", "Quarternion", "AABB", "Basis",
-		"Transform3D", "Projection", "Color", "StringName", "NodePath", "RID", "Object",
-		"Callable", "Signal", "Dictionary", "Array", "PackedArray", "PackedInt32Array",
-		"PackedInt64Array", "PackedFloat32Array", "PackedFloat64Array", "PackedVec2Array",
-		"PackedVec3Array", "PackedColorArray", "Max"
-]
-
+# Stores import flags (used throughout the importer)
 static var options := {}
+
+static func parse_file(source_file: String) -> Dictionary:
+	var json := FileAccess.open(source_file, FileAccess.READ)
+	if json == null:
+		push_error("\nFailed to open file: ", source_file)
+		return {}
+	var data := JSON.parse_string(json.get_as_text())
+	return data
+
+static func check_version(version: String, latest_version: String) -> bool:
+	if version.begins_with("0."):
+		push_error("LDTK version out of date. Please update LDtk to ", latest_version)
+		file_version = LDTK_VERSION.UNSUPPORTED
+		return false
+
+	var major_minor = version.substr(0, 3)
+	match major_minor:
+		"1.0", "1.1":
+			file_version = LDTK_VERSION.v1_0
+		"1.2":
+			file_version = LDTK_VERSION.v1_2
+		"1.3":
+			file_version = LDTK_VERSION.v1_3
+		"1.4":
+			file_version = LDTK_VERSION.v1_4
+		"1.5":
+			file_version = LDTK_VERSION.v1_5
+		_:
+			push_warning("LDtk file version is newer than what is supported. Errors may occur.")
+			file_version = LDTK_VERSION.FUTURE
+	return true
+
+static func recursive_set_owner(node: Node, owner: Node) -> void:
+	node.set_owner(owner)
+	for child in node.get_children():
+		# Child is NOT an instantiated scene - this would otherwise cause errors
+		if child.scene_file_path == "":
+			recursive_set_owner(child, owner)
+		else:
+			child.set_owner(owner)
 
 #region Performance Measurement
 
@@ -39,10 +71,10 @@ static func timer_start(category: int = 0) -> int:
 		var last: Dictionary = time_history[-1]
 		DebugTime.log_time(last.category, d)
 
-	time_history.append({"category": category, "time": t})
-	return d
+	time_history.append({"category": category, "time": t, "init": t})
+	return t
 
-static func timer_finish(message: String, indent: int = 0, print: bool = true) -> int:
+static func timer_finish(message: String, indent: int = 0, doPrint: bool = true) -> int:
 	if time_history.size() == 0:
 		push_error("Unbalanced DebugTime stack")
 	var last: Dictionary = time_history.pop_back()
@@ -54,8 +86,10 @@ static func timer_finish(message: String, indent: int = 0, print: bool = true) -
 	if time_history.size() > 0:
 		time_history[-1].time = t
 
-	if (print and options.verbose_output):
-		print_time("item_info_time", message, d, indent)
+	if (doPrint and options.verbose_output):
+		# Print 'gross' duration for this block
+		var d2: int = t - last.init
+		print_time("item_info_time", message, d2, indent)
 	return d
 
 static func timer_reset() -> void:
@@ -103,47 +137,7 @@ static func print_time(type: String, message: String, time: int = -1, indent: in
 
 #endregion
 
-static func parse_file(source_file: String) -> Dictionary:
-	var json := FileAccess.open(source_file, FileAccess.READ)
-	if json == null:
-		push_error("\nFailed to open file: ", source_file)
-		return {}
-	var data := JSON.parse_string(json.get_as_text())
-	return data
-
-static func check_version(version: String, latest_version: String) -> bool:
-	if version.begins_with("0."):
-		push_error("LDTK version out of date. Please update LDtk to ", latest_version)
-		file_version = LDTK_VERSION.UNSUPPORTED
-		return false
-
-	var major_minor = version.substr(0, 3)
-	match major_minor:
-		"1.0", "1.1":
-			file_version = LDTK_VERSION.v1_0
-		"1.2":
-			file_version = LDTK_VERSION.v1_2
-		"1.3":
-			file_version = LDTK_VERSION.v1_3
-		"1.4":
-			file_version = LDTK_VERSION.v1_4
-		"1.5":
-			file_version = LDTK_VERSION.v1_5
-		_:
-			push_warning("LDtk file version is newer than what is supported. Errors may occur.")
-			file_version = LDTK_VERSION.FUTURE
-	return true
-
-static func recursive_set_owner(node: Node, owner: Node) -> void:
-	node.set_owner(owner)
-	for child in node.get_children():
-		# Child is NOT an instantiated scene - this would otherwise cause errors
-		if child.scene_file_path == "":
-			recursive_set_owner(child, owner)
-		else:
-			child.set_owner(owner)
-
-# References
+#region References
 static var tilesets := {}
 static var tileset_refs := {}
 static var instance_refs := {}
@@ -151,18 +145,9 @@ static var unresolved_refs := []
 static var path_resolvers := []
 
 static func update_instance_reference(iid: String, instance: Variant) -> void:
-	#if instance_refs.has(iid):
-		#if (options.verbose_output):
-			#print("  Overwriting InstanceRef: %s -> '%s'" % [iid.substr(0,8), instance.name])
 	instance_refs[iid] = instance
 
 static func add_tileset_reference(uid: int, atlas: TileSetAtlasSource) -> void:
-	#if tileset_refs.has(uid):
-		#if (options.verbose_output):
-			#print("  Overwriting TileSetAtlasSourceRef: %s -> '%s'" % [uid, atlas.resource_name])
-	#else:
-		#if (options.verbose_output):
-			#print("  Creating TileSetAtlasSourceRef: %s -> '%s'" % [uid, atlas.resource_name])
 	tileset_refs[uid] = atlas
 
 # This is useful for handling entity instances, as they might not exist yet when encountered
@@ -180,6 +165,11 @@ static func add_unresolved_reference(
 			"iid": iid
 	})
 
+static func handle_references() -> void:
+	if (options.resolve_entityrefs): resolve_references()
+	clean_references()
+	clean_resolvers()
+
 static func resolve_references() -> void:
 	var solved_refcount := 0
 
@@ -189,31 +179,28 @@ static func resolve_references() -> void:
 		var property: Variant = ref.property # Expected: String or Int
 		var node: Variant = ref.node # Expected: Node, but needs to accept null
 
-		#if (options.verbose_output):
-			#print("Ref: %s" % [iid.substr(0,8)])
-
 		if instance_refs.has(iid):
 			var instance = instance_refs[iid]
 
 			if instance is Node and node is Node:
-				# Check if they are in the same tree
-				if instance.owner != null and node.owner != null:
+				# BUG: When using 'Pack Levels', external references cannot be resolved at import time. (e.g. Level_0 -> Level_1)
+				# Internal references can resolve, but Godot pushes the error: Parameter "common_parent" is null.
+				# Currently it's a choice between a bunch of errors (that suppress other messages), or no resolving.
+				if true: #instance.owner != null and node.owner != null:
 					var path = node.get_path_to(instance)
 					if path:
 						object[property] = path
+					else:
+						print("Cannot resolve. Out-of-bounds? '%s' '%s'" % [instance.name, node.name])
+						continue
 			else:
 				object[property] = instance
 
-			#if (options.verbose_output):
-				#print("'%s' = %s -> %s" % [property, iid.substr(0,8), object[property]])
-
 			solved_refcount += 1
-		else:
-			print("%s not found as a reference" % [iid.substr(0,8)])
 
 	var leftover_refcount: int = unresolved_refs.size() - solved_refcount
 	if leftover_refcount > 0:
-		push_warning("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
+		print("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
 
 static func clean_references() -> void:
 	tileset_refs.clear()
@@ -224,3 +211,5 @@ static func clean_resolvers() -> void:
 	for resolver in path_resolvers:
 		resolver.free()
 	path_resolvers.clear()
+
+#endregion

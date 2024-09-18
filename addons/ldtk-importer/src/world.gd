@@ -4,10 +4,10 @@ const Util = preload("util/util.gd")
 const PostImport = preload("post-import.gd")
 
 static func create_world(
-	name: String,
-	iid: String,
-	levels: Array,
-	base_dir: String
+		name: String,
+		iid: String,
+		levels: Array,
+		base_dir: String
 ) -> LDTKWorld:
 
 	var world = LDTKWorld.new()
@@ -26,8 +26,8 @@ static func create_world(
 		level.position = level.world_position
 
 		if Util.options.group_world_layers:
-			var worldDepthLayer
-			var z_index = level.z_index if (level is not PackedScene) else 0
+			var worldDepthLayer: LDTKWorldLayer
+			var z_index: int = level.z_index if (level is not PackedScene) else 0
 			if not z_index in worldDepths:
 				worldDepthLayer = LDTKWorldLayer.new()
 				worldDepthLayer.name = "WorldLayer_" + str(z_index)
@@ -77,7 +77,7 @@ static func create_multi_world(
 	multi_world.name = name
 	multi_world.iid = iid
 
-	worlds.sort_custom(func(a,b): return a.depth < b.depth)
+	worlds.sort_custom(func(a, b): return a.depth < b.depth)
 
 	for world in worlds:
 		multi_world.add_child(world)

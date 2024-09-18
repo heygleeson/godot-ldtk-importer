@@ -21,7 +21,6 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 			var light = Light.instantiate()
 
 			# Copy fields over to the new instance.
-			light.name = entity.identifier
 			light.position = entity.position
 			light.scale = Vector2(entity.size) / Vector2(64,64)
 			light.color = entity.smart_color
@@ -30,7 +29,7 @@ func post_import(entity_layer: LDTKEntityLayer) -> LDTKEntityLayer:
 			# Give it a unique name (using the index suffix)
 			spawn_count += 1
 			if spawn_count > 1:
-				light.name += str(spawn_count)
+				light.name = light.name + str(spawn_count)
 
 			# Add instance to the EntityLayer node.
 			entity_layer.add_child(light)

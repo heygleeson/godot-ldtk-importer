@@ -11,6 +11,9 @@ const Level = preload("src/level.gd")
 const Tileset = preload("src/tileset.gd")
 const DefinitionUtil = preload("src/util/definition_util.gd")
 
+#region EditorImportPlugin Overrides
+
+#region Simple
 func _get_importer_name():
 	return "ldtk.import"
 
@@ -41,6 +44,17 @@ func _get_preset_name(index):
 			return "Default"
 		_:
 			return "Unknown"
+
+func _get_option_visibility(path, option_name, options):
+	match option_name:
+		_:
+			return true
+	return true
+
+func _can_import_threaded() -> bool:
+	return true
+
+#endregion
 
 func _get_import_options(path, index):
 	return [
@@ -88,8 +102,8 @@ func _get_import_options(path, index):
 		{"name": "Entity", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
 		{
 			#
-			"name": "hold_entities_metadata",
-			"default_value": false,
+			"name": "resolve_entityrefs",
+			"default_value": true,
 		},
 		{
 			# Create LDTKEntityPlaceholder nodes to help debug importing.
@@ -138,15 +152,6 @@ func _get_import_options(path, index):
 			"name": "verbose_output", "default_value": false
 		}
 	]
-
-func _get_option_visibility(path, option_name, options):
-	match option_name:
-		_:
-			return true
-	return true
-
-func _can_import_threaded() -> bool:
-	return false
 
 func _import(
 		source_file: String,
@@ -223,28 +228,24 @@ func _import(
 			if (Util.options.verbose_output):
 				Util.print("block", "References")
 				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
+			Util.handle_references()
 
-			Util.resolve_references()
-			Util.clean_references()
-			Util.clean_resolvers()
-
-			if Util.options.verbose_output: Util.print("block", "Save Levels")
+			if (Util.options.verbose_output): Util.print("block", "Save Levels")
 
 			var packed_levels = save_levels(levels, levels_path, gen_files)
 			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
 		else:
 			world = World.create_world(world_name, world_iid, levels, base_dir)
+
 			if (Util.options.verbose_output):
 				Util.print("block", "References")
 				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
-			Util.resolve_references()
-			Util.clean_resolvers()
-			Util.clean_references()
+			Util.handle_references()
 
 	# Save World as PackedScene
 	if Util.options.verbose_output: Util.print("block", "Save World")
 	Util.timer_start(Util.DebugTime.SAVE)
-	var err = save_world(save_path, world, gen_files)
+	var err = save_world(world, save_path, gen_files)
 	Util.timer_finish("World Saved")
 
 	if Util.options.verbose_output: Util.print("block", "Results")
@@ -256,11 +257,14 @@ func _import(
 
 	if Util.options.verbose_output: Util.print("item_info", result_message)
 	Util.print("import_finish", str(total_time))
+
 	return err
 
+#endregion
+
 func save_world(
-		save_path: String,
 		world: LDTKWorld,
+		save_path: String,
 		gen_files: Array[String]
 ) -> Error:
 	var packed_world = PackedScene.new()

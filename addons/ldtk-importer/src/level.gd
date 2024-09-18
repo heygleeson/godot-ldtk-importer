@@ -69,8 +69,8 @@ static func create_level(
 		position: Vector2i,
 		definitions: Dictionary
 ) -> LDTKLevel:
-	var level_name = level_data.identifier
-	var level = LDTKLevel.new()
+	var level_name: String = level_data.identifier
+	var level := LDTKLevel.new()
 	level.name = level_name
 	level.iid = level_data.iid
 	level.world_position = position
@@ -81,25 +81,27 @@ static func create_level(
 	if (Util.options.verbose_output): Util.print("block", level_name, 1)
 	Util.update_instance_reference(level_data.iid, level)
 
-	# Get neighbours (handle levelIid references)
 	var neighbours = level_data.__neighbours
-	for neighbour in neighbours:
-		Util.add_unresolved_reference(neighbour, "levelIid", level)
+
+	if not Util.options.pack_levels:
+		for neighbour in neighbours:
+			Util.add_unresolved_reference(neighbour, "levelIid", level)
+
 	level.neighbours = neighbours
 
 	# Create background image
 	if level_data.bgRelPath != null:
-		var path = "%s/%s" % [base_directory, level_data.bgRelPath]
-		var sprite = Sprite2D.new()
+		var path := "%s/%s" % [base_directory, level_data.bgRelPath]
+		var sprite := Sprite2D.new()
 		sprite.name = "BG Image"
 		sprite.centered = false
 		sprite.texture = load(path)
 
 		# Calculate BG Position
-		var bgData = level_data.__bgPos
-		var pos = bgData.topLeftPx
-		var scale = bgData.scale
-		var region = bgData.cropRect
+		var bgData: Dictionary = level_data.__bgPos
+		var pos: Array = bgData.topLeftPx
+		var scale: Array = bgData.scale
+		var region: Array = bgData.cropRect
 		sprite.region_enabled = true
 		sprite.position = Vector2i(pos[0], pos[1])
 		sprite.scale = Vector2i(scale[0], scale[1])

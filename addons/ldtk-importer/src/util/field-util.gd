@@ -10,14 +10,19 @@ static func create_fields(fields: Array, entity: Variant = null) -> Dictionary:
 	for field in fields:
 		var key: String = field.__identifier
 		dict[key] = parse_field(field)
-		if Util.options.hold_entities_metadata: continue
-		if hitUnresolved:
+
+		if not Util.options.resolve_entityrefs:
+			hitUnresolved = false
+			continue
+
+		if hitUnresolved and entity != null:
 			if dict[key] is Array:
 				for index in range(dict[key].size()):
 					Util.add_unresolved_reference(dict[key], index, entity)
 			else:
 				Util.add_unresolved_reference(dict, key, entity)
-			hitUnresolved = false
+		hitUnresolved = false
+
 	return dict
 
 static func parse_field(field: Dictionary) -> Variant:
@@ -86,10 +91,10 @@ static func parse_field(field: Dictionary) -> Variant:
 		_:
 			return value
 
-static func __parse_point(x: int, y: int) -> Vector2:
+static func __parse_point(x: int, y: int) -> Vector2i:
 	# NOTE: would convert gridcoords to pixelcoords here, but needs more data
 	# LDTKEntity currently converts it using LayerDefinition.
-	return Vector2(x,y)
+	return Vector2i(x,y)
 
 static func __parse_enum(enum_str: String, value: String) -> String:
 	var result: String = "%s.%s" % [enum_str, value]

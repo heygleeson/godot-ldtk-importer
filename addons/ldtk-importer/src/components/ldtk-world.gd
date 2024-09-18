@@ -8,8 +8,15 @@ extends Node2D
 @export var levels: Array[LDTKLevel]
 
 func _init() -> void:
-	child_entered_tree.connect(_on_child_entered)
+	child_order_changed.connect(_find_level_children)
 
-func _on_child_entered(child: Node) -> void:
-	if child is LDTKLevel:
-		levels.append(child)
+func _find_level_children() -> void:
+	for child in get_children():
+		if child is LDTKLevel:
+			if not levels.has(child):
+				levels.append(child)
+		else:
+			for grandchild in child.get_children():
+				if grandchild is LDTKLevel:
+					if not levels.has(grandchild):
+						levels.append(grandchild)

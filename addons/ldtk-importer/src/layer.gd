@@ -46,11 +46,13 @@ static func create_layers(
 		Util.print("item_info", "Created Layers: [color=slategray]%s[/color]" % [layer_names], 2)
 	return layer_nodes
 
+#region Layer Types
+
 static func create_entity_layer(
 		layer_data: Dictionary,
 		layer_def: Dictionary,
 		entity_defs: Dictionary
-) -> Node2D:
+) -> LDTKEntityLayer:
 
 	var layer = LDTKEntityLayer.new()
 	layer.name = layer_data.__identifier
@@ -77,32 +79,12 @@ static func create_entity_layer(
 	if (Util.options.use_entity_placeholders):
 		LayerUtil.placeholder_counts.clear()
 		for entity in entities:
-				var placeholder = LayerUtil.create_entity_placeholder(layer, entity)
-				try_push_placeholder_ref(placeholder, pathResolver)
+				var placeholder: LDTKEntity = LayerUtil.create_entity_placeholder(layer, entity)
 				Util.update_instance_reference(placeholder.iid, placeholder)
+				#try_push_placeholder_ref(placeholder, pathResolver)
+				try_push_placeholder_ref(placeholder, placeholder)
 
 	return layer
-
-static func try_push_placeholder_ref(placeholder, entity):
-	if not Util.options.hold_entities_metadata: return
-	if not placeholder.fields: return
-	placeholder.fields = str_to_var(var_to_str(placeholder.fields))
-	var field_defs = {}
-	for key in placeholder.definition.field_defs:
-		var def = placeholder.definition.field_defs[key]
-		field_defs[def.identifier] = def
-	for key in placeholder.fields:
-		var def = field_defs[key]
-		if not def.type.contains("EntityRef"):
-			continue
-		var prop = placeholder.fields[key]
-		if not prop:
-			continue
-		if prop is Array:
-			for index in range(prop.size()):
-				Util.add_unresolved_reference(prop, index, entity)
-		else:
-			Util.add_unresolved_reference(placeholder.fields, key, entity)
 
 static func create_intgrid_layer(
 		layer_data: Dictionary,
@@ -169,6 +151,35 @@ static func create_tile_layer(
 	__place_tiles(tilemap, tiles, tile_source_id, grid_size)
 
 	return tilemap
+
+#endregion
+
+static func try_push_placeholder_ref(
+		placeholder: LDTKEntity,
+		entity: Node
+) -> void:
+	if not Util.options.resolve_entityrefs: return
+	if not placeholder.fields: return
+
+	placeholder.fields = str_to_var(var_to_str(placeholder.fields))
+	var field_defs = {}
+
+	for key in placeholder.definition.field_defs:
+		var def = placeholder.definition.field_defs[key]
+		field_defs[def.identifier] = def
+
+	for key in placeholder.fields:
+		var def = field_defs[key]
+		if not def.type.contains("EntityRef"): continue
+
+		var field = placeholder.fields[key]
+		if not field: continue
+
+		if field is Array:
+			for index in range(field.size()):
+				Util.add_unresolved_reference(field, index, entity)
+		else:
+			Util.add_unresolved_reference(placeholder.fields, key, entity)
 
 static func __place_tiles(
 		tilemap: TileMapLayer,
