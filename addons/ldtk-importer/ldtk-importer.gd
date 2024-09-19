@@ -200,7 +200,6 @@ func _import(
 	var external_levels: bool = world_data.externalLevels
 	var world_iid: String = world_data.iid
 
-	if Util.options.verbose_output: Util.print("block", "Levels")
 	var world: LDTKWorld
 	if world_data.worldLayout == null:
 		var world_nodes: Array[LDTKWorld] = []
@@ -215,6 +214,7 @@ func _import(
 
 		world = World.create_multi_world(world_name, world_iid, world_nodes)
 	else:
+		if Util.options.verbose_output: Util.print("block", "Levels")
 		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
 
 		# Save Levels (after Level Post-Import)
@@ -225,28 +225,23 @@ func _import(
 				directory.make_dir(levels_path)
 
 			# Resolve Refs + Cleanup Resolvers. We don't want to save 'NodePathResolver' in the Level scene.
-			if (Util.options.verbose_output):
-				Util.print("block", "References")
-				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
-			Util.handle_references()
-
+			#if (Util.options.verbose_output): Util.print("block", "References")
 			if (Util.options.verbose_output): Util.print("block", "Save Levels")
-
+			Util.handle_references()
 			var packed_levels = save_levels(levels, levels_path, gen_files)
+
+			if (Util.options.verbose_output): Util.print("block", "Save World")
 			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
 		else:
+			if (Util.options.verbose_output): Util.print("block", "Save World")
 			world = World.create_world(world_name, world_iid, levels, base_dir)
 
-			if (Util.options.verbose_output):
-				Util.print("block", "References")
-				Util.print("item_info", "Resolving %s references" % [Util.unresolved_refs.size()])
 			Util.handle_references()
 
 	# Save World as PackedScene
-	if Util.options.verbose_output: Util.print("block", "Save World")
 	Util.timer_start(Util.DebugTime.SAVE)
 	var err = save_world(world, save_path, gen_files)
-	Util.timer_finish("World Saved")
+	Util.timer_finish("World Saved", 1)
 
 	if Util.options.verbose_output: Util.print("block", "Results")
 
@@ -270,7 +265,7 @@ func save_world(
 	var packed_world = PackedScene.new()
 	packed_world.pack(world)
 
-	if (Util.options.verbose_output): Util.print("item_save", "Saving World [color=#fe8019]'%s'[/color]" % [save_path])
+	Util.print("item_save", "Saving World [color=#fe8019][i]'%s'[/i][/color]" % [save_path], 1)
 
 	var world_path = "%s.%s" % [save_path, _get_save_extension()]
 	var err = ResourceSaver.save(packed_world, world_path)
@@ -286,9 +281,9 @@ func save_levels(
 	Util.timer_start(Util.DebugTime.SAVE)
 	var packed_levels: Array[LDTKLevel] = []
 
-	if (Util.options.verbose_output):
-		var level_names := levels.map(func(elem): return elem.name)
-		Util.print("item_save", "Saving Levels: [color=#fe8019]%s[/color]" % [level_names])
+
+	var level_names := levels.map(func(elem): return elem.name)
+	Util.print("item_save", "Saving Levels: [color=#fe8019]%s[/color]" % [level_names], 1)
 
 	for level in levels:
 		for child in level.get_children():
@@ -297,7 +292,7 @@ func save_levels(
 		var packed_level = load(level_path).instantiate()
 		packed_levels.append(packed_level)
 
-	Util.timer_finish("%s Levels Saved" % [levels.size()])
+	Util.timer_finish("%s Levels Saved" % [levels.size()], 1)
 	return packed_levels
 
 func save_level(

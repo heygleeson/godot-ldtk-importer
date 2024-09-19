@@ -61,7 +61,7 @@ static func build_levels(
 
 		levels.append(level)
 
-	Util.timer_finish("Built %s Levels" % levels.size())
+	Util.timer_finish("Built %s Levels" % levels.size(), 1)
 	return levels
 
 static func create_level(

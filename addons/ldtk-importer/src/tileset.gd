@@ -7,7 +7,6 @@ const PostImport = preload("post-import.gd")
 
 enum AtlasTextureType {CompressedTexture2D, CanvasTexture}
 
-static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
 static func build_tilesets(
 		definitions: Dictionary,
 		base_dir: String,
@@ -17,7 +16,6 @@ static func build_tilesets(
 	var tilesets := {}
 	var tileset_sources := {}
 
-	## Reduce Layer Defs to find all unique layer grid sizes and create TileSets for each.
 	# Reduce Layer Defs to find all unique layer grid sizes and create TileSets for each.
 	var layer_def_uids: Array = definitions.layers.keys()
 
@@ -36,11 +34,9 @@ static func build_tilesets(
 					var intgrid_source = create_intgrid_source(layer_def)
 					tileset_sources[intgrid_uid] = intgrid_source
 					Util.add_tileset_reference(intgrid_uid, intgrid_source)
-
 			return accum
 	, tilesets)
 
-	## Create TileSetSources for each Tileset Def
 	# Create TileSetSources for each Tileset Def
 	var tileset_def_uids = definitions.tilesets.keys()
 	for uid in tileset_def_uids:
@@ -49,28 +45,14 @@ static func build_tilesets(
 		tileset_sources[uid] = source
 		Util.add_tileset_reference(tileset_def.uid, source)
 
-	## Add TileSetSources to all TileSets
-	# NOTE: We also add Sources to mismatched TileSet sizes (if a Layer uses that Tileset Def)
 	# Add TileSetSources to TileSets
 	# NOTE: We also add Sources to mismatched TileSet sizes (if a layer uses that TilesetDef as an override)
 	for id in tilesets.keys():
-		var tileset = tilesets[id]
 		var tileset: TileSet = tilesets[id]
 		var size: int = tileset.tile_size.x
 
 		for uid in tileset_sources.keys():
 			var source: TileSetAtlasSource = tileset_sources[uid]
-			if tileset.has_source(uid):
-				source = tileset.get_source(uid)
-			else:
-				source = source.duplicate()
-				tileset.add_source(source, uid)
-
-			if (Util.options.tileset_custom_data):
-				if definitions.tilesets.has(uid):
-					#print(definitions.tilesets.keys(), " --- ", uid)
-					var tileset_def: Dictionary = definitions.tilesets[uid]
-					add_tileset_custom_data(tileset_def, tileset, source, tileset_def.__cWid)
 			if source == null: continue
 			var source_size: int = source.texture_region_size.x
 
@@ -95,26 +77,19 @@ static func build_tilesets(
 
 	# Post-Import
 	if (Util.options.tileset_post_import):
-		Util.timer_start(Util.DebugTime.POST_IMPORT)
 		tilesets = PostImport.run_tileset_post_import(tilesets, Util.options.tileset_post_import)
-		Util.timer_finish("Tileset Post-Import")
 
 	# Store tilesets in Util
 	Util.tilesets = tilesets
 
-	Util.timer_finish("Tilesets Created")
-
-	if (Util.options.verbose_output):
-		var tileset_names = tilesets.values().map(func(elem): return elem.resource_name)
-		Util.print("item_save", "Saving Tilesets: [color=#fe8019]%s[/color]" % [tileset_names])
+	Util.timer_finish("Tilesets Created", 1)
 
 	# Save tilesets
 	Util.timer_start(Util.DebugTime.SAVE)
 	var files = save_tilesets(tilesets, base_dir)
-	Util.timer_finish("Tilesets Saved")
+	Util.timer_finish("Tilesets Saved", 1)
 
 	for key in tilesets.keys():
-		var tileset = tilesets[key]
 		# reload tileset (improves performance)
 		var tileset = tilesets[key]
 		if tileset == null: continue
@@ -139,25 +114,32 @@ static func get_tileset(tile_size: int,base_dir: String) -> TileSet:
 	tileset.tile_size = Vector2i(tile_size, tile_size)
 
 	if (Util.options.verbose_output):
-		Util.print("item_info", "Created new TileSet: \"%s\"" % [tileset_name])
+		Util.print("item_info", "Created new TileSet: \"%s\"" % [tileset_name], 1)
 
 	return tileset
 
 # Create an AtlasSource using tileset definition
 static func create_new_tileset_source(definition: Dictionary, base_dir: String) -> TileSetSource:
-	var source := TileSetAtlasSource.new()
-
 	# No source texture defined
 	if definition.relPath == null:
-		push_warning("Tileset Definition has no source texture: '%s'" % [definition])
-		return source
+		Util.print("item_fail", "No texture defined for tileset '%s'" % [definition.identifier])
+		push_error("Tileset Definition '%s' has no source texture. Please fix this in your LDtk project file." % [definition.identifier])
+		return null
+
+	# Check if relPath is an absolute directory
+	var filepath: String
+	if definition.relPath.contains(":"):
+		push_warning("Absolute path detected for texture resource '%s'. This is not recommended. Please include this file in the Godot project." % [definition.identifier])
+		filepath = definition.relPath
+	else:
+		filepath = base_dir + definition.relPath
+
+	var texture := load(filepath)
 
 	# Cannot load texture
-	var filepath: String = base_dir + definition.relPath
-	var texture := load(filepath)
 	if texture == null:
-		push_warning("Cannot access source texture: %s" % [filepath])
-		return source
+		push_error("Cannot access source texture: %s. Please include this file in the Godot project." % [filepath])
+		return null
 
 	var image: Image = texture.get_image()
 
@@ -172,6 +154,8 @@ static func create_new_tileset_source(definition: Dictionary, base_dir: String) 
 	var separation: int = definition.spacing
 	var grid_w: int = definition.__cWid
 	var grid_h: int = definition.__cHei
+
+	var source := TileSetAtlasSource.new()
 
 	# Apply TileSet properties
 	if source.texture == null or source.texture.get_class() != texture.get_class():
@@ -290,8 +274,6 @@ static func create_intgrid_source(definition: Dictionary) -> TileSetAtlasSource:
 		if not source.has_tile(coords):
 			source.create_tile(coords)
 
-	print("IntGrid AtlasSource '%s' has texture: %s" % [source.resource_name, source.texture])
-
 	return source
 
 # Save TileSets as Resources
@@ -302,8 +284,11 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 	if not directory.dir_exists(save_path):
 		directory.make_dir_recursive(save_path)
 
+	var tileset_names = tilesets.values().map(func(elem): return elem.resource_name)
+	Util.print("item_save", "Saving Tilesets: [color=#fe8019]%s[/color]" % [tileset_names], 1)
+
 	for key in tilesets.keys():
-		var tileset: Resource = tilesets.get(key)
+		var tileset: TileSet = tilesets.get(key)
 		if tileset.get_source_count() == 0:
 			continue
 
@@ -326,3 +311,20 @@ static func get_entity_def_tiles(definitions: Dictionary, tilesets: Dictionary) 
 		entity.tile = texture
 
 	return definitions
+
+# Collect all layer tileset overrides. Later we'll ensure these sources are included in TileSet resources.
+static func get_tileset_overrides(world_data: Dictionary) -> Dictionary:
+	var overrides := {}
+	for level in world_data.levels:
+		for layer in level.layerInstances:
+			if layer.overrideTilesetUid == null:
+				continue
+			var gridSize: int = layer.__gridSize
+			var overrideUid: int = layer.overrideTilesetUid
+			if overrideUid != null:
+				if not overrides.has(gridSize):
+					overrides[gridSize] = []
+				var gridsize_overrides: Array = overrides[gridSize]
+				if not gridsize_overrides.has(overrideUid):
+					gridsize_overrides.append(overrideUid)
+	return overrides

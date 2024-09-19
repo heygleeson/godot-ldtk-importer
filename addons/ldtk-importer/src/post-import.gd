@@ -28,14 +28,14 @@ static func run_tileset_post_import(tilesets: Dictionary, script_path: String) -
 	Util.timer_start(Util.DebugTime.POST_IMPORT)
 	Util.print("tileset_post_import", str(tilesets), 1)
 	tilesets = run(tilesets, Util.options.tileset_post_import)
-	Util.timer_finish("Tileset Post-Import")
+	Util.timer_finish("Tileset Post-Import: Complete", 1)
 	return tilesets
 
 static func run_level_post_import(level: LDTKLevel, script_path: String) -> LDTKLevel:
 	Util.timer_start(Util.DebugTime.POST_IMPORT)
-	Util.print("level_post_import", level.name, 1)
+	Util.print("level_post_import", level.name, 2)
 	level = run(level, Util.options.level_post_import)
-	Util.timer_finish("Level Post-Import (%s)" % [level.name])
+	Util.timer_finish("Level Post-Import: Complete", 2)
 	return level
 
 static func run_entity_post_import(level: LDTKLevel, script_path: String) -> LDTKLevel:
@@ -46,15 +46,15 @@ static func run_entity_post_import(level: LDTKLevel, script_path: String) -> LDT
 			continue
 
 		var entityLayerName = layer.get_parent().name + "." + layer.name
-		Util.print("entity_post_import", entityLayerName, 2)
+		Util.print("entity_post_import", entityLayerName, 3)
 		layer = run(layer, script_path)
 
-	Util.timer_finish("Entity Post-Import (%s)" % [level.name], 2)
+	Util.timer_finish("Entity Post-Import: Complete", 3)
 	return level
 
 static func run_world_post_import(world: LDTKWorld, script_path: String) -> LDTKWorld:
 	Util.timer_start(Util.DebugTime.POST_IMPORT)
-	Util.print("world_post_import", world.name)
+	Util.print("world_post_import", world.name, 1)
 	world = run(world, Util.options.world_post_import)
-	Util.timer_finish("World Post-Import (%s)" % [world.name])
+	Util.timer_finish("World Post-Import: Complete", 1)
 	return world

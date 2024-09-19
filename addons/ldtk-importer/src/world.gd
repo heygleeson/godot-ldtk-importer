@@ -10,6 +10,7 @@ static func create_world(
 		base_dir: String
 ) -> LDTKWorld:
 
+	Util.timer_start(Util.DebugTime.GENERAL)
 	var world = LDTKWorld.new()
 	world.name = name
 	world.iid = iid
@@ -60,6 +61,8 @@ static func create_world(
 
 	world.rect.position = Vector2i(x1, y1)
 	world.rect.end = Vector2i(x2, y2)
+
+	Util.timer_finish("World Created", 1)
 
 	# Post-Import
 	if (Util.options.world_post_import):

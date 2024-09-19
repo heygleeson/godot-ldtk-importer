@@ -2,6 +2,8 @@
 
 const Util = preload("util.gd")
 
+# When building definitions we are only collecting data we need and do some pre-parsing to make the next steps easier.
+
 static func build_definitions(world_data: Dictionary) -> Dictionary:
 	var definitions := {
 		"enums": resolve_enum_definitions(world_data.defs.enums),

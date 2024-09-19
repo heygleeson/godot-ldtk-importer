@@ -5,11 +5,16 @@ const LayerUtil = preload("util/layer-util.gd")
 const FieldUtil = preload("util/field-util.gd")
 const TileUtil = preload("util/tile-util.gd")
 
+# Used to display helpful error messages (which level we are in)
+static var current_level: String = "N/A"
+
 static func create_layers(
 		level_data: Dictionary,
 		layer_instances: Array,
 		definitions: Dictionary
 ) -> Array:
+
+	current_level = level_data.identifier
 
 	var layer_nodes := []
 	var layer_index: int = 0
@@ -145,8 +150,13 @@ static func create_tile_layer(
 	else:
 		tiles = layer_data.autoLayerTiles
 
-	var tile_source_id: int = layer_data.__tilesetDefUid
+	var tile_source_id = layer_data.__tilesetDefUid
 	var grid_size := Vector2(layer_data.__gridSize, layer_data.__gridSize)
+
+	if (tile_source_id == null):
+		Util.print("item_fail", "Null Tilemap on layerInstance: '%s'" % [layer_name], 2)
+		push_warning("Detected null tilemap on a level '%s' layer instance '%s'. Please fix this in your LDTK project file." % [current_level, layer_name])
+		return tilemap
 
 	__place_tiles(tilemap, tiles, tile_source_id, grid_size)
 

@@ -119,13 +119,16 @@ const PRINT_SNIPPET := {
 	"entity_post_import": "[color=tomato]‣ Entity Post-Import: %s[/color]",
 }
 
-static func print(type: String, message: String, indent: int = 0) -> void:
+static func nice_print(type: String, message: String, indent: int = 0) -> void:
 	if PRINT_SNIPPET.has(type):
 		var snippet: String = PRINT_SNIPPET[type]
 		snippet = snippet.indent(str("\t").repeat(indent))
 		print_rich(snippet % [message])
 	else:
 		print_rich(message)
+
+static func print(type: String, message: String, indent: int = 0) -> void:
+	nice_print(type, message, indent)
 
 static func print_time(type: String, message: String, time: int = -1, indent: int = 0) -> void:
 	if PRINT_SNIPPET.has(type):
@@ -166,11 +169,18 @@ static func add_unresolved_reference(
 	})
 
 static func handle_references() -> void:
-	if (options.resolve_entityrefs): resolve_references()
+	resolve_references()
 	clean_references()
 	clean_resolvers()
 
 static func resolve_references() -> void:
+	var count := unresolved_refs.size()
+	if (count == 0 or options.resolve_entityrefs):
+		if (options.verbose_output): nice_print("item_info", "No references to resolve", 1)
+		return
+	else:
+		if (options.verbose_output): nice_print("item_info", "Resolving %s references" % [count], 1)
+
 	var solved_refcount := 0
 
 	for ref in unresolved_refs:
@@ -191,7 +201,7 @@ static func resolve_references() -> void:
 					if path:
 						object[property] = path
 					else:
-						print("Cannot resolve. Out-of-bounds? '%s' '%s'" % [instance.name, node.name])
+						nice_print("item_fail", "Cannot resolve ref (out-of-bounds?) '%s' '%s'" % [instance.name, node.name], 1)
 						continue
 			else:
 				object[property] = instance
@@ -200,7 +210,7 @@ static func resolve_references() -> void:
 
 	var leftover_refcount: int = unresolved_refs.size() - solved_refcount
 	if leftover_refcount > 0:
-		print("Could not resolve ", leftover_refcount, " references, most likely non-existent entities.")
+		nice_print("item_info", "Could not resolve %s references, most likely non-existent entities." % [leftover_refcount], 1)
 
 static func clean_references() -> void:
 	tileset_refs.clear()
