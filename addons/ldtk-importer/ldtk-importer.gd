@@ -52,7 +52,7 @@ func _get_option_visibility(path, option_name, options):
 	return true
 
 func _can_import_threaded() -> bool:
-	return true
+	return false
 
 #endregion
 
