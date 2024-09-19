@@ -161,6 +161,7 @@ static func add_unresolved_reference(
 	node: Variant = object,
 	iid: String = str(object[property])
 ) -> void:
+
 	unresolved_refs.append({
 			"object": object,
 			"property": property,
@@ -175,7 +176,7 @@ static func handle_references() -> void:
 
 static func resolve_references() -> void:
 	var count := unresolved_refs.size()
-	if (count == 0 or options.resolve_entityrefs):
+	if (count == 0 or not options.resolve_entityrefs):
 		if (options.verbose_output): nice_print("item_info", "No references to resolve", 1)
 		return
 	else:
