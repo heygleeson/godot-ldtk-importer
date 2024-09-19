@@ -8,11 +8,17 @@ const PostImport = preload("post-import.gd")
 enum AtlasTextureType {CompressedTexture2D, CanvasTexture}
 
 static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
+static func build_tilesets(
+		definitions: Dictionary,
+		base_dir: String,
+		tileset_overrides: Dictionary
+) -> Array:
 	Util.timer_start(Util.DebugTime.TILES)
 	var tilesets := {}
 	var tileset_sources := {}
 
 	## Reduce Layer Defs to find all unique layer grid sizes and create TileSets for each.
+	# Reduce Layer Defs to find all unique layer grid sizes and create TileSets for each.
 	var layer_def_uids: Array = definitions.layers.keys()
 
 	tilesets = layer_def_uids.reduce(
@@ -35,6 +41,7 @@ static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
 	, tilesets)
 
 	## Create TileSetSources for each Tileset Def
+	# Create TileSetSources for each Tileset Def
 	var tileset_def_uids = definitions.tilesets.keys()
 	for uid in tileset_def_uids:
 		var tileset_def: Dictionary = definitions.tilesets[uid]
@@ -44,8 +51,13 @@ static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
 
 	## Add TileSetSources to all TileSets
 	# NOTE: We also add Sources to mismatched TileSet sizes (if a Layer uses that Tileset Def)
+	# Add TileSetSources to TileSets
+	# NOTE: We also add Sources to mismatched TileSet sizes (if a layer uses that TilesetDef as an override)
 	for id in tilesets.keys():
 		var tileset = tilesets[id]
+		var tileset: TileSet = tilesets[id]
+		var size: int = tileset.tile_size.x
+
 		for uid in tileset_sources.keys():
 			var source: TileSetAtlasSource = tileset_sources[uid]
 			if tileset.has_source(uid):
@@ -59,6 +71,27 @@ static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
 					#print(definitions.tilesets.keys(), " --- ", uid)
 					var tileset_def: Dictionary = definitions.tilesets[uid]
 					add_tileset_custom_data(tileset_def, tileset, source, tileset_def.__cWid)
+			if source == null: continue
+			var source_size: int = source.texture_region_size.x
+
+			# Check if override exists.
+			var has_override: bool = false
+			if (tileset_overrides.has(size)):
+				if (tileset_overrides[size].has(int(uid))):
+					has_override = true
+
+			# Include Source if size matches grid (or is an override found for this grid size)
+			if size == source_size or has_override:
+				if tileset.has_source(uid):
+					source = tileset.get_source(uid)
+				else:
+					source = source.duplicate()
+					tileset.add_source(source, uid)
+
+				if (Util.options.tileset_custom_data):
+					if definitions.tilesets.has(uid):
+						var tileset_def: Dictionary = definitions.tilesets[uid]
+						add_tileset_custom_data(tileset_def, tileset, source, tileset_def.__cWid)
 
 	# Post-Import
 	if (Util.options.tileset_post_import):
@@ -83,6 +116,9 @@ static func build_tilesets(definitions: Dictionary, base_dir: String) -> Array:
 	for key in tilesets.keys():
 		var tileset = tilesets[key]
 		# reload tileset (improves performance)
+		var tileset = tilesets[key]
+		if tileset == null: continue
+		if not files.has(key): continue
 		tilesets[key] = ResourceLoader.load(files[key])
 
 	return files.values()

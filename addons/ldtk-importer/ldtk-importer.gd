@@ -183,14 +183,14 @@ func _import(
 	else:
 		return ERR_PARSE_ERROR
 
-	# Generate definitions
 	Util.timer_start(Util.DebugTime.GENERAL)
 	var definitions := DefinitionUtil.build_definitions(world_data)
+	var tileset_overrides := Tileset.get_tileset_overrides(world_data)
 	Util.timer_finish("Definitions Created")
 
-	# Save Tilesets as Resources
+	# Build Tilesets and save as Resources
 	if Util.options.verbose_output: Util.print("block", "Tilesets")
-	var tileset_paths := Tileset.build_tilesets(definitions, base_dir)
+	var tileset_paths := Tileset.build_tilesets(definitions, base_dir, tileset_overrides)
 	gen_files.append_array(tileset_paths)
 
 	# Fetch EntityDef Tile textures
