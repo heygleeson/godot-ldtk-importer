@@ -294,6 +294,10 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 
 		var file_name = tileset.resource_name
 		var file_path = "%s%s.%s" % [save_path, file_name, "res"]
+		if ResourceLoader.exists(file_path):
+			tileset.take_over_path(file_path)
+			gen_files[key] = file_path
+			continue
 		var err = ResourceSaver.save(tileset, file_path)
 		if err == OK:
 			gen_files[key] = file_path
