@@ -174,9 +174,9 @@ static func handle_references() -> void:
 	clean_references()
 	clean_resolvers()
 
-static func resolve_references() -> void:
+static func resolve_references(force: bool = true) -> void:
 	var count := unresolved_refs.size()
-	if (count == 0 or not options.resolve_entityrefs):
+	if not force and (count == 0 or not options.resolve_entityrefs):
 		if (options.verbose_output): nice_print("item_info", "No references to resolve", 1)
 		return
 	else:
