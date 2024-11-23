@@ -100,7 +100,7 @@ static func build_tilesets(
 
 static func get_tileset(tile_size: int,base_dir: String) -> TileSet:
 	var tileset_name := "tileset_%spx" % [str(tile_size)]
-	var path := base_dir + "tilesets/" + tileset_name + ".res"
+	var path := base_dir + "tilesets/" + tileset_name + ".tres"
 
 	if not (Util.options.force_tileset_reimport):
 		if ResourceLoader.exists(path):
@@ -293,11 +293,7 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 			continue
 
 		var file_name = tileset.resource_name
-		var file_path = "%s%s.%s" % [save_path, file_name, "res"]
-		if ResourceLoader.exists(file_path):
-			tileset.take_over_path(file_path)
-			gen_files[key] = file_path
-			continue
+		var file_path = "%s%s.%s" % [save_path, file_name, "tres"]
 		var err = ResourceSaver.save(tileset, file_path)
 		if err == OK:
 			gen_files[key] = file_path
