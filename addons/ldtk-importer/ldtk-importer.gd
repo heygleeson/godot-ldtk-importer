@@ -6,7 +6,7 @@ const LDTK_LATEST_VERSION = "1.5.3"
 enum Presets {DEFAULT}
 enum SaveExtensions {
 	SCN,
-	TSCN
+	TSCN,
 }
 
 const Util = preload("src/util/util.gd")
