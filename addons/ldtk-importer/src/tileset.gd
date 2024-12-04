@@ -2,6 +2,7 @@
 
 const Util = preload("util/util.gd")
 const TileUtil = preload("util/tile-util.gd")
+const LevelUtil = preload("util/level-util.gd")
 const FieldUtil = preload("util/field-util.gd")
 const PostImport = preload("post-import.gd")
 
@@ -313,10 +314,20 @@ static func get_entity_def_tiles(definitions: Dictionary, tilesets: Dictionary) 
 	return definitions
 
 # Collect all layer tileset overrides. Later we'll ensure these sources are included in TileSet resources.
-static func get_tileset_overrides(world_data: Dictionary) -> Dictionary:
+static func get_tileset_overrides(
+	world_data: Dictionary,
+	base_dir: String,
+	external_levels: bool
+) -> Dictionary:
 	var overrides := {}
-	for level in world_data.levels:
-		for layer in level.layerInstances:
+	for level_index in range(world_data.levels.size()):
+		var level_data
+		level_data = world_data.levels[level_index]
+
+		if external_levels:
+			level_data = LevelUtil.get_external_level(level_data, base_dir)
+
+		for layer in level_data.layerInstances:
 			if layer.overrideTilesetUid == null:
 				continue
 			var gridSize: int = layer.__gridSize

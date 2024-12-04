@@ -175,6 +175,7 @@ func _import(
 
 	Util.timer_start(Util.DebugTime.LOAD)
 	var world_data := Util.parse_file(source_file)
+	var external_levels: bool = world_data.externalLevels
 	Util.timer_finish("File parsed")
 
 	# Check version
@@ -185,7 +186,7 @@ func _import(
 
 	Util.timer_start(Util.DebugTime.GENERAL)
 	var definitions := DefinitionUtil.build_definitions(world_data)
-	var tileset_overrides := Tileset.get_tileset_overrides(world_data)
+	var tileset_overrides := Tileset.get_tileset_overrides(world_data, base_dir, external_levels)
 	Util.timer_finish("Definitions Created")
 
 	# Build Tilesets and save as Resources
@@ -197,7 +198,6 @@ func _import(
 	Tileset.get_entity_def_tiles(definitions, Util.tilesets)
 
 	# Detect Multi-Worlds
-	var external_levels: bool = world_data.externalLevels
 	var world_iid: String = world_data.iid
 
 	var world: LDTKWorld
