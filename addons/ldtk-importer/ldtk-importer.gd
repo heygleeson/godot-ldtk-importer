@@ -3,7 +3,10 @@ extends EditorImportPlugin
 
 const LDTK_LATEST_VERSION = "1.5.3"
 
-enum Presets {DEFAULT}
+enum Presets {DEFAULT}enum SaveExtensions {
+	SCN,
+	TSCN
+}
 
 const Util = preload("src/util/util.gd")
 const World = preload("src/world.gd")
@@ -33,7 +36,7 @@ func _get_recognized_extensions():
 	return ["ldtk"]
 
 func _get_save_extension():
-	return "scn"
+	return SaveExtensions.keys()[Util.options.save_extension].to_lower()
 
 func _get_preset_count():
 	return Presets.size()
@@ -71,6 +74,12 @@ func _get_import_options(path, index):
 			# Save LDTKLevels as PackedScenes.
 			"name": "pack_levels",
 			"default_value": true,
+		},		{
+			# Define LDTKLevels save extension.
+			"name": "save_extension",
+			"default_value": 0,
+			"property_hint": PROPERTY_HINT_ENUM,
+			"hint_string": "scn,tscn",
 		},
 		# --- Layers --- #
 		{"name": "Layer", "default_value":"", "usage": PROPERTY_USAGE_GROUP},
