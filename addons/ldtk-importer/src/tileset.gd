@@ -315,9 +315,9 @@ static func get_entity_def_tiles(definitions: Dictionary, tilesets: Dictionary) 
 
 # Collect all layer tileset overrides. Later we'll ensure these sources are included in TileSet resources.
 static func get_tileset_overrides(
-	world_data: Dictionary,
-	base_dir: String,
-	external_levels: bool
+		world_data: Dictionary,
+		base_dir: String,
+		external_levels: bool
 ) -> Dictionary:
 	var overrides := {}
 	for level_index in range(world_data.levels.size()):
