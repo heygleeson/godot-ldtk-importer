@@ -4,9 +4,9 @@ extends EditorImportPlugin
 const LDTK_LATEST_VERSION = "1.5.3"
 
 enum Presets {DEFAULT}
-enum SaveExtensions {
+enum LevelSaveExtensions {
 	SCN,
-	TSCN,
+	TSCN
 }
 
 const Util = preload("src/util/util.gd")
@@ -37,7 +37,7 @@ func _get_recognized_extensions():
 	return ["ldtk"]
 
 func _get_save_extension():
-	return SaveExtensions.keys()[Util.options.save_extension].to_lower()
+	return LevelSaveExtensions.keys()[Util.options.level_save_extension].to_lower()
 
 func _get_preset_count():
 	return Presets.size()
@@ -75,9 +75,10 @@ func _get_import_options(path, index):
 			# Save LDTKLevels as PackedScenes.
 			"name": "pack_levels",
 			"default_value": true,
-		},		{
+		},
+		{
 			# Define LDTKLevels save extension.
-			"name": "save_extension",
+			"name": "level_save_extension",
 			"default_value": 0,
 			"property_hint": PROPERTY_HINT_ENUM,
 			"hint_string": "scn,tscn",
@@ -107,6 +108,13 @@ func _get_import_options(path, index):
 			"default_value": 0,
 			"property_hint": PROPERTY_HINT_ENUM,
 			"hint_string": "CompressedTexture2D,CanvasTexture",
+		},
+		{
+			# Define Godot tileset save extension.
+			"name": "tileset_save_extension",
+			"default_value": 0,
+			"property_hint": PROPERTY_HINT_ENUM,
+			"hint_string": "res,tres",
 		},
 		# --- Entities --- #
 		{"name": "Entity", "default_value":"", "usage": PROPERTY_USAGE_GROUP},

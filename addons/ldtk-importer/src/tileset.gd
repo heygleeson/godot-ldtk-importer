@@ -2,10 +2,18 @@
 
 const Util = preload("util/util.gd")
 const TileUtil = preload("util/tile-util.gd")
+const LevelUtil = preload("util/level-util.gd")
 const FieldUtil = preload("util/field-util.gd")
 const PostImport = preload("post-import.gd")
 
 enum AtlasTextureType {CompressedTexture2D, CanvasTexture}
+enum TilesetSaveExtension {
+	RES,
+	TRES,
+}
+
+static func get_tileset_save_extension() -> String:
+	return TilesetSaveExtension.keys()[Util.options.tileset_save_extension].to_lower()
 
 static func build_tilesets(
 		definitions: Dictionary,
@@ -100,7 +108,11 @@ static func build_tilesets(
 
 static func get_tileset(tile_size: int,base_dir: String) -> TileSet:
 	var tileset_name := "tileset_%spx" % [str(tile_size)]
-	var path := base_dir + "tilesets/" + tileset_name + ".tres"
+	var path := "%stilesets/%s.%s" % [
+		base_dir,
+		tileset_name,
+		get_tileset_save_extension()
+	]
 
 	if not (Util.options.force_tileset_reimport):
 		if ResourceLoader.exists(path):
@@ -293,7 +305,7 @@ static func save_tilesets(tilesets: Dictionary, base_dir: String) -> Dictionary:
 			continue
 
 		var file_name = tileset.resource_name
-		var file_path = "%s%s.%s" % [save_path, file_name, "tres"]
+		var file_path = "%s%s.%s" % [save_path, file_name, get_tileset_save_extension()]
 		var err = ResourceSaver.save(tileset, file_path)
 		if err == OK:
 			gen_files[key] = file_path
