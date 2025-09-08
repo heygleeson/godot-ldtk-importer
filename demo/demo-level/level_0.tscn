@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxuxg0jxvyg0u"]
+
+[ext_resource type="PackedScene" uid="uid://d24lhves6lh8l" path="res://demo/levels/Level_0.scn" id="1_vdsbh"]
+[ext_resource type="Script" uid="uid://db17cja2vo1ml" path="res://demo/demo-level/level_0.gd" id="2_s8tp5"]
+
+[node name="Level_0" instance=ExtResource("1_vdsbh")]
+script = ExtResource("2_s8tp5")
+
+[node name="Camera2D" type="Camera2D" parent="." index="2"]
+position = Vector2(1024, 512)
+zoom = Vector2(0.5, 0.5)

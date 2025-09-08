@@ -1,0 +1,21 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="-819.2" x2="819.2" spreadMethod="pad" gradientTransform="matrix(0.0146484375 0 0 0.0048828125 16 20)" id="gradient0">
+      <stop offset="0" stop-color="#419FDD"/>
+      <stop offset="1" stop-color="#366FBF"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="-819.2" x2="819.2" spreadMethod="pad" gradientTransform="matrix(0.0146484375 0 0 0.0048828125 16 36)" id="gradient1">
+      <stop offset="0" stop-color="#419FDD"/>
+      <stop offset="1" stop-color="#366FBF"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <path stroke="none" fill="#353541" d="M22.3 7.25 L22.4 7.25 Q29.45 9.35 35.9 5.95 L36.05 5.9 36.1 5.85 36.8 5.5 Q48.6 -0.7 59.2 4.1 61.25 4.95 62.65 6.9 L62.7 7.05 Q64 9 64 11.4 L64 37.85 Q64 40.35 62.5 42.45 61 44.55 58.65 45.4 L53.8 45.55 Q47.3 43.85 40.1 47.75 L40 47.8 39.65 47.95 Q30.35 52.85 20 49.85 L20 64 0 64 0 10 Q0 5.85 2.95 2.95 5.85 0 10 0 14.15 0 17.1 2.95 18.8 4.65 19.55 6.9 L22.3 7.25"/>
+    <path stroke="none" fill="#EE9366" d="M4 13.9 L4 10 Q4 7.5 5.75 5.75 7.5 4 10 4 12.5 4 14.25 5.75 16 7.5 16 10 L16 13.9 Q15.95 11.45 14.25 9.75 12.5 8 10 8 7.5 8 5.75 9.75 4.05 11.45 4 13.9"/>
+    <path stroke="none" fill="#DE7E4F" d="M4 13.9 Q4.05 11.45 5.75 9.75 7.5 8 10 8 12.5 8 14.25 9.75 15.95 11.45 16 13.9 L16 64 4 64 4 13.9"/>
+    <path stroke="none" fill="#419FDD" d="M20 10.85 L21.15 11.05 Q25.7 12.4 30 11.95 L32 11.6 Q35.05 10.95 38 9.35 L38.3 9.2 Q41.2 7.65 44 6.9 L46 6.4 Q52 5.3 57.6 7.75 58.65 8.2 59.35 9.2 60 10.2 60 11.4 L60 37.85 Q60 39.1 59.25 40.15 58.5 41.15 57.3 41.6 L54.9 41.7 46 41.35 44 41.8 Q41.1 42.6 38.1 44.25 L38 44.3 Q35.05 45.85 32 46.5 L30 46.85 Q25.15 47.4 20 45.65 L20 10.85"/>
+    <path stroke="none" fill="#366FBF" d="M20 10.85 L20 45.65 19.65 45.5 18.55 45.1 Q17.4 44.65 16.7 43.65 16 42.6 16 41.4 L16 14.85 Q16 13.55 16.75 12.55 17.5 11.5 18.7 11.1 L20 10.85"/>
+    <path stroke="none" fill="url(#gradient0)" d="M4 16 L16 16 16 24 4 24 4 16"/>
+    <path stroke="none" fill="url(#gradient1)" d="M4 32 L16 32 16 40 4 40 4 32"/>
+  </g>
+</svg>

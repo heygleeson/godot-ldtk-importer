@@ -1,0 +1,16 @@
+<TextureAtlas imagePath="spritesheet-backgrounds-double.png">
+	<SubTexture name="background_clouds" x="0" y="0" width="512" height="512"/>
+	<SubTexture name="background_color_desert" x="512" y="1024" width="512" height="512"/>
+	<SubTexture name="background_color_hills" x="1536" y="0" width="512" height="512"/>
+	<SubTexture name="background_color_mushrooms" x="1024" y="1536" width="512" height="512"/>
+	<SubTexture name="background_color_trees" x="1024" y="1024" width="512" height="512"/>
+	<SubTexture name="background_fade_desert" x="1024" y="512" width="512" height="512"/>
+	<SubTexture name="background_fade_hills" x="1024" y="0" width="512" height="512"/>
+	<SubTexture name="background_fade_mushrooms" x="512" y="1536" width="512" height="512"/>
+	<SubTexture name="background_fade_trees" x="1536" y="512" width="512" height="512"/>
+	<SubTexture name="background_solid_cloud" x="512" y="512" width="512" height="512"/>
+	<SubTexture name="background_solid_dirt" x="512" y="0" width="512" height="512"/>
+	<SubTexture name="background_solid_grass" x="0" y="1536" width="512" height="512"/>
+	<SubTexture name="background_solid_sand" x="0" y="1024" width="512" height="512"/>
+	<SubTexture name="background_solid_sky" x="0" y="512" width="512" height="512"/>
+</TextureAtlas>

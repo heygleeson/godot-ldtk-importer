@@ -1,0 +1,39 @@
+[remap]
+
+importer="ldtk.import"
+type="PackedScene"
+uid="uid://cqx6yiyvelle2"
+path="res://.godot/imported/DemoLDTK.ldtk-a358dc4976c6f0af9a4c82a5fecdc405.scn"
+
+[deps]
+
+files=["res://demo/tilesets/tileset_64px.res", "res://.godot/imported/DemoLDTK.ldtk-a358dc4976c6f0af9a4c82a5fecdc405.scn"]
+
+source_file="res://demo/DemoLDTK.ldtk"
+dest_files=["res://.godot/imported/DemoLDTK.ldtk-a358dc4976c6f0af9a4c82a5fecdc405.scn", "res://demo/tilesets/tileset_64px.res", "res://.godot/imported/DemoLDTK.ldtk-a358dc4976c6f0af9a4c82a5fecdc405.scn"]
+
+[params]
+
+World=""
+group_world_layers=false
+Level=""
+pack_levels=true
+level_save_extension=0
+Layer=""
+layers_always_visible=false
+Tileset=""
+tileset_custom_data=false
+integer_grid_tilesets=false
+atlas_texture_type=0
+tileset_save_extension=0
+Entity=""
+resolve_entityrefs=true
+use_entity_placeholders=false
+Post Import=""
+tileset_post_import=""
+entities_post_import=""
+level_post_import="uid://dn0boo6gysau4"
+world_post_import=""
+Debug=""
+force_tileset_reimport=false
+verbose_output=false

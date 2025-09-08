@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://w650dba0f3kp"]
+
+[ext_resource type="Texture2D" uid="uid://cicpg866stkjg" path="res://demo/entities/Flag/flag_yellow_a.png" id="1_2twbl"]
+[ext_resource type="Script" uid="uid://d314d4s418bo6" path="res://demo/entities/Flag/flag.gd" id="1_u132k"]
+
+[node name="Flag" type="Node2D"]
+script = ExtResource("1_u132k")
+
+[node name="FlagYellowA" type="Sprite2D" parent="."]
+texture = ExtResource("1_2twbl")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -64.0
+offset_right = 40.0
+offset_bottom = -41.0
+metadata/_edit_use_anchors_ = true

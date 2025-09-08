@@ -1,0 +1,16 @@
+<TextureAtlas imagePath="spritesheet-backgrounds-default.png">
+	<SubTexture name="background_clouds" x="256" y="512" width="256" height="256"/>
+	<SubTexture name="background_color_desert" x="768" y="0" width="256" height="256"/>
+	<SubTexture name="background_color_hills" x="512" y="768" width="256" height="256"/>
+	<SubTexture name="background_color_mushrooms" x="512" y="512" width="256" height="256"/>
+	<SubTexture name="background_color_trees" x="512" y="256" width="256" height="256"/>
+	<SubTexture name="background_fade_desert" x="512" y="0" width="256" height="256"/>
+	<SubTexture name="background_fade_hills" x="256" y="768" width="256" height="256"/>
+	<SubTexture name="background_fade_mushrooms" x="768" y="256" width="256" height="256"/>
+	<SubTexture name="background_fade_trees" x="256" y="256" width="256" height="256"/>
+	<SubTexture name="background_solid_cloud" x="256" y="0" width="256" height="256"/>
+	<SubTexture name="background_solid_dirt" x="0" y="768" width="256" height="256"/>
+	<SubTexture name="background_solid_grass" x="0" y="512" width="256" height="256"/>
+	<SubTexture name="background_solid_sand" x="0" y="256" width="256" height="256"/>
+	<SubTexture name="background_solid_sky" x="0" y="0" width="256" height="256"/>
+</TextureAtlas>

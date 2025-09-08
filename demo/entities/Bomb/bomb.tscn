@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://3iqotex11ni1"]
+
+[ext_resource type="Script" uid="uid://dke5q155s6s7e" path="res://demo/entities/Bomb/bomb.gd" id="1_11238"]
+[ext_resource type="Texture2D" uid="uid://i127rtds8of4" path="res://demo/entities/Bomb/bomb.png" id="2_nsfsk"]
+
+[node name="Bomb" type="Node2D"]
+script = ExtResource("1_11238")
+
+[node name="Bomb" type="Sprite2D" parent="."]
+texture = ExtResource("2_nsfsk")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -64.0
+offset_right = 40.0
+offset_bottom = -41.0
+metadata/_edit_use_anchors_ = true

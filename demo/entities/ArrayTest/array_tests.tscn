@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1lnutbf7uaj6"]
+
+[ext_resource type="Script" uid="uid://452e1n4045nx" path="res://demo/entities/ArrayTest/array_tests.gd" id="1_musir"]
+
+[node name="ArrayTests" type="Node2D"]
+script = ExtResource("1_musir")

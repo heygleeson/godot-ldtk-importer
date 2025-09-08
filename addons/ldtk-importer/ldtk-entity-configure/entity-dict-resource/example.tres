@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EntityDictionary" load_steps=3 format=3 uid="uid://44fhdv1xivjm"]
+
+[ext_resource type="PackedScene" uid="uid://3iqotex11ni1" path="res://demo/entities/Bomb/bomb.tscn" id="1_0awlf"]
+[ext_resource type="Script" uid="uid://17k3vugsg1go" path="res://ldtk-entity-configure/entity-dict-resource/entity_dict.gd" id="2_1dsp8"]
+
+[resource]
+script = ExtResource("2_1dsp8")
+scene_mappings = {
+"Bomb": ExtResource("1_0awlf")
+}
+metadata/_custom_type_script = "uid://17k3vugsg1go"
