@@ -80,7 +80,11 @@ static func create_multi_world(
 	multi_world.name = name
 	multi_world.iid = iid
 
-	worlds.sort_custom(func(a, b): return a.depth < b.depth)
+	worlds.sort_custom(
+		func(a, b): return \
+			a.depth < b.depth if 'depth' in a and 'depth' in b \
+			else false
+	)
 
 	for world in worlds:
 		multi_world.add_child(world)

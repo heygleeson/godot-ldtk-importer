@@ -226,35 +226,26 @@ func _import(
 		for world_instance in world_instances:
 			var world_instance_name: String = world_instance.identifier
 			var world_instance_iid: String = world_instance.iid
-			var levels := Level.build_levels(world_instance, definitions, base_dir, external_levels)
+			var levels := pack_levels_if_needed(
+				Level.build_levels(world_instance, definitions, base_dir, external_levels),
+				base_dir,
+				gen_files
+			)
+
 			var world_node := World.create_world(world_instance_name, world_instance_iid, levels, base_dir)
 			world_nodes.append(world_node)
 
 		world = World.create_multi_world(world_name, world_iid, world_nodes)
 	else:
 		if Util.options.verbose_output: Util.print("block", "Levels")
-		var levels := Level.build_levels(world_data, definitions, base_dir, external_levels)
+		var levels := pack_levels_if_needed(
+			Level.build_levels(world_data, definitions, base_dir, external_levels),
+			base_dir,
+			gen_files
+		)
 
-		# Save Levels (after Level Post-Import)
-		if (Util.options.pack_levels):
-			var levels_path := base_dir + 'levels/'
-			var directory = DirAccess.open(base_dir)
-			if not directory.dir_exists(levels_path):
-				directory.make_dir(levels_path)
-
-			# Resolve Refs + Cleanup Resolvers. We don't want to save 'NodePathResolver' in the Level scene.
-			#if (Util.options.verbose_output): Util.print("block", "References")
-			if (Util.options.verbose_output): Util.print("block", "Save Levels")
-			Util.handle_references()
-			var packed_levels = save_levels(levels, levels_path, gen_files)
-
-			if (Util.options.verbose_output): Util.print("block", "Save World")
-			world = World.create_world(world_name, world_iid, packed_levels, base_dir)
-		else:
-			if (Util.options.verbose_output): Util.print("block", "Save World")
-			world = World.create_world(world_name, world_iid, levels, base_dir)
-
-			Util.handle_references()
+		world = World.create_world(world_name, world_iid, levels, base_dir)
+		Util.handle_references()
 
 	# Save World as PackedScene
 	Util.timer_start(Util.DebugTime.SAVE)
@@ -274,6 +265,27 @@ func _import(
 	return err
 
 #endregion
+
+func pack_levels_if_needed(
+	levels: Array[LDTKLevel],
+	base_dir: String,
+	gen_files: Array[String],
+) -> Array[LDTKLevel]:
+	if (Util.options.verbose_output): Util.print("block", "Save World")
+	if (not Util.options.pack_levels):
+		return levels
+
+	var levels_path := base_dir + 'levels/'
+	var directory = DirAccess.open(base_dir)
+	if not directory.dir_exists(levels_path):
+		directory.make_dir(levels_path)
+
+	# Resolve Refs + Cleanup Resolvers. We don't want to save 'NodePathResolver' in the Level scene.
+	#if (Util.options.verbose_output): Util.print("block", "References")
+	Util.handle_references()
+	var packed_levels = save_levels(levels, levels_path, gen_files)
+
+	return save_levels(levels, levels_path, gen_files)
 
 func save_world(
 		world: LDTKWorld,
