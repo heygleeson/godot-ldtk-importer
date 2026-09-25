@@ -1,0 +1,37 @@
+[remap]
+
+importer="ldtk.import.resource"
+type="Resource"
+uid="uid://cl2xhri6n1cjr"
+path="res://.godot/imported/example_gridvania.ldtk-1e90ad79e30c9b6df2716717ed71f39f.res"
+
+[deps]
+
+files=["res://examples/gridvania-resource/tilesets/tileset_16px.res", "res://examples/gridvania-resource/levels/Level_0.scn", "res://examples/gridvania-resource/levels/Level_1.scn", "res://examples/gridvania-resource/levels/Level_2.scn", "res://examples/gridvania-resource/levels/Level_3.scn", "res://examples/gridvania-resource/levels/Level_4.scn", "res://examples/gridvania-resource/levels/Level_5.scn", "res://examples/gridvania-resource/levels/Level_0.scn", "res://examples/gridvania-resource/levels/Level_1.scn", "res://examples/gridvania-resource/levels/Level_2.scn", "res://examples/gridvania-resource/levels/Level_3.scn", "res://examples/gridvania-resource/levels/Level_4.scn", "res://examples/gridvania-resource/levels/Level_5.scn", "res://.godot/imported/example_gridvania.ldtk-1e90ad79e30c9b6df2716717ed71f39f.res"]
+
+source_file="res://examples/gridvania-resource/example_gridvania.ldtk"
+dest_files=["res://.godot/imported/example_gridvania.ldtk-1e90ad79e30c9b6df2716717ed71f39f.res", "res://examples/gridvania-resource/tilesets/tileset_16px.res", "res://examples/gridvania-resource/levels/Level_0.scn", "res://examples/gridvania-resource/levels/Level_1.scn", "res://examples/gridvania-resource/levels/Level_2.scn", "res://examples/gridvania-resource/levels/Level_3.scn", "res://examples/gridvania-resource/levels/Level_4.scn", "res://examples/gridvania-resource/levels/Level_5.scn", "res://examples/gridvania-resource/levels/Level_0.scn", "res://examples/gridvania-resource/levels/Level_1.scn", "res://examples/gridvania-resource/levels/Level_2.scn", "res://examples/gridvania-resource/levels/Level_3.scn", "res://examples/gridvania-resource/levels/Level_4.scn", "res://examples/gridvania-resource/levels/Level_5.scn", "res://.godot/imported/example_gridvania.ldtk-1e90ad79e30c9b6df2716717ed71f39f.res"]
+
+[params]
+
+World=""
+Level=""
+level_save_extension=0
+Layer=""
+layers_always_visible=false
+Tileset=""
+tileset_custom_data=true
+integer_grid_tilesets=false
+atlas_texture_type=1
+tileset_save_extension=0
+Entity=""
+resolve_entityrefs=false
+use_entity_placeholders=true
+Post Import=""
+tileset_post_import=""
+entities_post_import=""
+level_post_import=""
+world_resource_post_import=""
+Debug=""
+force_tileset_reimport=true
+verbose_output=false

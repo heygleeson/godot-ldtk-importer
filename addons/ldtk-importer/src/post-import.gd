@@ -58,3 +58,11 @@ static func run_world_post_import(world: LDTKWorld, script_path: String) -> LDTK
 	world = run(world, Util.options.world_post_import)
 	Util.timer_finish("World Post-Import: Complete", 1)
 	return world
+
+
+static func run_world_resource_post_import(world: LDTKWorldData, script_path: String) -> LDTKWorldData:
+	Util.timer_start(Util.DebugTime.POST_IMPORT)
+	Util.print("world_resource_post_import", world.resource_name, 1)
+	world = run(world, Util.options.world_resource_post_import)
+	Util.timer_finish("World Resource Post-Import: Complete", 1)
+	return world
