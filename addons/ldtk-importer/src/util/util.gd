@@ -21,7 +21,7 @@ static func parse_file(source_file: String) -> Dictionary:
 	if json == null:
 		push_error("\nFailed to open file: ", source_file)
 		return {}
-	var data := JSON.parse_string(json.get_as_text())
+	var data: Variant = JSON.parse_string(json.get_as_text())
 	return data
 
 static func check_version(version: String, latest_version: String) -> bool:
